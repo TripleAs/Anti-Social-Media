@@ -1,4 +1,4 @@
-package com.example.arafatm.anti_socialmedia;
+package com.example.arafatm.anti_socialmedia.Home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,11 +20,19 @@ import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.example.arafatm.anti_socialmedia.Fragments.ChatFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GameFragment;
-import com.example.arafatm.anti_socialmedia.Fragments.GroupFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupCreationFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupManagerFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.SettingsFragment;
+import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener, GroupFragment.OnFragmentInteractionListener, GameFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
+
+public class MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
+        GroupManagerFragment.OnFragmentInteractionListener,
+        GameFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener, GroupCreationFragment.OnFragmentInteractionListener,
+        GroupFeedFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +44,9 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
 
         /*gets instance of all fragments here*/
+
         final Fragment chatFragment = new ChatFragment();
-        final Fragment groupFragment = new GroupFragment();
+        final Fragment groupFragment = new GroupManagerFragment();
         final Fragment gameFragment = new GameFragment();
         final Fragment settingsFragment = new SettingsFragment();
 
@@ -111,4 +120,15 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    /*Navigates to the groupManagerFragment*/
+    public void navigate_to_fragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
 }

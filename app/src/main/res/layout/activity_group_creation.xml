@@ -3,30 +3,47 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/groupCreationFragment"
+    tools:context=".Fragments.GroupFeedFragment">
+
+    <SearchView
+        android:id="@+id/sv_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary" />
 
     <Button
         android:id="@+id/btCreateGroup"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Create Group" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="61dp"
+        android:background="@color/colorPrimary"
+        android:text="Create"
+        android:textColor="@color/white" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFriends"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btCreateGroup"
-        android:layout_below="@+id/tvAddFriends"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:id="@+id/tvAddFriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="374dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Add friends to your new group"
-        android:textSize="18sp" />
+        android:layout_marginTop="91dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="61dp"
+        android:text="List of friends"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
+
+
 </RelativeLayout>

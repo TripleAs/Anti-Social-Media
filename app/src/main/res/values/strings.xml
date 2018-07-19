@@ -2,5 +2,8 @@
     <string name="app_name">Anti-Social Media</string>
     <string name="facebook_app_id">787835504939356</string>
     <string name="fb_login_protocol_scheme">fb787835504939356</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_media_location_folder">attachment-folder</string>
 </resources>

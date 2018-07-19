@@ -12,8 +12,7 @@
         android:id="@+id/ic_group_empty"
         android:enabled="true"
         android:icon="@drawable/ic_group_empty"
-        android:title=""
-        app:showAsAction="ifRoom" />
+        android:title="" />
     <item
         android:id="@+id/ic_game_empty"
         android:enabled="true"

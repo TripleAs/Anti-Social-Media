@@ -3,6 +3,7 @@ package com.example.arafatm.anti_socialmedia.Models;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -52,5 +53,26 @@ public class Group extends ParseObject {
         List<ParseObject> users = getList(KEY_POSTS);
         users.add(post);
         put(KEY_POSTS, users);
+    }
+
+    public static class Query extends ParseQuery {
+        public Query() {
+            super(Group.class);
+        }
+
+//        public Query getTop() {
+//            setLimit(20);
+//            return this;
+//        }
+
+//        public Query withUser() {
+//            include("user");
+//            return this;
+//        }
+//
+//        public Query getPostsForUser(ParseUser user) {
+//            whereEqualTo("user", user);
+//            return this;
+//        }
     }
 }

@@ -1,23 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/groupManagerFragament"
+    tools:context=".Fragments.GroupManagerFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvGroupManager"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ivNewGroup"
-        android:layout_alignParentLeft="true" />
-
-    <ImageView
-        android:id="@+id/ivNewGroup"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:layout_alignParentRight="true" />
+        app:titleTextColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentLeft="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:text="Group Manager"
+                android:textColor="@color/solid_white"
+                android:textSize="18sp" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:id="@+id/ic_add_icon"
+            android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_add_icon"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <GridView
+        android:id="@+id/gv_group_list"
+        android:layout_width="match_parent"
+        android:layout_height="504dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="63dp"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" />
+
+
 
 </RelativeLayout>
