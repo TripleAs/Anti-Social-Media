@@ -96,8 +96,8 @@ public class UserGroupList extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_groupList);
 
         groupList = new ArrayList<>();
-        final Group.Query postQuery = new Group.Query();
-        postQuery.findInBackground(new FindCallback<Group>() {
+        final Group.Query groupQuery = new Group.Query();
+        groupQuery.findInBackground(new FindCallback<Group>() {
             @Override
             public void done(final List<Group> objects, ParseException e) {
                 if (e == null) {

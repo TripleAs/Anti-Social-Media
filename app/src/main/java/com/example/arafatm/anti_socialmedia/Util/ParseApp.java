@@ -36,9 +36,9 @@ public class ParseApp extends Application {
 
         /*Setting up parse*/
         final Parse.Configuration configuration = new Parse.Configuration.Builder(this)
-                .applicationId("triple_as_lovely_app") // takes in App ID
-                .clientKey("amy_alison_arafat_are_triple_as") //takes in App Master Key
-                .server("http://anti-social-media.herokuapp.com/parse") // takes in Parse URL
+                .applicationId("forked-anti-social-media") // takes in App ID
+                .clientKey("amy-gu-makes-up-one-third-of-triple-as") //takes in App Master Key
+                .server("http://forked-asm.herokuapp.com/parse") // takes in Parse URL
                 .build();
 
         Parse.initialize(configuration); //initializing parse

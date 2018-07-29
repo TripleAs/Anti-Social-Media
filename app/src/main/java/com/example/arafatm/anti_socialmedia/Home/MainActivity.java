@@ -355,8 +355,6 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
 //        });
 
         Group.Query groupQuery = new Group.Query();
-        groupQuery.whereEqualTo("groupName", "Group4");
-
         groupQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {

@@ -208,7 +208,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                                 .into(ivGroupPic);
                     }
 
-                    loadTopPosts();
+//                    loadTopPosts();
+                    loadGroupPosts();
 
                 } else {
                     e.printStackTrace();
@@ -241,27 +242,26 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     private void loadTopPosts() {
-
         final Post.Query postsQuery = new Post.Query();
-
         postsQuery.getTop().withUser().forGroup(group);
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-
                     postAdapter.notifyDataSetChanged();
                     posts.addAll(objects);
-
                     swipeContainer.setRefreshing(false);
-
                 } else {
                     e.printStackTrace();
                 }
             }
         });
+    }
 
+    private void loadGroupPosts() {
+        List<Post> groupPosts = group.getPosts();
+        posts = (ArrayList<Post>) groupPosts;
     }
 
     private void refreshFeed(){
@@ -295,6 +295,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     @Override
     public void onFinishCreatePost(Post post) {
+        if (posts == null) {
+            posts = new ArrayList<>();
+        }
         posts.add(0, post);
         postAdapter.notifyItemInserted(0);
         rvPosts.scrollToPosition(0);

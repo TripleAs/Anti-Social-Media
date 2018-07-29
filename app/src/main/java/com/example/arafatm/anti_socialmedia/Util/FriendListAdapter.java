@@ -24,7 +24,7 @@ import java.util.List;
 public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
     public List<ParseUser> allFriends;
     private Context context;
-    private ArrayList<String> newGroupMembers;
+    private ArrayList<ParseUser> newGroupMembers;
 
     // Pass in the contact array into the constructor
     public FriendListAdapter(List<ParseUser> allFriends) {
@@ -68,7 +68,7 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
         return allFriends.size();
     }
 
-    public ArrayList<String> getNewGroupMembers() {
+    public ArrayList<ParseUser> getNewGroupMembers() {
         return newGroupMembers;
     }
 
@@ -109,13 +109,13 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
                     if (Added == true) { //when the user unselects a friend
                         addButton.setImageResource(R.drawable.ic_add_icon);
                         //remove that user's ObjectId from the newGroupMembers list
-                        newGroupMembers.remove(friend.getObjectId());
+                        newGroupMembers.remove(friend);
                         Added = false;
                         Toast.makeText(context,friend.getUsername()+" removed", Toast.LENGTH_SHORT).show();
                     } else {
                         addButton.setImageResource(R.drawable.ic_check_mark);
                         //add that user's ObjectId to the newGroupMembers list to be accessed later
-                        newGroupMembers.add(friend.getObjectId());
+                        newGroupMembers.add(friend);
                         Added = true;
                         Toast.makeText(context,friend.getUsername()+" added", Toast.LENGTH_SHORT).show();
                     }

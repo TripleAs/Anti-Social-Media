@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,7 @@ public class GroupCustomizationFragment extends Fragment {
     private ImageView ivCamera;
     private ImageView ivUpload;
 
-    private List<String> newMembers;
+    private List<ParseUser> newMembers;
     private PhotoHelper photoHelper;
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
@@ -55,10 +58,10 @@ public class GroupCustomizationFragment extends Fragment {
         void navigate_to_fragment(Fragment fragment);
     }
 
-    public static GroupCustomizationFragment newInstance(ArrayList<String> friendsToAdd) {
+    public static GroupCustomizationFragment newInstance(ArrayList<ParseUser> friendsToAdd) {
         GroupCustomizationFragment fragment = new GroupCustomizationFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList("newMembers", friendsToAdd);
+        args.putParcelable("newMembers", Parcels.wrap(friendsToAdd));
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,7 +81,7 @@ public class GroupCustomizationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            newMembers = getArguments().getStringArrayList("newMembers");
+            newMembers = Parcels.unwrap(getArguments().getParcelable("newMembers"));
         }
     }
 
@@ -184,18 +187,20 @@ public class GroupCustomizationFragment extends Fragment {
 
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
-                @Override
-                public void done(ParseUser object, ParseException e) {
-                    newRequest.initRequest(object, newGroup);
-                    try {
-                        newRequest.save();
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
+            newRequest.initRequest(newMembers.get(i), newGroup);
+            newRequest.saveInBackground();
+//            ParseQuery<ParseUser> query = ParseUser.getQuery();
+//            query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
+//                @Override
+//                public void done(ParseUser object, ParseException e) {
+//                    newRequest.initRequest(object, newGroup);
+//                    try {
+//                        newRequest.save();
+//                    } catch (ParseException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                }
+//            });
         }
     }
 

@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
 
         ivPropic = view.findViewById(R.id.ivGroupPic);
         String propicUrl = user.getString("propicUrl");
-        propicUrl = (propicUrl == null) ? user.getParseFile("profileImage").getUrl() : propicUrl;
+//        propicUrl = (propicUrl == null) ? user.getParseFile("profileImage").getUrl() : propicUrl;
 
         // for Parse profile pictures
         if (propicUrl != null && !(propicUrl.equals("")))  {
@@ -124,8 +124,8 @@ public class ProfileFragment extends Fragment {
 
     private void loadAllGroups(final View view, final GridView profileGroups){
         //loadAllGroups method from GroupManagerFragment
-        final Group.Query postQuery = new Group.Query();
-        postQuery.findInBackground(new FindCallback<Group>() {
+        final Group.Query groupQuery = new Group.Query();
+        groupQuery.findInBackground(new FindCallback<Group>() {
             @Override
             public void done(final List<Group> objects, ParseException e) {
                 if (e == null) {

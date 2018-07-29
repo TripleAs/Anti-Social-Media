@@ -51,8 +51,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-
 public class StoryActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 0;
     private static final int REQUEST_WRITE_PERMISSION_RESULT = 1;
@@ -60,6 +58,7 @@ public class StoryActivity extends AppCompatActivity {
     private static final int STATE_WAIT_LOCK = 1;
     private TextureView mTextureView;
     private int mCaptureState = STATE_PREVIEW;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
 
     private TextureView.SurfaceTextureListener msurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
