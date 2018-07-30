@@ -8,15 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applozic.mobicomkit.api.people.ChannelInfo;
 import com.applozic.mobicomkit.contact.AppContactService;
-import com.applozic.mobicomkit.feed.ChannelFeedApiResponse;
-import com.applozic.mobicomkit.uiwidgets.async.AlChannelCreateAsyncTask;
-import com.applozic.mobicommons.people.channel.Channel;
 import com.applozic.mobicommons.people.contact.Contact;
-import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
 import com.example.arafatm.anti_socialmedia.R;
 import com.facebook.AccessToken;
@@ -30,7 +26,6 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -47,6 +42,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
+    private TextView title;
     private EditText usernameInput;
     private EditText passwordInput;
     private Button parseLoginButton;
@@ -64,11 +60,17 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         context = getApplicationContext();
 
+        title = findViewById(R.id.tvTitle);
         usernameInput = findViewById(R.id.etUsername);
         passwordInput = findViewById(R.id.etPassword);
         parseLoginButton = findViewById(R.id.btLogin);
         loginButton =  findViewById(R.id.login_button);
         signupButton = findViewById(R.id.btSwitchToSignup);
+
+        //title
+        title.setText("ANTI\nSOCIAL\nSOCIAL\nMEDIA");
+
+
 
         // Login via Parse
         parseLoginButton.setOnClickListener(new View.OnClickListener() {
