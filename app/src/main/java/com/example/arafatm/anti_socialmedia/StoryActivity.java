@@ -51,7 +51,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+//import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 
 public class StoryActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 0;
@@ -698,7 +698,7 @@ public class StoryActivity extends AppCompatActivity {
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+//            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
