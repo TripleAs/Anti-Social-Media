@@ -36,18 +36,18 @@ public class Group extends ParseObject {
     }
 
     //gets list all users
-    public List<ParseUser> getUsers() { return getList(KEY_USERS); }
+    public List<String> getUsers() { return getList(KEY_USERS); }
 
     /*Gets the Array of users from Parse, updates it, and save it back to parse*/
-    public void setUsers(List<ParseUser> users) {
+    public void setUsers(List<String> users) {
         put(KEY_USERS, users);
     }
 
-    public List<ParseUser> getPending() {
+    public List<String> getPending() {
         return getList(KEY_PENDING);
     }
 
-    public void setPending(List<ParseUser> requests) {
+    public void setPending(List<String> requests) {
         put(KEY_PENDING, requests);
     }
 
@@ -68,18 +68,19 @@ public class Group extends ParseObject {
     }
 
     public void approveUser(ParseUser user) {
-        List<ParseUser> approved = getUsers();
-        List<ParseUser> pending = getPending();
-        approved.add(user);
-        pending.remove(user);
+        String userId = user.getObjectId();
+        List<String> approved = getUsers();
+        List<String> pending = getPending();
+        approved.add(userId);
+        pending.remove(userId);
     }
 
-    public void initGroup(String name, List<ParseUser> requests, ParseFile image) {
+    public void initGroup(String name, List<String> requests, ParseFile image) {
         setGroupName(name);
         setPending(requests);
         setGroupImage(image);
-        ArrayList<ParseUser> approved = new ArrayList<ParseUser>();
-        approved.add(ParseUser.getCurrentUser());
+        ArrayList<String> approved = new ArrayList<String>();
+        approved.add(ParseUser.getCurrentUser().getObjectId());
         setUsers(approved);
     }
 

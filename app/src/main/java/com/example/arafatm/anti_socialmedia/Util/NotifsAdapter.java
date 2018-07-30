@@ -88,9 +88,6 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.ViewHolder
                     removeAt(position);
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     List<Group> currentGroups = currentUser.getList("groups");
-                    if (currentGroups == null) {
-                        currentGroups = new ArrayList<>();
-                    }
                     currentGroups.add((Group) request.getRequestedGroup());
                     currentUser.put("groups", currentGroups);
                     currentUser.saveInBackground();
