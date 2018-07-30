@@ -1,20 +1,13 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -36,16 +28,9 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -163,7 +148,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         //displaying the posts
         posts = new ArrayList<>();
-        postAdapter = new PostAdapter(posts);
+        postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
 
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
@@ -262,10 +247,26 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
+        //did they already do this?
+
+//        postAdapter = new PostAdapter( posts);
+//        rvPosts.setAdapter(postAdapter);
+//
+//        rvPosts.setOnClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v,
+//                                    int position, long id) {
+//                Toast.makeText(getContext(), "" + position,
+//                        Toast.LENGTH_SHORT).show();
+//                Post selectedPost = rvPosts.get(position);
+//                Fragment fragment = CommentFragment.newInstance(selectedPost);
+//                mListener.navigate_to_fragment(fragment);
+//            }
+//        });
+
     }
 
     private void refreshFeed(){
-        PostAdapter adapter = new PostAdapter(posts);
+        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
 
         adapter.clear();
         loadTopPosts();

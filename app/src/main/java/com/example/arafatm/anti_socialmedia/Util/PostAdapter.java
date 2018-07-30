@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +26,11 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     private List<Post> mPosts;
     Context context;
+    FragmentManager manager;
 
-    public PostAdapter(List<Post> posts){
+    public PostAdapter(FragmentManager m, Context c, List<Post> posts){
+        manager = m;
+        context = c;
         mPosts = posts;
     }
 
@@ -96,14 +99,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         String message = post.getMessage();
         String sender = sender1.getString("fullName");
-//        int number = mPosts.size();
+        String number = Integer.toString(post.getCommentsCount());
         String propicUrl = sender1.getString("propicUrl");
         ParseFile propicParse = sender1.getParseFile("profileImage");
 
         //populate the views according to this (username, body)
         viewHolder.tvPostText.setText(message);
         viewHolder.tvFullName.setText(sender);
-//        viewHolder.tvNumberComments.setText(number);
+        viewHolder.tvNumberComments.setText(number);
 
         //profile picture
         if (propicUrl != null && !(propicUrl.equals("")))  {
@@ -119,7 +122,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
                 CommentFragment commentFragment = CommentFragment.newInstance(post);     //need a method to remember the post from previous screen
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                manager.beginTransaction()
                         .replace(R.id.layout_child_activity, commentFragment)
                         .commit();
             }

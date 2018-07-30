@@ -38,6 +38,7 @@ public class CommentFragment extends Fragment{
     private EditText etCommentText;
     private RecyclerView rvComments;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayoutManager linearLayoutManager;
 
     CommentAdapter commentAdapter;
     ArrayList<Post> comments;
@@ -46,7 +47,7 @@ public class CommentFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext = context;
+//        mContext = context;
     }
 
     @Override
@@ -76,7 +77,8 @@ public class CommentFragment extends Fragment{
         final ArrayList<Post> pointToComment = originalPost.getComments();
         comments = new ArrayList<>();
         commentAdapter = new CommentAdapter(pointToComment);
-        rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        rvComments.setLayoutManager(linearLayoutManager);
         rvComments.setAdapter(commentAdapter);
 
         // Setup refresh listener which triggers new data loading
@@ -100,8 +102,6 @@ public class CommentFragment extends Fragment{
         });
 
     }
-
-
 
     public static CommentFragment newInstance(Post post) {
         CommentFragment commentFragment = new CommentFragment();
@@ -171,7 +171,7 @@ public class CommentFragment extends Fragment{
 
         adapter.clear();
         loadTopPosts();
-        rvComments.smoothScrollToPosition(0);
+        linearLayoutManager.scrollToPosition(comments.size()-1);
 
     }
 

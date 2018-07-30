@@ -29,7 +29,6 @@
         android:layout_centerInParent="true"
         android:ems="10"
         android:hint="Password"
-        android:fontFamily="@font/domine"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"
@@ -45,7 +44,6 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/white"
         android:textCursorDrawable="@color/white"
-        android:fontFamily="@font/domine"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="Username"
@@ -58,9 +56,9 @@
         android:layout_below="@+id/etPassword"
         android:layout_centerHorizontal="true"
         android:text="Log in"
-        android:textColor="@color/white"
-        android:textSize="18sp"
         android:fontFamily="@font/domine"
+        android:textColor="@color/white"
+        android:textSize="18sp"  
         android:background="@color/transparent"/>
 
     <com.facebook.login.widget.LoginButton
@@ -80,9 +78,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="Sign Up"
+        android:fontFamily="@font/domine"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:fontFamily="@font/domine"
         android:background="@color/transparent"
         />
     <TextView
@@ -93,7 +91,6 @@
         android:layout_centerHorizontal="true"
         android:text="Don't have an account yet?"
         android:textColor="@color/white"
-        android:fontFamily="@font/domine"
         />
 
 </RelativeLayout>
