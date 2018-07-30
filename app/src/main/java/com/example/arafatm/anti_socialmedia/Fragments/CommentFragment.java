@@ -34,7 +34,6 @@ public class CommentFragment extends Fragment{
      Post originalPost;
 
     private Button btCommentSubmit;
-//    private TextView tvCommentCount = null;
     private EditText etCommentText;
     private RecyclerView rvComments;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -69,9 +68,6 @@ public class CommentFragment extends Fragment{
         btCommentSubmit = view.findViewById(R.id.btCommentPost);
         etCommentText = view.findViewById(R.id.etComment);
         rvComments = view.findViewById(R.id.rvComments);
-//        tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
-
-//        tvCommentCount.setText(originalPost.getCommentsCount());
 
         //set up ArrayList of pointers to comments
         final ArrayList<Post> pointToComment = originalPost.getComments();
@@ -112,7 +108,7 @@ public class CommentFragment extends Fragment{
     }
 
     private void createComment(String commentString, final ArrayList<Post> pointToComment){
-        Post comment = new Post();
+        final Post comment = new Post();
 
         // save comment to Parse
         comment.setUser(ParseUser.getCurrentUser());
@@ -124,10 +120,12 @@ public class CommentFragment extends Fragment{
             public void done(ParseException e) {
                 if(e == null){
                     originalPost.setComments(pointToComment);
-                    commentAdapter.notifyItemInserted(0);
-                    Toast.makeText(getContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
+                    commentAdapter.notifyDataSetChanged();
                     etCommentText.setText("");
-                    refreshFeed();
+                    Toast.makeText(getContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
+
+                    rvComments.scrollToPosition(comments.size()-1);
+                    comments.addAll(comments);
                 }
                 else {
                     e.printStackTrace();
@@ -139,15 +137,7 @@ public class CommentFragment extends Fragment{
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();     //there's got to be a better way for doing this
-        postsQuery.getTop();
-
-
-        postsQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-
-            }
-        });
+        postsQuery.getTop().withUser();
 
 
         postsQuery.findInBackground(new FindCallback<Post>() {
@@ -171,8 +161,7 @@ public class CommentFragment extends Fragment{
 
         adapter.clear();
         loadTopPosts();
-        linearLayoutManager.scrollToPosition(comments.size()-1);
-
+        rvComments.scrollToPosition(comments.size()-1);
     }
 
 }

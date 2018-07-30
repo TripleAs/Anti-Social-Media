@@ -11,7 +11,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;

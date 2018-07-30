@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.CommentFragment;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
@@ -110,7 +112,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         //profile picture
         if (propicUrl != null && !(propicUrl.equals("")))  {
-            Glide.with(context).load(propicUrl).into(viewHolder.ivPostPic);
+            Glide.with(context)
+                    .load(propicUrl)
+                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                    .into(viewHolder.ivPostPic);
         }
         else if(propicParse != null){
             Glide.with(context).load(propicParse.getUrl()).into(viewHolder.ivPostPic);

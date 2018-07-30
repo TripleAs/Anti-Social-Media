@@ -247,22 +247,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-        //did they already do this?
-
-//        postAdapter = new PostAdapter( posts);
-//        rvPosts.setAdapter(postAdapter);
-//
-//        rvPosts.setOnClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v,
-//                                    int position, long id) {
-//                Toast.makeText(getContext(), "" + position,
-//                        Toast.LENGTH_SHORT).show();
-//                Post selectedPost = rvPosts.get(position);
-//                Fragment fragment = CommentFragment.newInstance(selectedPost);
-//                mListener.navigate_to_fragment(fragment);
-//            }
-//        });
-
     }
 
     private void refreshFeed(){
