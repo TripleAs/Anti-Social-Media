@@ -15,13 +15,11 @@ import com.applozic.mobicomkit.contact.AppContactService;
 import com.applozic.mobicommons.people.contact.Contact;
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
 import com.example.arafatm.anti_socialmedia.R;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.FindCallback;
@@ -55,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        persistLogin();
+//        persistLogin();
 
         callbackManager = CallbackManager.Factory.create();
         context = getApplicationContext();
@@ -68,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.btSwitchToSignup);
 
         //title
-        title.setText("ANTI\nSOCIAL\nSOCIAL\nMEDIA");
+        title.setText("Anti-Social\nMedia");
 
 
 
@@ -125,17 +123,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void persistLogin() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-        if (isLoggedIn && ParseUser.getCurrentUser() != null) {
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_friends", "public_profile", "email"));
-            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
-        }
-    }
+//    private void persistLogin() {
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+//
+//        if (isLoggedIn && ParseUser.getCurrentUser() != null) {
+//            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_friends", "public_profile", "email"));
+//            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+//            startActivity(i);
+//            finish();
+//        }
+//    }
 
     private void loginParse(String username, String password){
         ParseUser.logInInBackground(username, password, new LogInCallback() {

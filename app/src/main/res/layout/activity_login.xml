@@ -15,12 +15,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
 
-        android:text="title"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:fontFamily="@font/domine"
+        android:gravity="center"
+        android:text="Anti-Social"
         android:textColor="@color/white"
-        android:gravity="center"/>
+        android:textSize="45sp"
+        app:fontFamily="@font/fredericka_the_great" />
 
 
     <EditText
@@ -30,6 +29,7 @@
         android:layout_centerInParent="true"
         android:ems="10"
         android:hint="Password"
+        android:fontFamily="@font/domine"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"
@@ -45,6 +45,7 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/white"
         android:textCursorDrawable="@color/white"
+        android:fontFamily="@font/domine"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="Username"
