@@ -1,6 +1,7 @@
-package com.example.arafatm.anti_socialmedia;
+package com.example.arafatm.anti_socialmedia.Story;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,6 +46,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.arafatm.anti_socialmedia.Home.MainActivity;
+import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.OnSwipeTouchListener;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,12 +80,14 @@ public class StoryActivity extends AppCompatActivity {
     private ImageButton upload;
     private ImageButton switchCamera;
     private ImageView captureButton;
+    private ImageButton closeTView;
     private boolean mIsRecording = false;
     private boolean mIsTimeLapsed = false;
     private File mVideoFolder;
     private String mVideoFileName;
     private File mImageFolder;
     private String mImageFileName;
+    private boolean frontCameraEnabled = false;
     private int mTotalRotation;
     private Size mVideoSize;
     private MediaRecorder mMediaRecorder;
@@ -278,6 +285,34 @@ public class StoryActivity extends AppCompatActivity {
         upload = (ImageButton) findViewById(R.id.iv_upload);
         captureButton = (ImageView) findViewById(R.id.iv_take);
         switchCamera = (ImageButton) findViewById(R.id.ib_switch_cam);
+        closeTView = (ImageButton) findViewById(R.id.iv_close);
+
+        closeTView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View view) {
+                closeCamera();
+                stopBackgroundThread();
+                Intent intent = new Intent(StoryActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        switchCamera.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View view) {
+                switchCamera();
+            }
+        });
+
+        mTextureView.setOnTouchListener(new OnSwipeTouchListener(StoryActivity.this) {
+            @Override
+            public void onDoubleClick() {
+                super.onDoubleClick();
+                switchCamera();
+            }
+        });
 
         upload.setOnClickListener(new View.OnClickListener() { //when the gallery icon is clicked
             @Override
@@ -322,6 +357,26 @@ public class StoryActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void switchCamera() {
+        closeCamera();
+        stopBackgroundThread();
+        startBackgroundThread();
+        if (mTextureView.isAvailable()) {
+            if (frontCameraEnabled) {
+                frontCameraEnabled = false;
+                setupCamera(mTextureView.getWidth(), mTextureView.getHeight());
+            } else {
+                frontCameraEnabled = true;
+                setupFrontCamera(mTextureView.getWidth(), mTextureView.getHeight());
+            }
+
+            connectCamera();
+        } else {
+            mTextureView.setSurfaceTextureListener(msurfaceTextureListener);
+        }
     }
 
     /*when the story pages loads*/
@@ -423,6 +478,40 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setupFrontCamera(int width, int height) {
+        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
+            for (String cameraId : cameraManager.getCameraIdList()) {
+                CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
+                if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) != cameraCharacteristics.LENS_FACING_FRONT) {
+                    continue;
+                }
+
+                StreamConfigurationMap map = cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
+                mTotalRotation = sensorToDeviceRotation(cameraCharacteristics, deviceOrientation);
+                boolean swapRotation = mTotalRotation == 90 || mTotalRotation == 270;
+                int rotationWidth = width;
+                int rotationHeight = height;
+                if (swapRotation) {
+                    rotationWidth = width;
+                    rotationHeight = height;
+                }
+                mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotationWidth, rotationHeight);
+                mVideoSize = chooseOptimalSize(map.getOutputSizes(MediaRecorder.class), rotationWidth, rotationHeight);
+                mImageSize = chooseOptimalSize(map.getOutputSizes(ImageFormat.JPEG), rotationWidth, rotationHeight);
+                mImageReader = ImageReader.newInstance(mImageSize.getWidth(), mImageSize.getHeight(), ImageFormat.JPEG, 1);
+                mImageReader.setOnImageAvailableListener(onImageAvailableListener, mBackgroundHandler);
+                mCameraId = cameraId;
+                return;
+            }
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void connectCamera() {
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -448,12 +537,7 @@ public class StoryActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startRecord() {
         try {
-            if (mIsRecording) {
-                setupMeidaRecorder();
-            } else {
-                setupMeidaRecorder();
-                //setupTimeElapse();
-            }
+            setupMeidaRecorder();
 
             SurfaceTexture surfaceTexture = mTextureView.getSurfaceTexture();
             surfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());

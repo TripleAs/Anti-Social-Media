@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PreviewStoryActivity">
+    tools:context=".Story.PreviewStoryActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_preview_activity"
@@ -12,7 +12,7 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/bottom_navigation"
         android:layout_gravity="left|top"
-        android:background="@color/conversation_list_all_background" >
+        android:background="@color/conversation_list_all_background">
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -26,7 +26,64 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"></FrameLayout>
+            app:layout_constraintVertical_bias="0.0">
+
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/iv_emoji"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_text"
+            app:layout_constraintStart_toEndOf="@+id/iv_rotate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/emoji" />
+
+
+        <ImageButton
+            android:id="@+id/iv_rotate"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparent"
+            android:layout_marginLeft="152dp"
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/rotate" />
+
+
+        <ImageButton
+            android:id="@+id/iv_text"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/transparent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/text" />
+
+
+        <ImageButton
+            android:id="@+id/iv_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/transparent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/close" />
+
 
         <EditText
             android:id="@+id/tv_caption"
@@ -43,6 +100,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:textCursorDrawable="@color/colorPrimary"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_share"
             app:layout_constraintHorizontal_bias="0.518"

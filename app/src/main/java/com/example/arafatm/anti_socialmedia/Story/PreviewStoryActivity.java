@@ -1,4 +1,4 @@
-package com.example.arafatm.anti_socialmedia;
+package com.example.arafatm.anti_socialmedia.Story;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.arafatm.anti_socialmedia.Fragments.PictureFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.VideoFragment;
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
+import com.example.arafatm.anti_socialmedia.R;
 
 public class PreviewStoryActivity extends AppCompatActivity implements PictureFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener {
 
@@ -25,8 +26,41 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
 
         ImageButton backToCamera = (ImageButton) findViewById(R.id.iv_camera);
         ImageButton shareButton = (ImageButton) findViewById(R.id.iv_share);
+        ImageButton closeToCamera = (ImageButton) findViewById(R.id.iv_close);
+        ImageButton text = (ImageButton) findViewById(R.id.iv_text);
+        ImageButton emoji = (ImageButton) findViewById(R.id.iv_emoji);
+        ImageButton rotate = (ImageButton) findViewById(R.id.iv_rotate);
         final EditText caption = (EditText) findViewById(R.id.tv_caption);
 
+        rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Toast.makeText(getApplicationContext(), "rotating", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Text", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        emoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "emoji :)", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        closeToCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PreviewStoryActivity.this, StoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
         Fragment pictureFragment = new PictureFragment();
@@ -72,13 +106,14 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
 
                 Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
                 intent.putExtra("caption", status);
+                intent.putExtra("key", status);
+//                if (imageFilePath == null) {
+////                    //pass video
+////
+////                } else {
+////                    intent.putExtra("imagePath", imageFilePath);
+////                }
 
-                if (imageFilePath == null) {
-                    //pass video
-
-                } else {
-                    intent.putExtra("imagePath", imageFilePath);
-                }
                 startActivity(intent);
             }
         });

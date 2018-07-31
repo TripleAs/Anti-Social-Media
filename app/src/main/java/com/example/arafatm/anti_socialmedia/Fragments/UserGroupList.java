@@ -165,8 +165,6 @@ public class UserGroupList extends Fragment {
 
 
     //TODO
-    //customize vieeoview
-    //save story
     //implement next and prev
     //add caption
 
