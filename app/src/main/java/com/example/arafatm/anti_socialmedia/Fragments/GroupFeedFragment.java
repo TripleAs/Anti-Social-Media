@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 import static android.app.Activity.RESULT_OK;
@@ -45,6 +48,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String groupName;
     private int groupId;
     private Group group;
+
+    private ImageView next_story;
+    private VideoView storyView;
+    private ImageView prev_story;
 
     @BindView(R.id.tvGroupName) TextView tvGroupName;
     @BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
@@ -134,8 +141,16 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
+
+
+        next_story = view.findViewById(R.id.iv_next);
+        prev_story = view.findViewById(R.id.iv_prev);
+        rvPosts = view.findViewById(R.id.rvPostsFeed);
+        tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
+        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts
         posts = new ArrayList<>();
@@ -177,6 +192,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                         /*shows group image on gridView*/
                         Glide.with(getContext())
                                 .load(groupImage.getUrl())
+                                .apply(RequestOptions.circleCropTransform())
                                 .into(ivGroupPic);
                     }
 
@@ -203,6 +219,37 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 mListener.navigate_to_fragment(groupSettingsFragment);
             }
         });
+
+
+        //TODO: ARAFAT'S IMPLEMENTATION
+
+        next_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        storyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "playing story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        prev_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "prev story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //TODO: ARAFAT'S IMPLEMENTATION
+
+
+
+
+
 
     }
 

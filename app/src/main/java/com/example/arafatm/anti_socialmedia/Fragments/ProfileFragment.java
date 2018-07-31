@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class ProfileFragment extends Fragment {
 
@@ -87,6 +88,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         tvFullName.setText(user.getString("fullName"));
         String propicUrl = user.getString("propicUrl");

@@ -26,6 +26,8 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -103,6 +105,7 @@ public class GroupSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         etGroupName.setText(currentGroup.getGroupName());
 

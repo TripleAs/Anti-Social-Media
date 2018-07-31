@@ -8,13 +8,13 @@
     android:id="@+id/groupFeedFragment"
     tools:context=".Fragments.GroupFeedFragment">
 
-    <ImageView
-        android:id="@+id/ivCoverPhoto"
+
+    <VideoView
+        android:id="@+id/vv_groupStory"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        app:srcCompat="@color/solid_white" />
+        android:layout_height="218dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/tvGroupName"
@@ -24,6 +24,62 @@
         android:layout_alignParentRight="true"
         android:text=""
         android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/ivStartChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvGroupName"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:tint="?attr/colorAccent"
+        android:src="@drawable/ic_chat_empty" />
+
+    <ImageView
+        android:id="@+id/ivLaunchNewPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivStartChat"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_create_post"
+        android:tint="?attr/colorAccent" />
+
+    <ImageView
+        android:id="@+id/ivThreeDots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ivCoverPhoto"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:tint="?attr/colorAccent"
+        android:src="@drawable/ic_three_dots" />
+
+
+    <ImageView
+        android:id="@+id/ivCoverPhoto"
+        android:layout_width="124dp"
+        android:layout_height="98dp"
+        android:layout_alignBottom="@+id/vv_groupStory"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/com_facebook_profile_picture_blank_square" />
+
+    <ImageView
+        android:id="@+id/iv_next"
+        android:layout_width="40dp"
+        android:layout_height="182dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+       />
+
+    <ImageView
+        android:id="@+id/iv_prev"
+        android:layout_width="40dp"
+        android:layout_height="182dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+    />
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -40,35 +96,5 @@
             />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ImageView
-        android:id="@+id/ivStartChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvGroupName"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="5dp"
-        android:tint="?attr/colorAccent"
-        android:src="@drawable/ic_chat_empty" />
-
-    <ImageView
-        android:id="@+id/ivLaunchNewPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivCoverPhoto"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:tint="?attr/colorAccent"
-        android:src="@drawable/ic_create_post" />
-
-    <ImageView
-        android:id="@+id/ivThreeDots"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/ivCoverPhoto"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="30dp"
-        android:tint="?attr/colorAccent"
-        android:src="@drawable/ic_three_dots" />
 
 </RelativeLayout>

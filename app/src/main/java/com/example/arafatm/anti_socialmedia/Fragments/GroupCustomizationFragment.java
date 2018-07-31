@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -108,6 +109,7 @@ public class GroupCustomizationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         ivColorRed = view.findViewById(R.id.ivColorRed);
         ivColorGreen = view.findViewById(R.id.ivColorGreen);

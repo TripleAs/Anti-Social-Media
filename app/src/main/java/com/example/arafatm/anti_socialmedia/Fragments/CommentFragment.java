@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CommentFragment extends Fragment{
     @BindView(R.id.btCommentPost) Button btCommentSubmit;
@@ -63,6 +64,7 @@ public class CommentFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         //set up ArrayList of pointers to comments
         final ArrayList<Post> pointToComment = originalPost.getComments();

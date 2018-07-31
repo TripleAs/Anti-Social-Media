@@ -16,6 +16,7 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        ButterKnife.bind(this);
 
         signUpBtn.setOnClickListener(new View.OnClickListener(){
             @Override

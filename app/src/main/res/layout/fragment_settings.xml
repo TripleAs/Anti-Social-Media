@@ -16,7 +16,7 @@
 
 
         <ImageView
-            android:id="@+id/ivGroupPic"
+            android:id="@+id/ivPropic"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_alignParentStart="true"
@@ -30,14 +30,14 @@
             android:src="@android:color/background_dark" />
 
         <TextView
-            android:id="@+id/tvGroupName"
+            android:id="@+id/tvFullName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="20dp"
-            android:layout_toEndOf="@+id/ivGroupPic"
+            android:layout_toEndOf="@+id/ivPropic"
             android:text="Firstname Lastname"
             android:textSize="18sp" />
 
@@ -45,8 +45,8 @@
             android:id="@+id/tvViewProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvGroupName"
-            android:layout_below="@+id/tvGroupName"
+            android:layout_alignStart="@+id/tvFullName"
+            android:layout_below="@+id/tvFullName"
             android:text="View your profile" />
 
     </RelativeLayout>

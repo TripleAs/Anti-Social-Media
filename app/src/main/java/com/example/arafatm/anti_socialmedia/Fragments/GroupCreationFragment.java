@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class GroupCreationFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -65,6 +66,7 @@ public class GroupCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group_creation, container, false);
+        ButterKnife.bind(this, view);
 
         friendList = new ArrayList<>();
         fetchAllFriendList();

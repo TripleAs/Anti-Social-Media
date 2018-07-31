@@ -1,23 +1,30 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.R;
 
+import java.io.File;
 import butterknife.BindView;
-
+import butterknife.ButterKnife;
 
 public class PictureFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "imagePath";
     private static final String ARG_PARAM2 = "param2";
+    private EditText status;
+    private String imagePath;
     private String imageStoryURL;
 
     @BindView(R.id.imagePreview) ImageView displayImage;
@@ -42,10 +49,9 @@ public class PictureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            imagePath = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
 
-            Toast.makeText(getContext(), mParam1, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -83,14 +89,25 @@ public class PictureFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
-//        Glide.with(view.getContext())
-//                .load(imageStoryURL)
-//                .apply(RequestOptions.circleCropTransform())
-//                .into(displayImage);
+        displayImage = (ImageView) view.findViewById(R.id.imagePreview);
+
+        //loads the file
+        File file = new File(imagePath);
+        //creates a bitmap out of it
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+       //rotate image to upright position
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+
+        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                matrix, true);
+        //displays the image
+        displayImage.setImageBitmap(rotated);
+
     }
 }

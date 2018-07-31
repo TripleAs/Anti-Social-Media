@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:id="@+id/ic_chat_empty"
+        android:id="@+id/ic_story"
         android:enabled="true"
-        android:icon="@drawable/ic_chat_empty"
+        android:icon="@drawable/ic_action_story"
         android:title=""
         app:showAsAction="ifRoom" />
     <item
@@ -14,9 +14,9 @@
         android:icon="@drawable/ic_group_empty"
         android:title="" />
     <item
-        android:id="@+id/ic_story"
+        android:id="@+id/ic_chat_empty"
         android:enabled="true"
-        android:icon="@drawable/ic_action_story"
+        android:icon="@drawable/ic_chat_empty"
         android:title=""
         app:showAsAction="ifRoom" />
     <item

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,8 +54,8 @@ public class SettingsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     @BindView(R.id.log_out_button) Button logOutBtn;
-    @BindView(R.id.ivGroupPic) ImageView ivPropic;
-    @BindView(R.id.tvFullNameFeed) TextView tvFullName;
+    @BindView(R.id.ivPropic) ImageView ivPropic;
+    @BindView(R.id.tvFullName) TextView tvFullName;
     @BindView(R.id.tvViewProfile) TextView tvViewProfile;
     @BindView(R.id.rlViewProfile) RelativeLayout rlViewProfile;
     @BindView(R.id.rvNotifs) RecyclerView rvNotifs;
@@ -125,6 +126,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         ParseUser user = ParseUser.getCurrentUser();
 

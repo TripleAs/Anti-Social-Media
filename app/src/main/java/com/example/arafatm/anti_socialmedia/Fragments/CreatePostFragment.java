@@ -25,6 +25,7 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 // ...
@@ -85,6 +86,7 @@ public class CreatePostFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         // Show soft keyboard automatically and request focus to field
         etNewPost.requestFocus();

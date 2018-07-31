@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.arafatm.anti_socialmedia.R;
@@ -23,13 +22,13 @@ import com.example.arafatm.anti_socialmedia.R;
 public class VideoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "videoPath";
     private static final String ARG_PARAM2 = "param2";
     private VideoView displayVideo;
     private Uri videoPath;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String videoFilePath;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -60,10 +59,8 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            videoFilePath = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
-            Toast.makeText(getContext(), mParam1, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -118,12 +115,17 @@ public class VideoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
+        displayVideo.setVideoPath(videoFilePath);
+        displayVideo.setMediaController(null);
+        displayVideo.requestFocus();
+        displayVideo.start();
 
-//        displayVideo.setVideoURI(videoPath);
-//        displayVideo.setMediaController(new MediaController(getContext()));
-//        displayVideo.requestFocus();
-//        displayVideo.start();
-//
+        displayVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayVideo.start();
+            }
+        });
     }
 }
 

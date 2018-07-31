@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
         import butterknife.BindView;
+        import butterknife.ButterKnife;
 
 
 public class GroupManagerFragment extends Fragment {
@@ -37,7 +38,7 @@ public class GroupManagerFragment extends Fragment {
 
     @BindView(R.id.gv_group_list) GridView gridview;
     @BindView(R.id.ic_add_icon) ImageView add_group;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    Toolbar toolbar;
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
@@ -106,6 +107,7 @@ public class GroupManagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         groupList = new ArrayList<>();
 
@@ -136,7 +138,7 @@ public class GroupManagerFragment extends Fragment {
                 public void done(final List<Group> objects, ParseException e) {
                     if (e == null) {
                         groupList.addAll(objects);
-                        displayOnGridView(objects, view, gridview);
+//                        displayOnGridView(objects, view, gridview);
                         constructGridView(gridview);
                     } else {
                         e.printStackTrace();
@@ -152,7 +154,7 @@ public class GroupManagerFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            displayOnGridView(groupList, view, gridview);
+//            displayOnGridView(groupList, view, gridview);
             constructGridView(gridview);
         }
     }
@@ -181,29 +183,29 @@ public class GroupManagerFragment extends Fragment {
         });
     }
 
-    /*this initializes the adapter, and pass the groupList into it and navigates to GroupFeed fragment*/
-    private void displayOnGridView(List<Group> objects, View view, final GridView gridview) {
-        groupAdapter = new GroupAdapter(getContext(), groupList);
-        gridview.setAdapter(groupAdapter);
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getContext(), "" + position,
-                        Toast.LENGTH_SHORT).show();
-
-//                ParseObject selectedGroup = groupList.get(position);
-                ParseObject selectedGroup = null;
-                try {
-                    selectedGroup = groupList.get(position).fetchIfNeeded();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
-
-                /*Navigates to the groupManagerFragment*/
-                mListener.navigate_to_fragment(fragment);
-            }
-        });
-    }
+//    /*this initializes the adapter, and pass the groupList into it and navigates to GroupFeed fragment*/
+//    private void displayOnGridView(ArrayList<Group> objects, View view, final GridView gridview) {
+//        groupAdapter = new GroupAdapter(getContext(), groupList);
+//        gridview.setAdapter(groupAdapter);
+//
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v,
+//                                    int position, long id) {
+//                Toast.makeText(getContext(), "" + position,
+//                        Toast.LENGTH_SHORT).show();
+//
+////                ParseObject selectedGroup = groupList.get(position);
+//                ParseObject selectedGroup = null;
+//                try {
+//                    selectedGroup = groupList.get(position).fetchIfNeeded();
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
+//
+//                /*Navigates to the groupManagerFragment*/
+//                mListener.navigate_to_fragment(fragment);
+//            }
+//        });
+//    }
 }

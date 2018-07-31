@@ -314,8 +314,8 @@
         <!-- android:resource="@xml/fileprovider" /> -->
         <!-- </provider> -->
 
-        <activity android:name=".StoryActivity" />
-        <activity android:name=".PreviewStoryActivity"></activity>
+        <activity android:name=".Story.StoryActivity" />
+        <activity android:name=".Story.PreviewStoryActivity"></activity>
     </application>
 
 </manifest>
