@@ -41,7 +41,6 @@ import com.applozic.mobicommons.commons.core.utils.Utils;
 import com.applozic.mobicommons.people.channel.Channel;
 import com.applozic.mobicommons.people.contact.Contact;
 import com.example.arafatm.anti_socialmedia.Fragments.ChatFragment;
-import com.example.arafatm.anti_socialmedia.Fragments.CreatePostFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupCreationFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
@@ -51,9 +50,8 @@ import com.example.arafatm.anti_socialmedia.Fragments.ProfileFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.SettingsFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.UserGroupList;
 import com.example.arafatm.anti_socialmedia.Models.Group;
-import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.StoryActivity;
+import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -65,13 +63,7 @@ import java.util.List;
 //import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
 
 
-public class
-
-
-
-
-
-MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
         GroupManagerFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener, GroupCreationFragment.OnFragmentInteractionListener,
         GroupFeedFragment.OnFragmentInteractionListener, MessageCommunicator, MobiComKitActivityInterface,
@@ -85,11 +77,12 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
     MobiComKitBroadcastReceiver mobiComKitBroadcastReceiver;
     ParseUser parseUser;
     private static final String ARG_PARAM1 = "param1";
-          
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         String name = getIntent().getStringExtra("key");
 
         if (name != null) {
@@ -101,7 +94,7 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
             Bundle args = new Bundle();
             args.putString(ARG_PARAM1, name); //pass group objectId
             fragment.setArguments(args);
-            
+
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
         }
@@ -110,14 +103,17 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
-
+        bottomNavigationView.getMenu().findItem(R.id.ic_group_empty).setChecked(true);
         final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
+        //sets default fragment
+        FragmentTransaction tx = fragmentManager.beginTransaction();
+        tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
+        tx.commit();
 
         /*gets instance of all fragments here*/
-
         final Fragment chatFragment = new ChatFragment();
         final Fragment groupFragment = new GroupManagerFragment();
-       // final Fragment userGroupList = new UserGroupList();
+        // final Fragment userGroupList = new UserGroupList();
         final Fragment settingsFragment = new SettingsFragment();
 
         // handle navigation selection to various fragments
@@ -256,10 +252,12 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
     public void showErrorMessageView(String errorMessage) {
 
     }
+
     @Override
     public void retry() {
         retry++;
     }
+
     @Override
     public int getRetryCount() {
         return retry;
@@ -374,7 +372,7 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
         AlChannelCreateAsyncTask.TaskListenerInterface channelCreateTaskListener = new AlChannelCreateAsyncTask.TaskListenerInterface() {
             @Override
             public void onSuccess(Channel channel, Context context) {
-                Log.i("Group","Group response :"+channel);
+                Log.i("Group", "Group response :" + channel);
 
             }
 
@@ -388,14 +386,14 @@ MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInterac
         List<String> groupMembersUserIdList = new ArrayList<>();
         groupMembersUserIdList.add("Jane Doe");
         groupMembersUserIdList.add("John Smith");//Note:while creating group exclude logged in userId from list
-        ChannelInfo channelInfo = new ChannelInfo(group.getString("groupName"),groupMembersUserIdList);
+        ChannelInfo channelInfo = new ChannelInfo(group.getString("groupName"), groupMembersUserIdList);
         channelInfo.setType(Channel.GroupType.PUBLIC.getValue().intValue()); //group type
         channelInfo.setImageUrl(group.getParseFile("groupImage").getUrl()); //pass group image link URL
         //channelInfo.setChannelMetadata(channelMetadata); //Optional option for setting group meta data
         channelInfo.setClientGroupId(Integer.toString(GroupFeedFragment.convert(group.getObjectId()))); //Optional if you have your own groupId then you can pass here
 
         AlChannelCreateAsyncTask channelCreateAsyncTask = new AlChannelCreateAsyncTask(
-                this,channelInfo,channelCreateTaskListener);
+                this, channelInfo, channelCreateTaskListener);
         channelCreateAsyncTask.execute();
     }
 }

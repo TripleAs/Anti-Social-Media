@@ -1,20 +1,13 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -36,16 +30,9 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,6 +58,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private ImageView ivStartChat;
     private ImageView ivThreeDots;
     private ImageView ivLaunchNewPost;
+    private ImageView next_story;
+    private VideoView storyView;
+    private ImageView prev_story;
 
     //posts
 
@@ -157,9 +147,12 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         ivStartChat = view.findViewById(R.id.ivStartChat);
         ivThreeDots = view.findViewById(R.id.ivThreeDots);
+        next_story = view.findViewById(R.id.iv_next);
+        prev_story = view.findViewById(R.id.iv_prev);
         ivLaunchNewPost = view.findViewById(R.id.ivLaunchNewPost);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
+        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts
         posts = new ArrayList<>();
@@ -205,6 +198,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                         /*shows group image on gridView*/
                         Glide.with(getContext())
                                 .load(groupImage.getUrl())
+                                .apply(RequestOptions.circleCropTransform())
                                 .into(ivGroupPic);
                     }
 
@@ -231,6 +225,37 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 mListener.navigate_to_fragment(groupSettingsFragment);
             }
         });
+
+
+        //TODO: ARAFAT'S IMPLEMENTATION
+
+        next_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        storyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "playing story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        prev_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "prev story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //TODO: ARAFAT'S IMPLEMENTATION
+
+
+
+
+
 
     }
 
