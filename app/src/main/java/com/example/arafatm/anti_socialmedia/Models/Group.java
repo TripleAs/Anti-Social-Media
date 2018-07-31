@@ -57,6 +57,8 @@ public class Group extends ParseObject {
 
     public String getTheme() { return getString(KEY_THEME); }
 
+    public void setTheme(String theme) { put(KEY_THEME, theme); }
+
     /*Gets the Array of posts from Parse, updates it, and save it back to parse*/
     public void addPost(Post post) {
         List<Post> posts = getPosts();
@@ -75,10 +77,11 @@ public class Group extends ParseObject {
         pending.remove(userId);
     }
 
-    public void initGroup(String name, List<String> requests, ParseFile image) {
+    public void initGroup(String name, List<String> requests, ParseFile image, String theme) {
         setGroupName(name);
         setPending(requests);
         setGroupImage(image);
+        setTheme(theme);
         ArrayList<String> approved = new ArrayList<String>();
         approved.add(ParseUser.getCurrentUser().getObjectId());
         setUsers(approved);

@@ -51,7 +51,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-//import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+
+import static com.example.arafatm.anti_socialmedia.Util.PhotoHelper.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 
 public class StoryActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 0;
