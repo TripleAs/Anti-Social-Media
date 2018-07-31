@@ -32,6 +32,12 @@ import java.util.List;
 
 import butterknife.BindView;
 
+
+import static android.app.Activity.RESULT_OK;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
+
 public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
 
@@ -95,7 +101,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         if (bundle != null) {
              groupObjectId = bundle.getString(ARG_PARAM1, groupObjectId);
-             themeName = bundle.getString("theme", "red");
+             themeName = bundle.getString("theme", KEY_BLUE);
         }
 
     }
@@ -106,11 +112,17 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         // Inflate the layout for this fragment
         // Equivalent to setContentView
         // create ContextThemeWrapper from the original Activity Context with the custom theme
-        final Context contextThemeWrapper;
-        if (themeName.matches("red")) {
-            contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
-        } else {
-            contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+        Context contextThemeWrapper = null;
+        switch (themeName) {
+            case KEY_RED:
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
+                break;
+            case KEY_GREEN:
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupGreenTheme);
+                break;
+            case KEY_BLUE:
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+                break;
         }
         // clone the inflater using the ContextThemeWrapper
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
