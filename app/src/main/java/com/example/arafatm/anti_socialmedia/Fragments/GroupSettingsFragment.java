@@ -26,7 +26,13 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static android.app.Activity.RESULT_OK;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
 public class GroupSettingsFragment extends Fragment {
     private EditText etGroupName;
@@ -34,6 +40,16 @@ public class GroupSettingsFragment extends Fragment {
     private ImageView ivCamera;
     private ImageView ivUpload;
     private Button btSave;
+
+    private ImageView ivColorRed;
+    private ImageView ivColorGreen;
+    private ImageView ivColorBlue;
+    private ImageView ivCheckmarkRed;
+    private ImageView ivCheckmarkGreen;
+    private ImageView ivCheckmarkBlue;
+    private ArrayList<ImageView> checkmarks = new ArrayList<>();
+    String theme;
+
     private Group currentGroup;
     private PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -92,6 +108,47 @@ public class GroupSettingsFragment extends Fragment {
         etGroupName = view.findViewById(R.id.etGroupName);
         etGroupName.setText(currentGroup.getGroupName());
 
+        ivColorRed = view.findViewById(R.id.ivColorRed);
+        ivColorGreen = view.findViewById(R.id.ivColorGreen);
+        ivColorBlue = view.findViewById(R.id.ivColorBlue);
+
+        ivCheckmarkRed = view.findViewById(R.id.ivCheckmarkRed);
+        ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
+        ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
+        checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
+        switch (currentGroup.getTheme()) {
+            case KEY_RED:
+                ivCheckmarkRed.setVisibility(View.VISIBLE);
+                break;
+            case KEY_GREEN:
+                ivCheckmarkGreen.setVisibility(View.VISIBLE);
+                break;
+            case KEY_BLUE:
+                ivCheckmarkBlue.setVisibility(View.VISIBLE);
+                break;
+        }
+
+        ivColorRed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleColorSelection(KEY_RED, ivCheckmarkRed);
+            }
+        });
+
+        ivColorGreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleColorSelection(KEY_GREEN, ivCheckmarkGreen);
+            }
+        });
+
+        ivColorBlue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleColorSelection(KEY_BLUE, ivCheckmarkBlue);
+            }
+        });
+
         ivPreview = view.findViewById(R.id.ivPreview);
         ParseFile currentImage = currentGroup.getGroupImage();
         if (currentImage != null) {
@@ -144,6 +201,9 @@ public class GroupSettingsFragment extends Fragment {
         if (hasNewPic) {
             currentGroup.setGroupImage(photoHelper.grabImage());
         }
+        if (theme != null) {
+            currentGroup.setTheme(theme);
+        }
         currentGroup.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -151,6 +211,14 @@ public class GroupSettingsFragment extends Fragment {
                 mListener.navigate_to_fragment(groupFeedFragment);
             }
         });
+    }
+
+    private void handleColorSelection(String color, ImageView checkmark) {
+        theme = color;
+        for (int i = 0; i < checkmarks.size(); i++) {
+            checkmarks.get(i).setVisibility(View.INVISIBLE);
+        }
+        checkmark.setVisibility(View.VISIBLE);
     }
 
     @Override

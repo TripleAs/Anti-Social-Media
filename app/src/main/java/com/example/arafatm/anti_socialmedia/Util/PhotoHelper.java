@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseFile;
 
 import java.io.ByteArrayOutputStream;
@@ -34,6 +35,12 @@ public class PhotoHelper {
 
     public PhotoHelper(Context c) {
         context = c;
+    }
+
+    public void getDefaultPropic() {
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_group_default);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        writeStreamToFile(bytes);
     }
 
     public Intent takePhoto() {
@@ -157,8 +164,11 @@ public class PhotoHelper {
     }
 
     public ParseFile grabImage() {
-        ParseFile parseFile = new ParseFile(resizedFile);
-        return parseFile;
+        if (resizedFile != null) {
+            ParseFile parseFile = new ParseFile(resizedFile);
+            return parseFile;
+        }
+        return null;
     }
 
     public static Bitmap scaleToFitWidth(Bitmap b, int width)

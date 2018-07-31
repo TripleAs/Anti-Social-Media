@@ -199,7 +199,12 @@ public class GroupManagerFragment extends Fragment {
                 Toast.makeText(getContext(), "" + position,
                         Toast.LENGTH_SHORT).show();
 //                Bundle args = new Bundle();
-                ParseObject selectedGroup = groupList.get(position);
+                ParseObject selectedGroup = null;
+                try {
+                    selectedGroup = groupList.get(position).fetchIfNeeded();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
 //                args.putString(ARG_PARAM1,selectedGroup.getObjectId()); //pass group objectId
 //                args.putString("theme", selectedGroup.getString("theme"));
@@ -226,7 +231,12 @@ public class GroupManagerFragment extends Fragment {
 //                args.putString(ARG_PARAM1, groupList.get(position).getObjectId()); //TO BE CHANGED LATER
 //                args.putString("theme", groupList.get(position).getString("theme"));
 //                fragment.setArguments(args);
-                ParseObject selectedGroup = groupList.get(position);
+                ParseObject selectedGroup = null;
+                try {
+                    selectedGroup = groupList.get(position).fetchIfNeeded();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
 
                 /*Navigates to the groupManagerFragment*/
