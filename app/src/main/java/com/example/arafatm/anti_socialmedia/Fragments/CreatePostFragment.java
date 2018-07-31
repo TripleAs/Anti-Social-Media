@@ -20,26 +20,23 @@ import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.PasswordCallback;
+import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
 // ...
 
 public class CreatePostFragment extends DialogFragment {
 
-    private EditText etNewPost;
-    private ImageView ivCamera;
-    private ImageView ivUpload;
-    private ImageView ivPreview;
-    private ImageView ivShareFrom;
-    private ImageView ivCreatePost;
+    @BindView(R.id.etNewPost) EditText etNewPost;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
+    @BindView(R.id.ivShareFrom) ImageView ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -88,20 +85,12 @@ public class CreatePostFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get field from view
-        etNewPost = view.findViewById(R.id.etNewPost);
-        ivCamera = view.findViewById(R.id.ivCamera);
-        ivUpload = view.findViewById(R.id.ivUpload);
-        ivShareFrom = view.findViewById(R.id.ivShareFrom);
-        ivCreatePost = view.findViewById(R.id.ivCreatePost);
-        ivPreview = view.findViewById(R.id.ivPreview);
 
         // Show soft keyboard automatically and request focus to field
         etNewPost.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        ivCamera = view.findViewById(R.id.ivCamera);
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +100,6 @@ public class CreatePostFragment extends DialogFragment {
             }
         });
 
-        ivUpload = view.findViewById(R.id.ivUpload);
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +109,6 @@ public class CreatePostFragment extends DialogFragment {
             }
         });
 
-        ivCreatePost = view.findViewById(R.id.ivCreatePost);
         ivCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

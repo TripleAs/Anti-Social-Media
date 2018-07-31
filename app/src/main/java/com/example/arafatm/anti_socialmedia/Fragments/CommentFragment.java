@@ -28,19 +28,18 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 public class CommentFragment extends Fragment{
-    private ParseUser user;
-    private Context mContext;
-     Post originalPost;
+    @BindView(R.id.btCommentPost) Button btCommentSubmit;
+    @BindView(R.id.etComment) EditText etCommentText;
+    @BindView(R.id.rvComments)  RecyclerView rvComments;
 
-    private Button btCommentSubmit;
-    private EditText etCommentText;
-    private RecyclerView rvComments;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private LinearLayoutManager linearLayoutManager;
-
+    SwipeRefreshLayout swipeRefreshLayout;
+    LinearLayoutManager linearLayoutManager;
     CommentAdapter commentAdapter;
     ArrayList<Post> comments;
+    Post originalPost;
 
 
     @Override
@@ -64,10 +63,6 @@ public class CommentFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        btCommentSubmit = view.findViewById(R.id.btCommentPost);
-        etCommentText = view.findViewById(R.id.etComment);
-        rvComments = view.findViewById(R.id.rvComments);
 
         //set up ArrayList of pointers to comments
         final ArrayList<Post> pointToComment = originalPost.getComments();

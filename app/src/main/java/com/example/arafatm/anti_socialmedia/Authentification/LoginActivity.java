@@ -40,15 +40,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+
 public class LoginActivity extends AppCompatActivity {
+    @BindView(R.id.tvTitle) TextView title;
+    @BindView(R.id.etUsername) EditText usernameInput;
+    @BindView(R.id.etPassword) EditText passwordInput;
+    @BindView(R.id.btLogin) Button parseLoginButton;
+    @BindView(R.id.login_button) LoginButton loginButton;
+    @BindView(R.id.btSwitchToSignup) Button signupButton;
+
     CallbackManager callbackManager;
-    private TextView title;
-    private EditText usernameInput;
-    private EditText passwordInput;
-    private Button parseLoginButton;
-    private LoginButton loginButton;
-    private Button signupButton;
-    static Context context;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
         context = getApplicationContext();
-
-        title = findViewById(R.id.tvTitle);
-        usernameInput = findViewById(R.id.etUsername);
-        passwordInput = findViewById(R.id.etPassword);
-        parseLoginButton = findViewById(R.id.btLogin);
-        loginButton =  findViewById(R.id.login_button);
-        signupButton = findViewById(R.id.btSwitchToSignup);
 
         //title
         title.setText("Anti-Social\nMedia");
