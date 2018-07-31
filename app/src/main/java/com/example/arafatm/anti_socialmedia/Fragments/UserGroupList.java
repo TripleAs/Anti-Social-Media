@@ -1,6 +1,8 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,10 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.GroupListAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -38,6 +42,7 @@ public class UserGroupList extends Fragment {
     private ArrayList<ParseObject> groupList;
     private RecyclerView recyclerView;
     private GroupListAdapter groupListAdapter;
+    private Button shareButton;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -159,6 +164,19 @@ public class UserGroupList extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        shareButton = (Button) view.findViewById(R.id.iv_share);
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "It's Sharing!!", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(getActivity(), StoryActivity.class);
+                startActivity(i);
+                ((Activity) getActivity()).overridePendingTransition(0,0);
+            }
+        });
     }
 
 

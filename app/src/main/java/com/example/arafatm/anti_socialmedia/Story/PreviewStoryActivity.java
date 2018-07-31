@@ -105,7 +105,7 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
                 String status = caption.getText().toString();
 
                 Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
-                intent.putExtra("caption", status);
+             //   intent.putExtra("caption", status);
                 intent.putExtra("key", status);
 //                if (imageFilePath == null) {
 ////                    //pass video
