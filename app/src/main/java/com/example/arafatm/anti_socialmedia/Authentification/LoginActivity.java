@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         title.setText("Anti-Social\nMedia");
 
 
-
         // Login via Parse
         parseLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
