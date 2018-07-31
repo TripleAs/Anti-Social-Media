@@ -1,51 +1,41 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PictureFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PictureFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.File;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PictureFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "imagePath";
     private static final String ARG_PARAM2 = "param2";
-    private ImageView displayImage;
+    private EditText status;
+    private String imagePath;
     private String imageStoryURL;
-    // TODO: Rename and change types of parameters
+
+    @BindView(R.id.imagePreview) ImageView displayImage;
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public PictureFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PictureFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PictureFragment newInstance(String param1, String param2) {
         PictureFragment fragment = new PictureFragment();
         Bundle args = new Bundle();
@@ -59,10 +49,9 @@ public class PictureFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            imagePath = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
 
-            Toast.makeText(getContext(), mParam1, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -73,7 +62,6 @@ public class PictureFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_picture, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -97,31 +85,29 @@ public class PictureFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         displayImage = (ImageView) view.findViewById(R.id.imagePreview);
 
-//        Glide.with(view.getContext())
-//                .load(imageStoryURL)
-//                .apply(RequestOptions.circleCropTransform())
-//                .into(displayImage);
+        //loads the file
+        File file = new File(imagePath);
+        //creates a bitmap out of it
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+       //rotate image to upright position
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+
+        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                matrix, true);
+        //displays the image
+        displayImage.setImageBitmap(rotated);
+
     }
 }

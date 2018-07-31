@@ -26,15 +26,18 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProfileFragment extends Fragment {
 
-    private ParseUser user;
-    private ImageView ivPropic;
-    private TextView tvFullName;
-    private Context mContext;
-    private GridView profileGroups;
+    @BindView(R.id.ivGroupPic) ImageView ivPropic;
+    @BindView(R.id.tvGroupName) TextView tvFullName;
+    @BindView(R.id.gvProfileGroups) GridView profileGroups;
+    @BindView(R.id.ivStartChat) ImageView ivStartChat;
     private String mParam1;
-    private ImageView ivStartChat;
+    private ParseUser user;
+    private Context mContext;
     GroupAdapter groupAdapter;
     ArrayList<Group> groupList;
 
@@ -85,11 +88,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
-        tvFullName = view.findViewById(R.id.tvGroupName);
         tvFullName.setText(user.getString("fullName"));
-
-        ivPropic = view.findViewById(R.id.ivGroupPic);
         String propicUrl = user.getString("propicUrl");
         propicUrl = (propicUrl == null) ? user.getParseFile("profileImage").getUrl() : propicUrl;
 
@@ -101,12 +102,10 @@ public class ProfileFragment extends Fragment {
             Glide.with(mContext).load(user.getParseFile("profileImage").getUrl()).into(ivPropic);
         }
 
-        profileGroups = view.findViewById(R.id.gvProfileGroups);
         groupList = new ArrayList<>();
 
         loadAllGroups(view, profileGroups);
 
-        ivStartChat = view.findViewById(R.id.ivStartChat);
         ivStartChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -125,7 +125,10 @@
 
         <meta-data
             android:name="com.package.name"
-            android:value="${applicationId}" /> <!-- NOTE: Do NOT change this, it should remain same i.e 'com.package.name' -->
+            android:value="${applicationId}" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" /> <!-- NOTE: Do NOT change this, it should remain same i.e 'com.package.name' -->
 
 
         <!-- <provider -->
@@ -311,8 +314,8 @@
         <!-- android:resource="@xml/fileprovider" /> -->
         <!-- </provider> -->
 
-        <activity android:name=".StoryActivity" />
-        <activity android:name=".PreviewStoryActivity"></activity>
+        <activity android:name=".Story.StoryActivity" />
+        <activity android:name=".Story.PreviewStoryActivity"></activity>
     </application>
 
 </manifest>

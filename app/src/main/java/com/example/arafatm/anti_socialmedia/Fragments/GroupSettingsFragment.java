@@ -2,7 +2,6 @@ package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +25,9 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -35,11 +37,11 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
 public class GroupSettingsFragment extends Fragment {
-    private EditText etGroupName;
-    private ImageView ivPreview;
-    private ImageView ivCamera;
-    private ImageView ivUpload;
-    private Button btSave;
+    @BindView(R.id.etGroupName) EditText etGroupName;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
+    @BindView(R.id.btSave) Button btSave;
 
     private ImageView ivColorRed;
     private ImageView ivColorGreen;
@@ -55,7 +57,6 @@ public class GroupSettingsFragment extends Fragment {
     private Boolean hasNewPic = false;
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
-
     private GroupSettingsFragment.OnFragmentInteractionListener mListener;
 
     public GroupSettingsFragment() {
@@ -104,8 +105,8 @@ public class GroupSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
-        etGroupName = view.findViewById(R.id.etGroupName);
         etGroupName.setText(currentGroup.getGroupName());
 
         ivColorRed = view.findViewById(R.id.ivColorRed);
@@ -157,7 +158,6 @@ public class GroupSettingsFragment extends Fragment {
             ivPreview.setImageResource(R.drawable.ic_group_default);
         }
 
-        ivCamera = view.findViewById(R.id.ivCamera);
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +167,6 @@ public class GroupSettingsFragment extends Fragment {
             }
         });
 
-        ivUpload = view.findViewById(R.id.ivUpload);
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,7 +176,6 @@ public class GroupSettingsFragment extends Fragment {
             }
         });
 
-        btSave = view.findViewById(R.id.btSave);
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

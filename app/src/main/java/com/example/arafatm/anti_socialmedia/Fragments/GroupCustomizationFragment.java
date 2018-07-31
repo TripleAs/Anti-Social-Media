@@ -31,14 +31,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.app.Activity.RESULT_OK;
 
 public class GroupCustomizationFragment extends Fragment {
-    private EditText etGroupName;
-    private Button btCreateGroup;
-    private ImageView ivPreview;
-    private ImageView ivCamera;
-    private ImageView ivUpload;
+    @BindView(R.id.etGroupName) EditText etGroupName;
+    @BindView(R.id.btCreateGroup) Button btCreateGroup;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
 
     private ImageView ivColorRed;
     private ImageView ivColorGreen;
@@ -106,12 +109,7 @@ public class GroupCustomizationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        etGroupName = view.findViewById(R.id.etGroupName);
-        btCreateGroup = view.findViewById(R.id.btCreateGroup);
-        ivPreview = view.findViewById(R.id.ivPreview);
-        ivCamera = view.findViewById(R.id.ivCamera);
-        ivUpload = view.findViewById(R.id.ivUpload);
+        ButterKnife.bind(this, view);
 
         ivColorRed = view.findViewById(R.id.ivColorRed);
         ivColorGreen = view.findViewById(R.id.ivColorGreen);

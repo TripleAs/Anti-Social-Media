@@ -7,32 +7,54 @@
     tools:context=".Fragments.UserGroupList">
 
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Share To"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
+        app:titleTextColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentLeft="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="12dp"
+                android:text="Share Story with"
+                android:textColor="@color/solid_white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Share Now"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/solid_white" />
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimary"
+            android:text="Share Now"
+            android:textColor="@color/solid_white" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_groupList"
         android:layout_width="match_parent"
-        android:layout_height="505dp"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        android:layout_below="@+id/tb_toolbar">
+
+    </android.support.v7.widget.RecyclerView>
 
 
 </RelativeLayout>

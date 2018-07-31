@@ -11,15 +11,15 @@
         android:id="@+id/commentSwipeContainer"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
         android:layout_above="@+id/etComment"
-        android:background="@color/grey_2"
+        android:background="@drawable/title_gradient"
         >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvComments"
             android:layout_width="match_parent"
             android:layout_height="505dp"
+            app:stackFromEnd="true"
 
             />
     </android.support.v4.widget.SwipeRefreshLayout>
