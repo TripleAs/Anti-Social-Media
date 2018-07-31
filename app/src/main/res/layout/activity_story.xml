@@ -9,38 +9,50 @@
     <TextureView
         android:id="@+id/textureView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_upload"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="51dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="50dp"
+        android:background="@color/transparent"
         android:clickable="true"
         android:tint="@color/solid_white"
-        app:srcCompat="@drawable/gallery_2" />
+        app:srcCompat="@drawable/gallery_3" />
 
     <ImageView
         android:id="@+id/iv_take"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignBottom="@+id/iv_upload"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_action_camera" />
+        android:clickable="true"
+        app:srcCompat="@drawable/record" />
 
     <Chronometer
         android:id="@+id/chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:textColor="#ff0000"
         android:textSize="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-    
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/ib_switch_cam"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/iv_upload"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/transparent"
+        app:srcCompat="@drawable/switch_camera" />
+
 </RelativeLayout>

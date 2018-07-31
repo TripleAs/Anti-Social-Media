@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -19,6 +21,7 @@ import android.media.CamcorderProfile;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,21 +30,26 @@ import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,16 +59,46 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-
 public class StoryActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 0;
     private static final int REQUEST_WRITE_PERMISSION_RESULT = 1;
+    private static final int CAPTURE_IMAGE_ACTIVITY = 100;
     private static final int STATE_PREVIEW = 0;
     private static final int STATE_WAIT_LOCK = 1;
     private TextureView mTextureView;
     private int mCaptureState = STATE_PREVIEW;
+    private HandlerThread mBackgroundHandlerThread;
+    private Handler mBackgroundHandler;
+    private String mCameraId;
+    private Size mPreviewSize;
+    private CaptureRequest.Builder mCaptureRequestBuilder;
+    private ImageButton upload;
+    private ImageButton switchCamera;
+    private ImageView captureButton;
+    private boolean mIsRecording = false;
+    private boolean mIsTimeLapsed = false;
+    private File mVideoFolder;
+    private String mVideoFileName;
+    private File mImageFolder;
+    private String mImageFileName;
+    private int mTotalRotation;
+    private Size mVideoSize;
+    private MediaRecorder mMediaRecorder;
+    private Chronometer mChronometer;
+    private CameraCaptureSession mPreviewCaptureSession;
+    private CameraDevice mCameraDevice;
+    private Size mImageSize;
+    private ImageReader mImageReader;
+    private static SparseIntArray ORIENTATIONS = new SparseIntArray();
 
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 0);
+        ORIENTATIONS.append(Surface.ROTATION_90, 90);
+        ORIENTATIONS.append(Surface.ROTATION_180, 180);
+        ORIENTATIONS.append(Surface.ROTATION_270, 270);
+    }
+
+    /*initializes the textureView*/
     private TextureView.SurfaceTextureListener msurfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
@@ -85,11 +123,11 @@ public class StoryActivity extends AppCompatActivity {
         }
     };
 
-    private CameraDevice mCameraDevice;
+    /*Initializes the camera device*/
     private CameraDevice.StateCallback mCameraDeviceStateCallBack = new CameraDevice.StateCallback() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
-        public void onOpened(CameraDevice cameraDevice) {
+        public void onOpened(CameraDevice cameraDevice) { // this gets called when the camera is on
             mCameraDevice = cameraDevice;
             if (mIsRecording) {
                 try {
@@ -101,7 +139,7 @@ public class StoryActivity extends AppCompatActivity {
                 mMediaRecorder.start();
                 mChronometer.setBase(SystemClock.elapsedRealtime());
                 mChronometer.setVisibility(View.VISIBLE);
-                mChronometer.start();
+                mChronometer.start(); //starts the timer
             } else {
                 startPreview();
             }
@@ -122,29 +160,8 @@ public class StoryActivity extends AppCompatActivity {
         }
     };
 
-    private HandlerThread mBackgroundHandlerThread;
-    private Handler mBackgroundHandler;
-    private String mCameraId;
-    private Size mPreviewSize;
-    private CaptureRequest.Builder mCaptureRequestBuilder;
-    private ImageView nextStory;
-    private ImageView prevStory;
-    private ImageView upload;
-    private ImageView captureButton;
-    private boolean mIsRecording = false;
-    private boolean mIsTimeLapsed = false;
-    private File mVideoFolder;
-    private String mVideoFileName;
-    private File mImageFolder;
-    private String mImageFileName;
-    private int mTotalRotation;
-    private Size mVideoSize;
-    private MediaRecorder mMediaRecorder;
-    private Chronometer mChronometer;
-    private CameraCaptureSession mPreviewCaptureSession;
-
+    /*this methods helps to determine the current state of the camera*/
     private CameraCaptureSession.CaptureCallback mPreviewCaptureCallback = new CameraCaptureSession.CaptureCallback() {
-
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         private void process(CaptureResult captureResult) {
             switch (mCaptureState) {
@@ -169,8 +186,6 @@ public class StoryActivity extends AppCompatActivity {
         }
     };
 
-    private Size mImageSize;
-    private ImageReader mImageReader;
     private final ImageReader.OnImageAvailableListener onImageAvailableListener = new ImageReader.OnImageAvailableListener() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
@@ -179,6 +194,7 @@ public class StoryActivity extends AppCompatActivity {
         }
     };
 
+    /*This class creates a savable images from the camera*/
     private class ImageSaver implements Runnable {
         private final Image mImage;
 
@@ -192,7 +208,6 @@ public class StoryActivity extends AppCompatActivity {
             ByteBuffer byteBuffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
-
             FileOutputStream fileOutputStream = null;
 
             try {
@@ -202,6 +217,16 @@ public class StoryActivity extends AppCompatActivity {
                 e.printStackTrace();
             } finally {
                 mImage.close();
+
+                Bitmap _bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                //creates the temporary file and gets the path
+                String filePath = tempFileImage(getApplicationContext(), _bitmap, "name");
+                //naviagtes to the preview page
+                Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
+                //send the just taken picture
+                intent.putExtra("imagePath", filePath);
+                intent.putExtra("result", "picture");
+                startActivity(intent);
                 if (fileOutputStream != null) {
                     try {
                         fileOutputStream.close();
@@ -210,19 +235,28 @@ public class StoryActivity extends AppCompatActivity {
                     }
                 }
             }
-
         }
     }
 
-    private static SparseIntArray ORIENTATIONS = new SparseIntArray();
+    //creates a temporary file and return the absolute file path
+    public static String tempFileImage(Context context, Bitmap bitmap, String name) {
+        File outputDir = context.getCacheDir();
+        File imageFile = new File(outputDir, name + ".jpg");
+        OutputStream os;
 
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 0);
-        ORIENTATIONS.append(Surface.ROTATION_90, 90);
-        ORIENTATIONS.append(Surface.ROTATION_180, 180);
-        ORIENTATIONS.append(Surface.ROTATION_270, 270);
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(context.getClass().getSimpleName(), "Error writing file", e);
+        }
+
+        return imageFile.getAbsolutePath();
     }
 
+    /*compares the various screen sizes*/
     private static class CompareSizeArea implements Comparator<Size> {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
@@ -238,34 +272,32 @@ public class StoryActivity extends AppCompatActivity {
 
         createVideoFolder();
         createImageFolder();
-
         mMediaRecorder = new MediaRecorder();
-
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
         mTextureView = (TextureView) findViewById(R.id.textureView);
-        upload = (ImageView) findViewById(R.id.iv_upload);
+        upload = (ImageButton) findViewById(R.id.iv_upload);
         captureButton = (ImageView) findViewById(R.id.iv_take);
+        switchCamera = (ImageButton) findViewById(R.id.ib_switch_cam);
 
-        upload.setOnClickListener(new View.OnClickListener() {
+        upload.setOnClickListener(new View.OnClickListener() { //when the gallery icon is clicked
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Uploading picture", Toast.LENGTH_SHORT).show();
                 uploadImage();
             }
         });
 
-        captureButton.setOnLongClickListener(new View.OnLongClickListener() {
+        captureButton.setOnLongClickListener(new View.OnLongClickListener() { //when the camera icon is clicked to record a video
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onLongClick(View view) {
                 mIsTimeLapsed = true;
-                captureButton.setImageResource(R.drawable.recorder_mode);
+                captureButton.setImageResource(R.drawable.recorder_mode); //switches the icon to recording mode
                 checkWriteStoragePermission();
                 return true;
             }
         });
 
-        captureButton.setOnClickListener(new View.OnClickListener() {
+        captureButton.setOnClickListener(new View.OnClickListener() { //when the camera icon is clicked to take pictures
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
@@ -274,35 +306,25 @@ public class StoryActivity extends AppCompatActivity {
                     mChronometer.setVisibility(View.INVISIBLE);
                     mIsRecording = false;
                     mIsTimeLapsed = false;
-                    captureButton.setImageResource(R.drawable.picture_mode);
+                    captureButton.setImageResource(R.drawable.record);
                     mMediaRecorder.stop();
                     mMediaRecorder.reset();
-                   // startPreview();
 
-                    //TODO
-                    //GET THE TAKEN PICTURE AND PASS IT TO STORYPREVIEWACTIVITY
-
-                    //preview taken picture
+                    String videoPath = videoFile.getAbsolutePath();
+                    //navigates to preview activity
                     Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
-                    //send the just taken video
+                    //pass the video path to preview activity
                     intent.putExtra("result", "video");
+                    intent.putExtra("videoPath", videoPath);
                     startActivity(intent);
                 } else {
                     lockFocus();
-
-                    //TODO
-                    //GET THE VIDEO AND PASS IT TO STORYPREVIEWACTIVITY
-
-                    //preview taken picture
-                    Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
-                    //send the just taken picture
-                    intent.putExtra("result", "picture");
-                    startActivity(intent);
                 }
             }
         });
     }
 
+    /*when the story pages loads*/
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onResume() {
@@ -315,9 +337,9 @@ public class StoryActivity extends AppCompatActivity {
         } else {
             mTextureView.setSurfaceTextureListener(msurfaceTextureListener);
         }
-
     }
 
+    /*Enables full screen display*/
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -342,7 +364,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     private void startBackgroundThread() {
-        mBackgroundHandlerThread = new HandlerThread("Camera2VideoImage");
+        mBackgroundHandlerThread = new HandlerThread("myVideo");
         mBackgroundHandlerThread.start();
         mBackgroundHandler = new Handler((mBackgroundHandlerThread.getLooper()));
     }
@@ -359,7 +381,6 @@ public class StoryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -400,7 +421,6 @@ public class StoryActivity extends AppCompatActivity {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -425,14 +445,14 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startRecord() {
         try {
             if (mIsRecording) {
                 setupMeidaRecorder();
             } else {
-                setupTimeElapse();
+                setupMeidaRecorder();
+                //setupTimeElapse();
             }
 
             SurfaceTexture surfaceTexture = mTextureView.getSurfaceTexture();
@@ -442,14 +462,13 @@ public class StoryActivity extends AppCompatActivity {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mCaptureRequestBuilder.addTarget(previewSurface);
             mCaptureRequestBuilder.addTarget(recordSurface);
-
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordSurface), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(CameraCaptureSession cameraCaptureSession) {
                     try {
                         cameraCaptureSession.setRepeatingRequest(
-                                mCaptureRequestBuilder.build(), null, null
-                        );
+                                mCaptureRequestBuilder.build(), null, null);
+
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
@@ -466,7 +485,7 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
-
+    /*Captures the picture upon request*/
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startStillCaptureRequest() {
         try {
@@ -476,11 +495,14 @@ public class StoryActivity extends AppCompatActivity {
 
             CameraCaptureSession.CaptureCallback stillCaptureCallback = new CameraCaptureSession.CaptureCallback() {
                 @Override
-                public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
+                public void onCaptureStarted(CameraCaptureSession session, CaptureRequest request, long timestamp, long frameNumber) {
                     super.onCaptureStarted(session, request, timestamp, frameNumber);
 
                     try {
                         createImageFileName();
+
+                        File im = imageFile;
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -491,9 +513,7 @@ public class StoryActivity extends AppCompatActivity {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void startPreview() {
@@ -504,10 +524,9 @@ public class StoryActivity extends AppCompatActivity {
         try {
             mCaptureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mCaptureRequestBuilder.addTarget(previewSurface);
-
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, mImageReader.getSurface()), new CameraCaptureSession.StateCallback() {
                 @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                public void onConfigured(CameraCaptureSession cameraCaptureSession) {
                     mPreviewCaptureSession = cameraCaptureSession;
                     try {
                         mPreviewCaptureSession.setRepeatingRequest(mCaptureRequestBuilder.build(), null, mBackgroundHandler);
@@ -517,7 +536,7 @@ public class StoryActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+                public void onConfigureFailed(CameraCaptureSession cameraCaptureSession) {
                     Toast.makeText(getApplicationContext(), "Unable to seturp camera preview", Toast.LENGTH_SHORT).show();
                 }
             }, null);
@@ -551,6 +570,7 @@ public class StoryActivity extends AppCompatActivity {
         return null;
     }
 
+    /*takes care of approving various permissions*/
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -578,7 +598,6 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
-
     private void createVideoFolder() {
         File movieFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         mVideoFolder = new File(movieFile, "myVideo");
@@ -587,15 +606,15 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
+    private File videoFile;
 
     private File createVideoFileName() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String prepend = "VIDEO_" + timeStamp + "_";
-        File videoFile = File.createTempFile(prepend, ".mp4", mVideoFolder);
+        videoFile = File.createTempFile(prepend, ".mp4", mVideoFolder);
         mVideoFileName = videoFile.getAbsolutePath();
         return videoFile;
     }
-
 
     private void createImageFolder() {
         File imageFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -605,16 +624,17 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
+    private File imageFile;
 
     private File createImageFileName() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String prepend = "IMAGE_" + timeStamp + "_";
-        File imageFile = File.createTempFile(prepend, ".jpg", mImageFolder);
+        imageFile = File.createTempFile(prepend, ".jpg", mImageFolder);
         mImageFileName = imageFile.getAbsolutePath();
         return imageFile;
     }
 
-
+    /*checks for permission and starts the video recording*/
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void checkWriteStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -660,13 +680,12 @@ public class StoryActivity extends AppCompatActivity {
         mMediaRecorder.setOutputFile(mVideoFileName);
         mMediaRecorder.setVideoEncodingBitRate(1000000);
         mMediaRecorder.setVideoFrameRate(30);
-        mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
+        //  mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mMediaRecorder.setOrientationHint(mTotalRotation);
         mMediaRecorder.prepare();
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setupTimeElapse() throws IOException {
@@ -677,7 +696,6 @@ public class StoryActivity extends AppCompatActivity {
         mMediaRecorder.setOrientationHint(mTotalRotation);
         mMediaRecorder.prepare();
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void lockFocus() {
@@ -692,14 +710,52 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     public void uploadImage() {
+        // Create intent for picking a photo from the gallery
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY);
         }
     }
 
+    /*gets the uploaded image and send it to preview page for preview*/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Uri photoUri = data.getData();
+                    // Do something with the photo based on Uri
+                    Bitmap selectedImage = null;
+                    try {
+                        selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //creates the temporary file and gets the path
+                    String filePath = tempFileImage(getApplicationContext(), selectedImage, "name");
+                    //naviagtes to the preview page
+                    Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
+                    //send the just taken picture
+                    intent.putExtra("imagePath", filePath);
+                    intent.putExtra("result", "picture");
+                    startActivity(intent);
+                }
+            } else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private byte[] compressImageToRightSize(Bitmap selectedImage) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        selectedImage.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        return stream.toByteArray();
+    }
 }
