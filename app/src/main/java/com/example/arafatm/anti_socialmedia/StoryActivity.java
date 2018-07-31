@@ -51,6 +51,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+
 import static com.example.arafatm.anti_socialmedia.Util.PhotoHelper.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 
 public class StoryActivity extends AppCompatActivity {
@@ -698,7 +699,7 @@ public class StoryActivity extends AppCompatActivity {
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Bring up gallery to select a photo
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+//            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
