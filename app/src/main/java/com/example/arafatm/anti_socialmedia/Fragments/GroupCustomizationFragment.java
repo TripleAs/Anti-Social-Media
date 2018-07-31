@@ -2,7 +2,6 @@ package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,14 +30,16 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 import static android.app.Activity.RESULT_OK;
 
 public class GroupCustomizationFragment extends Fragment {
-    private EditText etGroupName;
-    private Button btCreateGroup;
-    private ImageView ivPreview;
-    private ImageView ivCamera;
-    private ImageView ivUpload;
+    @BindView(R.id.etGroupName) EditText etGroupName;
+    @BindView(R.id.btCreateGroup) Button btCreateGroup;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
 
     private List<String> newMembers;
     private PhotoHelper photoHelper;
@@ -92,12 +93,6 @@ public class GroupCustomizationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        etGroupName = view.findViewById(R.id.etGroupName);
-        btCreateGroup = view.findViewById(R.id.btCreateGroup);
-        ivPreview = view.findViewById(R.id.ivPreview);
-        ivCamera = view.findViewById(R.id.ivCamera);
-        ivUpload = view.findViewById(R.id.ivUpload);
 
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override

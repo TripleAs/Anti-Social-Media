@@ -2,7 +2,6 @@ package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,20 +25,22 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+
 import static android.app.Activity.RESULT_OK;
 
 public class GroupSettingsFragment extends Fragment {
-    private EditText etGroupName;
-    private ImageView ivPreview;
-    private ImageView ivCamera;
-    private ImageView ivUpload;
-    private Button btSave;
+    @BindView(R.id.etGroupName) EditText etGroupName;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
+    @BindView(R.id.btSave) Button btSave;
+
     private Group currentGroup;
     private PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
-
     private GroupSettingsFragment.OnFragmentInteractionListener mListener;
 
     public GroupSettingsFragment() {
@@ -89,10 +90,8 @@ public class GroupSettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etGroupName = view.findViewById(R.id.etGroupName);
         etGroupName.setText(currentGroup.getGroupName());
 
-        ivPreview = view.findViewById(R.id.ivPreview);
         ParseFile currentImage = currentGroup.getGroupImage();
         if (currentImage != null) {
             Glide.with(getContext()).load(currentImage.getUrl()).into(ivPreview);
@@ -100,7 +99,6 @@ public class GroupSettingsFragment extends Fragment {
             ivPreview.setImageResource(R.drawable.ic_group_default);
         }
 
-        ivCamera = view.findViewById(R.id.ivCamera);
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,7 +108,6 @@ public class GroupSettingsFragment extends Fragment {
             }
         });
 
-        ivUpload = view.findViewById(R.id.ivUpload);
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +117,6 @@ public class GroupSettingsFragment extends Fragment {
             }
         });
 
-        btSave = view.findViewById(R.id.btSave);
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
