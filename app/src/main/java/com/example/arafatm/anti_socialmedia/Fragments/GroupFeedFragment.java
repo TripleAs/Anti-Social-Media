@@ -54,8 +54,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private ImageView prev_story;
 
     @BindView(R.id.tvGroupName) TextView tvGroupName;
-    @BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivGroupPic) ImageView ivGroupPic;
+    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
@@ -149,7 +148,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         next_story = view.findViewById(R.id.iv_next);
         prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
-        tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
         storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts

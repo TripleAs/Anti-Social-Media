@@ -117,16 +117,20 @@ public class GroupSettingsFragment extends Fragment {
         ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
         ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
         checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
-        switch (currentGroup.getTheme()) {
-            case KEY_RED:
-                ivCheckmarkRed.setVisibility(View.VISIBLE);
-                break;
-            case KEY_GREEN:
-                ivCheckmarkGreen.setVisibility(View.VISIBLE);
-                break;
-            case KEY_BLUE:
-                ivCheckmarkBlue.setVisibility(View.VISIBLE);
-                break;
+        if (currentGroup.getTheme() != null) {
+            switch (currentGroup.getTheme()) {
+                case KEY_RED:
+                    ivCheckmarkRed.setVisibility(View.VISIBLE);
+                    break;
+                case KEY_GREEN:
+                    ivCheckmarkGreen.setVisibility(View.VISIBLE);
+                    break;
+                case KEY_BLUE:
+                    ivCheckmarkBlue.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    ivCheckmarkGreen.setVisibility(View.VISIBLE);
+            }
         }
 
         ivColorRed.setOnClickListener(new View.OnClickListener() {
