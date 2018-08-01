@@ -35,8 +35,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-import static android.app.Activity.RESULT_OK;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
@@ -49,13 +47,12 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private int groupId;
     private Group group;
 
-    private ImageView next_story;
-    private VideoView storyView;
-    private ImageView prev_story;
+    @BindView(R.id.iv_next) ImageView next_story;
+    @BindView(R.id.vv_groupStory) VideoView storyView;
+    @BindView(R.id.iv_prev) ImageView prev_story;
 
     @BindView(R.id.tvGroupName) TextView tvGroupName;
-    @BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivGroupPic) ImageView ivGroupPic;
+    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
@@ -63,7 +60,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
-    RecyclerView rvPosts;
+    @BindView(R.id.rvPostsFeed) RecyclerView rvPosts;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     String themeName;
 
@@ -144,13 +141,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         ButterKnife.bind(this, view);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
-
-
-        next_story = view.findViewById(R.id.iv_next);
-        prev_story = view.findViewById(R.id.iv_prev);
-        rvPosts = view.findViewById(R.id.rvPostsFeed);
-        tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
-        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts
         posts = new ArrayList<>();

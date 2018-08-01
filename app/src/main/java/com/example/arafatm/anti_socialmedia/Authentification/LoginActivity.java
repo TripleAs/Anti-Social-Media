@@ -40,30 +40,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class LoginActivity extends AppCompatActivity {
-    @BindView(R.id.tvTitle) TextView title;
-    @BindView(R.id.etUsername) EditText usernameInput;
-    @BindView(R.id.etPassword) EditText passwordInput;
-    @BindView(R.id.btLogin) Button parseLoginButton;
-    @BindView(R.id.login_button) LoginButton loginButton;
-    @BindView(R.id.btSwitchToSignup) Button signupButton;
-
+    private TextView title;
+    private EditText usernameInput;
+    private EditText passwordInput;
+    private Button parseLoginButton;
+    private LoginButton loginButton;
+    private Button signupButton;
     CallbackManager callbackManager;
-    Context context;
+    static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
 
-        persistLogin();
-
+        title = findViewById(R.id.tvTitle);
+        usernameInput = findViewById(R.id.etUsername);
+        passwordInput = findViewById(R.id.etPassword);
+        parseLoginButton = findViewById(R.id.btLogin);
+        loginButton =  findViewById(R.id.login_button);
+        signupButton = findViewById(R.id.btSwitchToSignup);
         callbackManager = CallbackManager.Factory.create();
         context = getApplicationContext();
+
+        persistLogin();
 
         //title
         title.setText("Anti-Social\nMedia");
