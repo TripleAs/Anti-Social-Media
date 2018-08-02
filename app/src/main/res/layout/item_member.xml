@@ -23,12 +23,12 @@
         android:text="Friend McFrienderson"
         android:textSize="24sp" />
 
-    <ImageView
-        android:id="@+id/ivAddButton"
+    <ImageButton
+        android:id="@+id/ibEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_add_icon" />
+        app:srcCompat="@drawable/ic_create_post" />
 
 </RelativeLayout>

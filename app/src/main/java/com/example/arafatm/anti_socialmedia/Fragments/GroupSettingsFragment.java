@@ -21,6 +21,7 @@ import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -36,7 +37,7 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
-public class GroupSettingsFragment extends Fragment {
+public class GroupSettingsFragment extends Fragment implements EditNicknameFragment.OnFragmentInteractionListener {
     @BindView(R.id.etGroupName) EditText etGroupName;
     @BindView(R.id.ivPreview) ImageView ivPreview;
     @BindView(R.id.ivCamera) ImageView ivCamera;
@@ -238,5 +239,9 @@ public class GroupSettingsFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "No picture chosen", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onFinishEditNickname(String nickname, ParseUser member) {
+
     }
 }
