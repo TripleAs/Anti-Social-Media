@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
-
     @BindView(R.id.etFullName) EditText fullnameInput;
     @BindView(R.id.etUsername) EditText usernameInput;
     @BindView(R.id.etPassword) EditText passwordInput;

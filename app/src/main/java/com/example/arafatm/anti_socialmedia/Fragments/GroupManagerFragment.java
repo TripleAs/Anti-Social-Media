@@ -41,6 +41,7 @@ public class GroupManagerFragment extends Fragment {
     ArrayList<Group> groupList;
     Context mContext;
 
+
 //    @BindView(R.id.gv_group_list) GridView gridview;
     RecyclerView rvGroups;
     @BindView(R.id.ic_add_icon) ImageView add_group;
@@ -81,6 +82,12 @@ public class GroupManagerFragment extends Fragment {
         return view;
     }
 
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -108,6 +115,7 @@ public class GroupManagerFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        groupList = new ArrayList<>();
         rvGroups = view.findViewById(R.id.rvGroups);
         rvGroups.addItemDecoration(new SpacesItemDecoration(20));
 
@@ -141,6 +149,8 @@ public class GroupManagerFragment extends Fragment {
                 public void done(final List<Group> objects, ParseException e) {
                     if (e == null) {
                         groupList.addAll(objects);
+
+                        constructGridView(gridview);
                         groupAdapter.notifyDataSetChanged();
                     } else {
                         e.printStackTrace();
@@ -157,6 +167,32 @@ public class GroupManagerFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
+//            displayOnGridView(groupList, view, gridview);
+            constructGridView(gridview);
         }
+    }
+
+    private void constructGridView(GridView gridview) {
+        groupAdapter = new GroupAdapter(getContext(), groupList);
+        gridview.setAdapter(groupAdapter);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getContext(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+
+//                ParseObject selectedGroup = groupList.get(position);
+                ParseObject selectedGroup = null;
+                try {
+                    selectedGroup = groupList.get(position).fetchIfNeeded();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
+                /*Navigates to the groupFeedFragment*/
+                mListener.navigate_to_fragment(fragment);
+            }
+        });
     }
 }

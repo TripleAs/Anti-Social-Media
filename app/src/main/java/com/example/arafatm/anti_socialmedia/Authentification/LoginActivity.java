@@ -40,6 +40,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends AppCompatActivity {
     private TextView title;
     private EditText usernameInput;
@@ -47,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button parseLoginButton;
     private LoginButton loginButton;
     private Button signupButton;
+  
     CallbackManager callbackManager;
     static Context context;
 
@@ -54,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+      
         title = findViewById(R.id.tvTitle);
         usernameInput = findViewById(R.id.etUsername);
         passwordInput = findViewById(R.id.etPassword);
@@ -68,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //title
         title.setText("Anti-Social\nMedia");
-
 
         // Login via Parse
         parseLoginButton.setOnClickListener(new View.OnClickListener() {

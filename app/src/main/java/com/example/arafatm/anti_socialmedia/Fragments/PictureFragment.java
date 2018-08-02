@@ -26,6 +26,7 @@ public class PictureFragment extends Fragment {
     private EditText status;
     private String imagePath;
     private String imageStoryURL;
+    private int currentAngle = 90;
 
     @BindView(R.id.imagePreview) ImageView displayImage;
     private String mParam1;
@@ -88,26 +89,30 @@ public class PictureFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        
         displayImage = (ImageView) view.findViewById(R.id.imagePreview);
 
         //loads the file
         File file = new File(imagePath);
         //creates a bitmap out of it
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-       //rotate image to upright position
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
+        final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        Bitmap rotated = rotateImage(currentAngle, bitmap);
 
-        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
-                matrix, true);
         //displays the image
         displayImage.setImageBitmap(rotated);
 
     }
+
+    private Bitmap rotateImage(int degree, Bitmap bitmap) {
+        //rotate image to upright position
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                matrix, true);
+    }
+
 }

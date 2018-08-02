@@ -137,6 +137,7 @@ public class GroupCreationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String friendName) {
@@ -150,16 +151,13 @@ public class GroupCreationFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String friendName) {
                 if (friendName == null || friendName.isEmpty()) {
-                    fetchAllFriendList();
+                        fetchAllFriendList();
                     friendListAdapter.notifyDataSetChanged(); //updates the adapter
                     return true;
                 }
                 return false;
             }
-
         });
-
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +176,8 @@ public class GroupCreationFragment extends Fragment {
         for (int i = 0; i < friendListIds.size(); i++) {
             try {
                 ParseUser user = ParseUser.getQuery().get(friendListIds.get(i));
-                if (user.getString("fullName").compareTo(friendName) == 0) {
+
+                if (user.getString("fullName").toLowerCase().contains(friendName)) {
                   friendList.add(user);
                 }
             } catch (ParseException e) {
@@ -187,9 +186,6 @@ public class GroupCreationFragment extends Fragment {
         }
         friendListAdapter.notifyDataSetChanged(); //updates the adapter
     }
-
-    //TODO
-    //get empty search to fetch all users
 
     private void passToCustomization() {
         ArrayList<String> newMembers = friendListAdapter.getNewGroupMembers();

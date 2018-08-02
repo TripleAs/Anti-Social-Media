@@ -1,8 +1,7 @@
 package com.example.arafatm.anti_socialmedia.Models;
 
-import android.net.Uri;
-
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -23,23 +22,18 @@ public class Story extends ParseObject {
         put(KEY_SENDER, sender);
     }
 
-    public ParseObject getRecipient() {
-        return getParseObject(KEY_RECIPIENT);
+    public List<String> getAllRecipient() {
+        return getList(KEY_RECIPIENT);
     }
 
-    public void setRecipient(Group recipient) {
-        put(KEY_RECIPIENT, recipient);
+    public void addRecipient(String recipientObjectId) {
+    List<String> allRecipient = getList(KEY_RECIPIENT);
+    allRecipient.add(recipientObjectId);
+    put(KEY_RECIPIENT, allRecipient);
     }
-
-//    //Gets the list of comments from Parse
-//    public List<ParseObject> getStories() {
-//        return getList(KEY_STORY);
-//    }
 
     /*Gets the Array of stories from Parse, updates it, and save it back to parse*/
-    public void setStory(Uri storyUri) {
-        List<Uri> stories = getList(KEY_STORY);
-        stories.add(storyUri);
-        put(KEY_STORY, stories);
+    public void setStory(ParseFile file) {
+        put(KEY_STORY, file);
     }
 }

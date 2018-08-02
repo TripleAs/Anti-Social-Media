@@ -20,7 +20,7 @@
         android:id="@+id/tvGroupName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivCoverPhoto"
+        android:layout_alignBottom="@+id/vv_groupStory"
         android:layout_alignParentRight="true"
         android:text=""
         android:textSize="24sp" />

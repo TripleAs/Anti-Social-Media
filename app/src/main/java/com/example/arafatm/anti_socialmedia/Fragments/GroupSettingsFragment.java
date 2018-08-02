@@ -117,6 +117,7 @@ public class GroupSettingsFragment extends Fragment {
         ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
         ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
         checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
+
         if (currentGroup.getTheme() != null) {
             switch (currentGroup.getTheme()) {
                 case KEY_RED:

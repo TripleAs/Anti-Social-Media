@@ -47,6 +47,13 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private int groupId;
     private Group group;
 
+
+    private ImageView next_story;
+    private VideoView storyView;
+    private ImageView prev_story;
+    private String videoFilePath;
+
+    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
     @BindView(R.id.iv_next) ImageView next_story;
     @BindView(R.id.vv_groupStory) VideoView storyView;
     @BindView(R.id.iv_prev) ImageView prev_story;
@@ -60,6 +67,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
+
     @BindView(R.id.rvPostsFeed) RecyclerView rvPosts;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     String themeName;
@@ -212,6 +220,19 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
 
         //TODO: ARAFAT'S IMPLEMENTATION
+
+        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
+//        storyView.setVideoPath(videoFilePath);
+//        storyView.setMediaController(null);
+//        storyView.requestFocus();
+     //   storyView.start();
+
+        storyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+        //        storyView.start();
+            }
+        });
 
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
