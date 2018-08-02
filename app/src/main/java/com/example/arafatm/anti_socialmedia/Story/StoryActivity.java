@@ -228,6 +228,9 @@ public class StoryActivity extends AppCompatActivity {
                 Bitmap _bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 //creates the temporary file and gets the path
                 String filePath = tempFileImage(getApplicationContext(), _bitmap, "name");
+
+                //TODO: GET BYTE ARRAY FROM URI AND PASS THROUGH INTENT
+
                 //naviagtes to the preview page
                 Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
                 //send the just taken picture
@@ -346,6 +349,9 @@ public class StoryActivity extends AppCompatActivity {
                     mMediaRecorder.reset();
 
                     String videoPath = videoFile.getAbsolutePath();
+
+                    //TODO: GET BYTE ARRAY FROM URI AND PASS THROUGH INTENT
+
                     //navigates to preview activity
                     Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
                     //pass the video path to preview activity

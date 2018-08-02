@@ -37,7 +37,7 @@ import java.util.List;
 public class UserGroupList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "dataType";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<ParseObject> groupList;
     private RecyclerView recyclerView;
@@ -45,7 +45,7 @@ public class UserGroupList extends Fragment {
     private Button shareButton;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String dataType;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -82,7 +82,7 @@ public class UserGroupList extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
+            dataType = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             String storyId = getArguments().getString(ARG_PARAM1);
             Toast.makeText(getContext(), storyId, Toast.LENGTH_SHORT).show();
@@ -157,29 +157,51 @@ public class UserGroupList extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-
         void navigate_to_fragment(Fragment fragment);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        shareButton = (Button) view.findViewById(R.id.iv_share);
+        shareButton = (Button) view.findViewById(R.id.bt_share);
 
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "It's Sharing!!", Toast.LENGTH_SHORT).show();
 
-                Intent i = new Intent(getActivity(), StoryActivity.class);
-                startActivity(i);
-                ((Activity) getActivity()).overridePendingTransition(0,0);
+                ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
+
+                //TODO: make sure you pass in the dataByte
+
+//                if (allGroupWithStories != null) {
+//                    //Create a new story
+//                    Story story = new Story();
+//                    story.setSender(ParseUser.getCurrentUser());
+//                    ParseFile parseFile = null;
+//
+//                    if (dataType.compareTo("video") == 0) {
+//                        byte[] videoBytes = getArguments().getByteArray("byteData");
+//                        parseFile = new ParseFile("mynewStory.mp3", videoBytes);
+//                    } else {
+//                        byte[] imageBytes = getArguments().getByteArray("byteData");
+//                        parseFile = new ParseFile("mynewStory.png", imageBytes);
+//                    }
+//
+//                    story.setStory(parseFile);
+//
+//                    //adds the group's id to the recipient list of story
+//                    for (ParseObject group : allGroupWithStories) {
+//                        story.addRecipient(group.getObjectId());
+//                    }
+//                    story.saveInBackground();
+
+                    Intent i = new Intent(getActivity(), StoryActivity.class);
+                    startActivity(i);
+                    ((Activity) getActivity()).overridePendingTransition(0,0);//               }
             }
         });
     }
-
-
 
 
     //TODO

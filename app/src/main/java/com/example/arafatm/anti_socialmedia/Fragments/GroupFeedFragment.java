@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,17 +32,14 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GroupFeedFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GroupFeedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
+
 public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
     private String groupObjectId;
@@ -52,25 +47,23 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private int groupId;
     private Group group;
 
-    private TextView tvGroupName;
-    private TextView tvCommentCount;
-    private ImageView ivGroupPic;
-    private ImageView ivStartChat;
-    private ImageView ivThreeDots;
-    private ImageView ivLaunchNewPost;
     private ImageView next_story;
     private VideoView storyView;
     private ImageView prev_story;
+    private String videoFilePath;
 
-    //posts
+    @BindView(R.id.tvGroupName) TextView tvGroupName;
+    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
+    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
+    @BindView(R.id.ivStartChat) ImageView ivStartChat;
+    @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
+    @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
 
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
     RecyclerView rvPosts;
-    private EditText messageInput;
-    private Button createButton;
-    private SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     String themeName;
 
 
@@ -114,7 +107,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         if (bundle != null) {
              groupObjectId = bundle.getString(ARG_PARAM1, groupObjectId);
-             themeName = bundle.getString("theme", "red");
+             themeName = bundle.getString("theme", KEY_BLUE);
         }
 
     }
@@ -125,11 +118,17 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         // Inflate the layout for this fragment
         // Equivalent to setContentView
         // create ContextThemeWrapper from the original Activity Context with the custom theme
-        final Context contextThemeWrapper;
-        if (themeName.matches("red")) {
-            contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
-        } else {
-            contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+        Context contextThemeWrapper = null;
+        switch (themeName) {
+            case KEY_RED:
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
+                break;
+            case KEY_GREEN:
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupGreenTheme);
+                break;
+            case KEY_BLUE:
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+                break;
         }
         // clone the inflater using the ContextThemeWrapper
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
@@ -141,29 +140,24 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
-        //creating a post
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
 
-        ivStartChat = view.findViewById(R.id.ivStartChat);
-        ivThreeDots = view.findViewById(R.id.ivThreeDots);
+
         next_story = view.findViewById(R.id.iv_next);
         prev_story = view.findViewById(R.id.iv_prev);
-        ivLaunchNewPost = view.findViewById(R.id.ivLaunchNewPost);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
-        tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
         storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts
         posts = new ArrayList<>();
-        postAdapter = new PostAdapter(posts);
+        postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
 
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
 
-        // Setup refresh listener which triggers new data loading
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -186,12 +180,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                     Toast.makeText(getContext(), object.getString("groupName") + " Successfully Loaded", Toast.LENGTH_SHORT).show();
                     group = (Group) object;
 
-                    tvGroupName = (TextView) view.findViewById(R.id.tvGroupName);
                     groupName = object.getString("groupName");
                     tvGroupName.setText(groupName);
                     groupId = convert(object.getObjectId());
 
-                    ivGroupPic = (ImageView) view.findViewById(R.id.ivCoverPhoto);
                     ParseFile groupImage = object.getParseFile("groupImage");
 
                     if (groupImage != null) {
@@ -228,6 +220,19 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
 
         //TODO: ARAFAT'S IMPLEMENTATION
+
+        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
+//        storyView.setVideoPath(videoFilePath);
+//        storyView.setMediaController(null);
+//        storyView.requestFocus();
+     //   storyView.start();
+
+        storyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+        //        storyView.start();
+            }
+        });
 
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,7 +295,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     private void refreshFeed(){
-        PostAdapter adapter = new PostAdapter(posts);
+        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
 
         adapter.clear();
         loadTopPosts();

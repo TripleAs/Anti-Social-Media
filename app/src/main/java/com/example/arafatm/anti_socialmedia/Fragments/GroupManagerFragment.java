@@ -1,63 +1,52 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
         import android.content.Context;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.support.v4.app.Fragment;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.Toolbar;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.AdapterView;
-        import android.widget.EditText;
-        import android.widget.GridView;
-        import android.widget.ImageView;
-        import android.widget.Toast;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-        import com.example.arafatm.anti_socialmedia.Models.Group;
-        import com.example.arafatm.anti_socialmedia.R;
-        import com.example.arafatm.anti_socialmedia.Util.GroupAdapter;
-        import com.parse.FindCallback;
-        import com.parse.ParseException;
-        import com.parse.ParseObject;
-        import com.parse.ParseUser;
+import com.example.arafatm.anti_socialmedia.Models.Group;
+import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.GroupAdapter;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
+
+        import butterknife.BindView;
+        import butterknife.ButterKnife;
 
 
 public class GroupManagerFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     GroupAdapter groupAdapter;
     ArrayList<Group> groupList;
     Context mContext;
 
-    // TODO: Rename and change types of parameters
+    @BindView(R.id.gv_group_list) GridView gridview;
+    @BindView(R.id.ic_add_icon) ImageView add_group;
+    Toolbar toolbar;
     private String mParam1;
     private String mParam2;
-
-    private EditText groupName;
-    private ImageView groupPic;
-
     private OnFragmentInteractionListener mListener;
 
     public GroupManagerFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GroupFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static GroupManagerFragment newInstance(String param1, String param2) {
         GroupManagerFragment fragment = new GroupManagerFragment();
         Bundle args = new Bundle();
@@ -80,18 +69,12 @@ public class GroupManagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group_manager, container, false);
-
-        // Find the toolbar view inside the fragment layout
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.tb_toolbar);
-        // Sets the Toolbar to act as the ActionBar for this fragment window.
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -116,18 +99,7 @@ public class GroupManagerFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
         void navigate_to_fragment(Fragment fragment);
     }
@@ -135,10 +107,9 @@ public class GroupManagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
         groupList = new ArrayList<>();
-        GridView gridview = (GridView) view.findViewById(R.id.gv_group_list);
-        ImageView add_group = (ImageView) view.findViewById(R.id.ic_add_icon);
 
         add_group.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +138,7 @@ public class GroupManagerFragment extends Fragment {
                 public void done(final List<Group> objects, ParseException e) {
                     if (e == null) {
                         groupList.addAll(objects);
-                        displayOnGridView(objects, view, gridview);
+//                        displayOnGridView(objects, view, gridview);
                         constructGridView(gridview);
                     } else {
                         e.printStackTrace();
@@ -183,14 +154,13 @@ public class GroupManagerFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            displayOnGridView(groupList, view, gridview);
+//            displayOnGridView(groupList, view, gridview);
             constructGridView(gridview);
         }
     }
 
     private void constructGridView(GridView gridview) {
         groupAdapter = new GroupAdapter(getContext(), groupList);
-//                    GridView gridview = (GridView) view.findViewById(R.id.gv_group_list);
         gridview.setAdapter(groupAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -198,40 +168,44 @@ public class GroupManagerFragment extends Fragment {
                                     int position, long id) {
                 Toast.makeText(getContext(), "" + position,
                         Toast.LENGTH_SHORT).show();
-//                Bundle args = new Bundle();
-                ParseObject selectedGroup = groupList.get(position);
+
+//                ParseObject selectedGroup = groupList.get(position);
+                ParseObject selectedGroup = null;
+                try {
+                    selectedGroup = groupList.get(position).fetchIfNeeded();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
-//                args.putString(ARG_PARAM1,selectedGroup.getObjectId()); //pass group objectId
-//                args.putString("theme", selectedGroup.getString("theme"));
-//                fragment.setArguments(args);
                 /*Navigates to the groupFeedFragment*/
                 mListener.navigate_to_fragment(fragment);
             }
         });
     }
 
-    /*this initializes the adapter, and pass the groupList into it and navigates to GroupFeed fragment*/
-    private void displayOnGridView(List<Group> objects, View view, final GridView gridview) {
-        groupAdapter = new GroupAdapter(getContext(), groupList);
-//        GridView gridview = (GridView) view.findViewById(R.id.gv_group_list);
-        gridview.setAdapter(groupAdapter);
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getContext(), "" + position,
-                        Toast.LENGTH_SHORT).show();
-//                Fragment fragment = new GroupFeedFragment();
-//                Bundle args = new Bundle();
-//                args.putString(ARG_PARAM1, groupList.get(position).getObjectId()); //TO BE CHANGED LATER
-//                args.putString("theme", groupList.get(position).getString("theme"));
-//                fragment.setArguments(args);
-                ParseObject selectedGroup = groupList.get(position);
-                Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
-
-                /*Navigates to the groupManagerFragment*/
-                mListener.navigate_to_fragment(fragment);
-            }
-        });
-    }
+//    /*this initializes the adapter, and pass the groupList into it and navigates to GroupFeed fragment*/
+//    private void displayOnGridView(ArrayList<Group> objects, View view, final GridView gridview) {
+//        groupAdapter = new GroupAdapter(getContext(), groupList);
+//        gridview.setAdapter(groupAdapter);
+//
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v,
+//                                    int position, long id) {
+//                Toast.makeText(getContext(), "" + position,
+//                        Toast.LENGTH_SHORT).show();
+//
+////                ParseObject selectedGroup = groupList.get(position);
+//                ParseObject selectedGroup = null;
+//                try {
+//                    selectedGroup = groupList.get(position).fetchIfNeeded();
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                Fragment fragment = GroupFeedFragment.newInstance(selectedGroup.getObjectId(), selectedGroup.getString("theme"));
+//
+//                /*Navigates to the groupManagerFragment*/
+//                mListener.navigate_to_fragment(fragment);
+//            }
+//        });
+//    }
 }

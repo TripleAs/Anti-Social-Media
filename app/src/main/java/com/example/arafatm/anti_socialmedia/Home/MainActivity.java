@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +96,12 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
             // Extract name value from result extras
             Fragment fragment = new UserGroupList();
             Bundle args = new Bundle();
-            args.putString(ARG_PARAM1, name); //pass group objectId
+//            String dataType = getIntent().getStringExtra("dataType");
+//            byte[] bytes = getIntent().getByteArrayExtra("byteData");
+//
+//            args.putString("dataType", dataType); //pass story dataType
+//            args.putByteArray("byteData", bytes); //pass story
+//
             fragment.setArguments(args);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

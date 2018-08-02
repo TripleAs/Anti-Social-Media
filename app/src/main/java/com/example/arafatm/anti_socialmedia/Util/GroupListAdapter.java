@@ -18,15 +18,15 @@ import com.parse.ParseObject;
 
 import java.util.ArrayList;
 
-public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.ViewHolder> implements View.OnClickListener {
+public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<ParseObject> groupList;
+    private ArrayList<ParseObject> allGroupsWithStories;
 
     public GroupListAdapter(Context context, ArrayList<ParseObject> List) {
         mContext = context;
         this.groupList = List;
     }
-
 
     @Override
     public GroupListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -38,7 +38,6 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(friendListView);
         return viewHolder;
-
     }
 
     @Override
@@ -56,15 +55,6 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
                     .apply(RequestOptions.circleCropTransform())
                     .into(viewHolder.groupPic);
         }
-
-        final RadioButton addFriendButton = viewHolder.addButton;
-        addFriendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    Toast.makeText(mContext, "Story added to group", Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
     @Override
@@ -72,14 +62,13 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
         return groupList.size();
     }
 
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(mContext, "Group selected", Toast.LENGTH_SHORT).show();
+    public ArrayList<ParseObject> getAllGroupWithStories() {
+        return allGroupsWithStories;
     }
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView groupName;
@@ -92,10 +81,27 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
+            itemView.setOnClickListener(this);
 
             groupName = (TextView) itemView.findViewById(R.id.tvGroupName);
             addButton = (RadioButton) itemView.findViewById(R.id.rd_selected);
             groupPic = (ImageView) itemView.findViewById(R.id.ivGroupPic);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (addButton.isChecked()) {
+                Toast.makeText(mContext, "Group disselected" + getLayoutPosition(), Toast.LENGTH_SHORT).show();
+                addButton.setChecked(false);
+                //remove from list
+                allGroupsWithStories.remove(groupList.get(getLayoutPosition()));
+
+            } else {
+                Toast.makeText(mContext, "Group selected" + getLayoutPosition(), Toast.LENGTH_SHORT).show();
+                addButton.setChecked(true);
+                //add to list
+                allGroupsWithStories.add(groupList.get(getLayoutPosition()));
+            }
         }
     }
 }
