@@ -139,8 +139,13 @@ public class CreatePostFragment extends DialogFragment {
     private void sendPostToParse() {
         final Post newPost = new Post();
         if (hasNewPic) {
-            ParseFile image = photoHelper.grabImage();
-            newPost.setImage(image);
+            final ParseFile image = photoHelper.grabImage();
+            image.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    newPost.setImage(image);
+                }
+            });
         }
         String newMessage = etNewPost.getText().toString();
         newPost.initPost(newMessage, currentGroup);

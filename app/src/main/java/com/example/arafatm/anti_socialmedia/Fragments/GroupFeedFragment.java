@@ -47,13 +47,18 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private int groupId;
     private Group group;
 
+
     private ImageView next_story;
     private VideoView storyView;
     private ImageView prev_story;
     private String videoFilePath;
 
-    @BindView(R.id.tvGroupName) TextView tvGroupName;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
+    @BindView(R.id.iv_next) ImageView next_story;
+    @BindView(R.id.vv_groupStory) VideoView storyView;
+    @BindView(R.id.iv_prev) ImageView prev_story;
+
+    @BindView(R.id.tvGroupName) TextView tvGroupName;
     @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
@@ -62,7 +67,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
-    RecyclerView rvPosts;
+
+    @BindView(R.id.rvPostsFeed) RecyclerView rvPosts;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     String themeName;
 
@@ -143,12 +149,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         ButterKnife.bind(this, view);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
-
-
-        next_story = view.findViewById(R.id.iv_next);
-        prev_story = view.findViewById(R.id.iv_prev);
-        rvPosts = view.findViewById(R.id.rvPostsFeed);
-        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts
         posts = new ArrayList<>();
@@ -304,7 +304,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     // for converting group objectId to integer (used for chat channel ID)
     // credit to https://stackoverflow.com/questions/30404946/how-to-convert-parse-objectid-string-to-long
-    private static final String CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String CHARS = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0";
 
     private static int convertChar(char c) {
         int ret = CHARS.indexOf( c );

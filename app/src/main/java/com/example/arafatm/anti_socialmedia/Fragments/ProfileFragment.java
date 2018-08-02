@@ -109,7 +109,7 @@ public class ProfileFragment extends Fragment {
         ivStartChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.startUserChat(user.getString("fullName"), "testing");
+                mListener.startUserChat(user.getObjectId(), user.getString("fullName"));
             }
         });
 

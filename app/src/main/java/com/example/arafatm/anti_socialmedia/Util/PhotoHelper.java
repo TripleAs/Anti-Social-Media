@@ -165,7 +165,7 @@ public class PhotoHelper {
 
     public ParseFile grabImage() {
         if (resizedFile != null) {
-            ParseFile parseFile = new ParseFile(resizedFile);
+            final ParseFile parseFile = new ParseFile(resizedFile);
             return parseFile;
         }
         return null;

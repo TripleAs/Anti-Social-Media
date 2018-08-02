@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.example.arafatm.anti_socialmedia.R;
 
 import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,8 +28,7 @@ public class PictureFragment extends Fragment {
     private String imageStoryURL;
     private int currentAngle = 90;
 
-    @BindView(R.id.imagePreview)
-    ImageView displayImage;
+    @BindView(R.id.imagePreview) ImageView displayImage;
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
@@ -95,8 +93,7 @@ public class PictureFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
-
+        
         displayImage = (ImageView) view.findViewById(R.id.imagePreview);
 
         //loads the file
@@ -107,6 +104,7 @@ public class PictureFragment extends Fragment {
 
         //displays the image
         displayImage.setImageBitmap(rotated);
+
     }
 
     private Bitmap rotateImage(int degree, Bitmap bitmap) {
