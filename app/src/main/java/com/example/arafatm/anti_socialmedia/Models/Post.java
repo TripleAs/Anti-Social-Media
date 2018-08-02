@@ -72,16 +72,8 @@ public class Post extends ParseObject {
         group.addPost(this);
     }
 
-    /*Gets the Array of comments from Parse, updates it, and save it back to parse*/
-    public void addComments(Post comment) {
-        List<ParseObject> comments = getList(KEY_COMMENTS);
-        comments.add(comment);
-        put(KEY_COMMENTS, comments);
-    }
-
     public static class Query extends ParseQuery<Post> {
         //Query of a post class
-
         public Query(){
             super(Post.class);
         }
@@ -102,7 +94,6 @@ public class Post extends ParseObject {
             whereEqualTo("recipient", group);
             return this;
         }
-
     }
 
     // Functions for commenting

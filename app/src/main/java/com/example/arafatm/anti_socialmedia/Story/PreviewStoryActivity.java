@@ -17,25 +17,29 @@ import com.example.arafatm.anti_socialmedia.Fragments.VideoFragment;
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
 import com.example.arafatm.anti_socialmedia.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PreviewStoryActivity extends AppCompatActivity implements PictureFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener {
+    @BindView(R.id.iv_camera) ImageButton backToCamera;
+    @BindView(R.id.iv_share) ImageButton shareButton;
+    @BindView(R.id.iv_close) ImageButton closeToCamera;
+    @BindView(R.id.iv_text) ImageButton text;
+    @BindView(R.id.iv_emoji) ImageButton emoji;
+    @BindView(R.id.iv_rotate) ImageButton rotate;
+    @BindView(R.id.tv_caption) EditText caption;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_story);
-
-        ImageButton backToCamera = (ImageButton) findViewById(R.id.iv_camera);
-        ImageButton shareButton = (ImageButton) findViewById(R.id.iv_share);
-        ImageButton closeToCamera = (ImageButton) findViewById(R.id.iv_close);
-        ImageButton text = (ImageButton) findViewById(R.id.iv_text);
-        ImageButton emoji = (ImageButton) findViewById(R.id.iv_emoji);
-        ImageButton rotate = (ImageButton) findViewById(R.id.iv_rotate);
-        final EditText caption = (EditText) findViewById(R.id.tv_caption);
+        ButterKnife.bind(this);
 
         rotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              Toast.makeText(getApplicationContext(), "rotating", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "rotating", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -67,11 +71,15 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         Fragment videoFragment = new VideoFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        String intentResult = getIntent().getStringExtra("result");
+        final String intentResult = getIntent().getStringExtra("dataType");
+
         final String imageFilePath = getIntent().getStringExtra("imagePath");
         final String videoFIlePath = getIntent().getStringExtra("videoPath");
-        Bundle args = new Bundle();
+        final byte[] bytes = getIntent().getByteArrayExtra("byteData");
 
+
+
+        Bundle args = new Bundle();
         //if it is a picture
         if (intentResult.compareTo("picture") == 0) {
             args.putString("imagePath", imageFilePath);
@@ -87,6 +95,7 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             //This is wouldn't even happen
         }
 
+
         backToCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,19 +109,13 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Sharing story", Toast.LENGTH_SHORT).show();
 
-                //TODO
                 //get status from preview fragment
                 String status = caption.getText().toString();
-
                 Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
-                intent.putExtra("caption", status);
                 intent.putExtra("key", status);
-//                if (imageFilePath == null) {
-////                    //pass video
-////
-////                } else {
-////                    intent.putExtra("imagePath", imageFilePath);
-////                }
+
+//                intent.putExtra("dataType", intentResult);
+//                intent.putExtra("byteData", bytes);
 
                 startActivity(intent);
             }

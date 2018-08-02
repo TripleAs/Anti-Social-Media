@@ -28,7 +28,6 @@ import com.applozic.mobicomkit.api.conversation.Message;
 import com.applozic.mobicomkit.api.people.ChannelInfo;
 import com.applozic.mobicomkit.api.people.UserIntentService;
 import com.applozic.mobicomkit.broadcast.BroadcastService;
-import com.applozic.mobicomkit.channel.service.ChannelService;
 import com.applozic.mobicomkit.feed.ChannelFeedApiResponse;
 import com.applozic.mobicomkit.uiwidgets.async.AlChannelCreateAsyncTask;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
@@ -55,10 +54,8 @@ import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
@@ -84,33 +81,47 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String name = getIntent().getStringExtra("key");
-
-        if (name != null) {
-            // Extract name value from result extras
-
-            Fragment fragment = new UserGroupList();
-            FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager(); //Initiates FragmentManager
-
-            Bundle args = new Bundle();
-            args.putString(ARG_PARAM1, name); //pass group objectId
-            fragment.setArguments(args);
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
-        }
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
         bottomNavigationView.getMenu().findItem(R.id.ic_group_empty).setChecked(true);
         final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
+
+        String name = getIntent().getStringExtra("key");
+
+        if (name != null) {
+            // Extract name value from result extras
+            Fragment fragment = new UserGroupList();
+            Bundle args = new Bundle();
+//            String dataType = getIntent().getStringExtra("dataType");
+//            byte[] bytes = getIntent().getByteArrayExtra("byteData");
+//
+//            args.putString("dataType", dataType); //pass story dataType
+//            args.putByteArray("byteData", bytes); //pass story
+//
+            fragment.setArguments(args);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
+        } else {
+            //sets default fragment
+            FragmentTransaction tx = fragmentManager.beginTransaction();
+            tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
+            tx.commit();
+        }
+
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+//        Toolbar toolbar = findViewById(R.id.my_toolbar);
+//        setSupportActionBar(toolbar);
+//        toolbar.setVisibility(View.INVISIBLE);
+//        bottomNavigationView.getMenu().findItem(R.id.ic_group_empty).setChecked(true);
+//        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
         //sets default fragment
         FragmentTransaction tx = fragmentManager.beginTransaction();
         tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
         tx.commit();
-
+      
         /*gets instance of all fragments here*/
         final Fragment groupFragment = new GroupManagerFragment();
         // final Fragment userGroupList = new UserGroupList();

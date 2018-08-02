@@ -25,6 +25,9 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     private List<Post> mPosts;
     Context context;
@@ -56,21 +59,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     //create ViewHolder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvFullName;
-        public TextView tvPostText;
-        public ImageView ivPostPic;
-        public TextView tvNumberComments;                                           //comment
-        public ImageButton btCommentExpand;                                         //comment
+        @BindView(R.id.tvFullNameFeed) TextView tvFullName;
+        @BindView(R.id.tvPostBody) TextView tvPostText;
+        @BindView(R.id.ivProPicPost) ImageView ivPostPic;
+        @BindView(R.id.tvNumberOfComments) TextView tvNumberComments;           //comment
+        @BindView(R.id.btCommentIcon) ImageButton btCommentExpand;              //comment
+        @BindView(R.id.ivImagePost) ImageView imagePost;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            //perform findViewBtId lookups
-            tvFullName = (TextView) itemView.findViewById(R.id.tvFullNameFeed);
-            tvPostText = (TextView) itemView.findViewById(R.id.tvPostBody);
-            ivPostPic = (ImageView) itemView.findViewById(R.id.ivProPicPost);
-            tvNumberComments = (TextView) itemView.findViewById(R.id.tvNumberOfComments);   //comment
-            btCommentExpand = (ImageButton) itemView.findViewById(R.id.btCommentIcon);      //comment
+            ButterKnife.bind(this, itemView);
 
         }
     }
@@ -109,6 +107,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         viewHolder.tvPostText.setText(message);
         viewHolder.tvFullName.setText(sender);
         viewHolder.tvNumberComments.setText(number);
+
+        //picture with post
+        if (post.getImage() != null) {
+            Glide.with(context)
+                    .load(post.getImage().getUrl())
+                    .into(viewHolder.imagePost);
+        }
 
         //profile picture
         if (propicUrl != null && !(propicUrl.equals("")))  {

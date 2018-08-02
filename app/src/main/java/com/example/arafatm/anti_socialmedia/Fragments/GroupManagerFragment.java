@@ -5,45 +5,39 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.GridLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Util.GroupAdapter;
-        import com.example.arafatm.anti_socialmedia.Util.GroupManagerAdapter;
-        import com.example.arafatm.anti_socialmedia.Util.SpacesItemDecoration;
-        import com.parse.FindCallback;
+import com.example.arafatm.anti_socialmedia.Util.GroupManagerAdapter;
+import com.example.arafatm.anti_socialmedia.Util.SpacesItemDecoration;
+import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-        import butterknife.BindView;
-        import butterknife.ButterKnife;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class GroupManagerFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-//    GroupAdapter groupAdapter;
     GroupManagerAdapter groupAdapter;
     ArrayList<Group> groupList;
     Context mContext;
 
-//    @BindView(R.id.gv_group_list) GridView gridview;
-    RecyclerView rvGroups;
     @BindView(R.id.ic_add_icon) ImageView add_group;
+    RecyclerView rvGroups;
     Toolbar toolbar;
     private String mParam1;
     private String mParam2;
@@ -79,6 +73,12 @@ public class GroupManagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_group_manager, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         return view;
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
@@ -141,6 +141,7 @@ public class GroupManagerFragment extends Fragment {
                 public void done(final List<Group> objects, ParseException e) {
                     if (e == null) {
                         groupList.addAll(objects);
+
                         groupAdapter.notifyDataSetChanged();
                     } else {
                         e.printStackTrace();
@@ -159,4 +160,5 @@ public class GroupManagerFragment extends Fragment {
             }
         }
     }
+
 }

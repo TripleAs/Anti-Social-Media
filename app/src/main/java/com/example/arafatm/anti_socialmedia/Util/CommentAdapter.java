@@ -1,6 +1,7 @@
 package com.example.arafatm.anti_socialmedia.Util;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -67,9 +68,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         catch (ParseException e){
             e.printStackTrace();
         }
-        String user = parseUser.getString("fullName");
 
+        String user = parseUser.getString("fullName");
         String body = comment_Post.getComment();
+
+        // need to add "message" instead of "comment" for first post
+        if (i==0){
+            body = comment_Post.getString("message");
+
+            Typeface tf = Typeface.defaultFromStyle(Typeface.BOLD);
+            viewHolder.tvBodyComment.setTypeface(tf);
+            viewHolder.tvUserComment.setTypeface(tf);
+        }
 
         viewHolder.tvBodyComment.setText(body);
         viewHolder.tvUserComment.setText(user);
