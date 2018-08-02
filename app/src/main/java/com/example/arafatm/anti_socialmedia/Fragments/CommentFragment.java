@@ -68,6 +68,7 @@ public class CommentFragment extends Fragment{
 
         //set up ArrayList of pointers to comments
         final ArrayList<Post> pointToComment = originalPost.getComments();
+        pointToComment.add(0,originalPost);      //adds original post to comment fragment
         comments = new ArrayList<>();
         commentAdapter = new CommentAdapter(pointToComment);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -133,16 +134,17 @@ public class CommentFragment extends Fragment{
     }
 
     private void loadTopPosts() {
-        final Post.Query postsQuery = new Post.Query();     //there's got to be a better way for doing this
+        final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser();
-
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-                    commentAdapter.notifyDataSetChanged();
+//                    comments.add(0, originalPost);
+                    objects.add(0,originalPost);
                     comments.addAll(objects);
+                    commentAdapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
 
                 } else {

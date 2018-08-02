@@ -25,7 +25,7 @@ public class SignupActivity extends AppCompatActivity {
     @BindView(R.id.etPassword) EditText passwordInput;
     @BindView(R.id.etEmail) EditText emailInput;
     @BindView(R.id.btSignup) Button signUpBtn;
-
+    @BindView(R.id.btSwitchToLogin) Button loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,13 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void signUp(String fullname, String username, String password, String email){
