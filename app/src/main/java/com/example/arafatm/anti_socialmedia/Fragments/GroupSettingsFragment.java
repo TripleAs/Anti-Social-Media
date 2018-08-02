@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.MemberAdapter;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -31,6 +36,7 @@ import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
@@ -44,13 +50,17 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     @BindView(R.id.ivUpload) ImageView ivUpload;
     @BindView(R.id.btSave) Button btSave;
 
-    private ImageView ivColorRed;
-    private ImageView ivColorGreen;
-    private ImageView ivColorBlue;
-    private ImageView ivCheckmarkRed;
-    private ImageView ivCheckmarkGreen;
-    private ImageView ivCheckmarkBlue;
-    private ArrayList<ImageView> checkmarks = new ArrayList<>();
+    @BindView(R.id.rvMembers) RecyclerView rvMembers;
+    MemberAdapter memberAdapter;
+    ArrayList<ParseUser> members;
+
+    @BindView(R.id.ivColorRed) ImageView ivColorRed;
+    @BindView(R.id.ivColorGreen)  ImageView ivColorGreen;
+    @BindView(R.id.ivColorBlue)  ImageView ivColorBlue;
+    @BindView(R.id.ivCheckmarkRed)  ImageView ivCheckmarkRed;
+    @BindView(R.id.ivCheckmarkGreen)  ImageView ivCheckmarkGreen;
+    @BindView(R.id.ivCheckmarkBlue)  ImageView ivCheckmarkBlue;
+    ArrayList<ImageView> checkmarks = new ArrayList<>();
     String theme;
 
     private Group currentGroup;
@@ -94,6 +104,8 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         if (getArguments() != null) {
             currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
         }
+        members = new ArrayList<>();
+        memberAdapter = new MemberAdapter(members, GroupSettingsFragment.this, getActivity().getSupportFragmentManager());
     }
 
     @Override
@@ -108,15 +120,11 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
+        rvMembers.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMembers.setAdapter(memberAdapter);
+        getGroupMembers();
+
         etGroupName.setText(currentGroup.getGroupName());
-
-        ivColorRed = view.findViewById(R.id.ivColorRed);
-        ivColorGreen = view.findViewById(R.id.ivColorGreen);
-        ivColorBlue = view.findViewById(R.id.ivColorBlue);
-
-        ivCheckmarkRed = view.findViewById(R.id.ivCheckmarkRed);
-        ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
-        ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
         checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
 
         if (currentGroup.getTheme() != null) {
@@ -156,7 +164,6 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             }
         });
 
-        ivPreview = view.findViewById(R.id.ivPreview);
         ParseFile currentImage = currentGroup.getGroupImage();
         if (currentImage != null) {
             Glide.with(getContext()).load(currentImage.getUrl()).into(ivPreview);
@@ -240,6 +247,24 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         } else {
             Toast.makeText(getContext(), "No picture chosen", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getGroupMembers() {
+        List<String> memberIds = currentGroup.getUsers();
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", memberIds);
+
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    members.addAll(objects);
+                    memberAdapter.notifyDataSetChanged();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void onFinishEditNickname(String nickname, ParseUser member) {

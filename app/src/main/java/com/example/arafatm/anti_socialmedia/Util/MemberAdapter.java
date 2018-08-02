@@ -98,8 +98,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     private void openEditDialog(String name, ParseUser user) {
         EditNicknameFragment editNicknameFragment = EditNicknameFragment.newInstance(name, user);
         editNicknameFragment.setTargetFragment(fragment, 2);
-        fragmentManager.beginTransaction()
-                .replace(R.id.layout_child_activity, editNicknameFragment)
-                .commit();
+        editNicknameFragment.show(fragmentManager, "fragment_edit_nickname");
     }
 }
