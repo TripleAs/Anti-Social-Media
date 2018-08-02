@@ -54,8 +54,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private ImageView prev_story;
 
     @BindView(R.id.tvGroupName) TextView tvGroupName;
-    @BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivGroupPic) ImageView ivGroupPic;
+    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
@@ -149,7 +148,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         next_story = view.findViewById(R.id.iv_next);
         prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
-        tvCommentCount = view.findViewById(R.id.tvNumberOfComments);
         storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
 
         //displaying the posts
@@ -293,7 +291,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     // for converting group objectId to integer (used for chat channel ID)
     // credit to https://stackoverflow.com/questions/30404946/how-to-convert-parse-objectid-string-to-long
-    private static final String CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String CHARS = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0";
 
     private static int convertChar(char c) {
         int ret = CHARS.indexOf( c );

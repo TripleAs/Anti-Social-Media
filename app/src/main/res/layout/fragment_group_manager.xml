@@ -48,20 +48,10 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <GridView
-        android:id="@+id/gv_group_list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvGroups"
         android:layout_width="match_parent"
-        android:layout_height="504dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="63dp"
-        android:columnWidth="90dp"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" />
-
-
+        android:layout_height="match_parent"
+        android:layout_below="@id/tb_toolbar" />
 
 </RelativeLayout>
