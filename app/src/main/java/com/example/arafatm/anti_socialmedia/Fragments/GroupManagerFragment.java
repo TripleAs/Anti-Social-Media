@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class GroupManagerFragment extends Fragment {
+public class GroupManagerFragment extends Fragment implements GroupSettingsFragment.OnSettingsUpdatedListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     GroupManagerAdapter groupAdapter;
@@ -73,12 +73,6 @@ public class GroupManagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_group_manager, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         return view;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -159,6 +153,10 @@ public class GroupManagerFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public void refreshManager() {
+        groupAdapter.notifyDataSetChanged();
     }
 
 }

@@ -89,9 +89,9 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            friendName = (TextView) itemView.findViewById(R.id.tvGroupName);
+            friendName = (TextView) itemView.findViewById(R.id.tvFullName);
             addButton = (ImageView) itemView.findViewById(R.id.ivAddButton);
-            friendPic = (ImageView) itemView.findViewById(R.id.ivGroupPic);
+            friendPic = (ImageView) itemView.findViewById(R.id.ivPropic);
 
             itemView.setOnClickListener(this);
             friendName.setOnClickListener(this);
