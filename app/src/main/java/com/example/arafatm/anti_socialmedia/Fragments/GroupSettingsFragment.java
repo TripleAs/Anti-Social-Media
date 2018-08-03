@@ -72,6 +72,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private GroupSettingsFragment.OnFragmentInteractionListener mListener;
+    private GroupSettingsFragment.OnSettingsUpdatedListener refreshListener;
 
     public GroupSettingsFragment() {
         // Required empty public constructor
@@ -79,6 +80,10 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
 
     public interface OnFragmentInteractionListener {
         void navigate_to_fragment(Fragment fragment);
+    }
+
+    public interface OnSettingsUpdatedListener {
+        void refreshManager();
     }
 
     public static GroupSettingsFragment newInstance(Group group) {
@@ -95,6 +100,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         super.onAttach(context);
         if (context instanceof GroupSettingsFragment.OnFragmentInteractionListener) {
             mListener = (GroupSettingsFragment.OnFragmentInteractionListener) context;
+            refreshListener = (GroupSettingsFragment.OnSettingsUpdatedListener) new GroupManagerFragment();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -108,7 +114,8 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
         }
         members = new ArrayList<>();
-        memberAdapter = new MemberAdapter(members, currentGroup.getNicknamesDict(), GroupSettingsFragment.this, getActivity().getSupportFragmentManager());
+        nicknamesDict = currentGroup.getNicknamesDict();
+        memberAdapter = new MemberAdapter(members, nicknamesDict, GroupSettingsFragment.this, getActivity().getSupportFragmentManager());
     }
 
     @Override
@@ -223,6 +230,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             public void done(ParseException e) {
                 GroupFeedFragment groupFeedFragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
                 mListener.navigate_to_fragment(groupFeedFragment);
+//                refreshListener.refreshManager();
             }
         });
     }
@@ -271,7 +279,6 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     }
 
     public void onFinishEditNickname(String nickname, ParseUser member, int position) {
-        nicknamesDict = currentGroup.getNicknamesDict();
         nicknamesDict.put(member.getObjectId(), nickname);
         currentGroup.setNicknamesDict(nicknamesDict);
         memberAdapter.notifyItemChanged(position);

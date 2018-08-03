@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class GroupManagerFragment extends Fragment {
+public class GroupManagerFragment extends Fragment implements GroupSettingsFragment.OnSettingsUpdatedListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     GroupManagerAdapter groupAdapter;
@@ -153,6 +153,10 @@ public class GroupManagerFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public void refreshManager() {
+        groupAdapter.notifyDataSetChanged();
     }
 
 }

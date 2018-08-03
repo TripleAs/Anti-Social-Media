@@ -75,6 +75,7 @@ public class EditNicknameFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
+        etNickname.setText(nickname);
         etNickname.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
