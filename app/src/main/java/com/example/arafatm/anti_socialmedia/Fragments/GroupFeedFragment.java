@@ -296,7 +296,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         //displaying the posts
         posts = new ArrayList<>();
-        postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict());
+        postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
 
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
@@ -413,7 +413,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     private void refreshFeed() {
-        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict());
+        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
 
         adapter.clear();
         loadTopPosts();
