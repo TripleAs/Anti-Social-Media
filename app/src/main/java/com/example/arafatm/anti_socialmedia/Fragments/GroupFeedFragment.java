@@ -171,13 +171,16 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
 
-        //displaying the posts
-        posts = new ArrayList<>();
-        postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
+        query.getInBackground(groupObjectId, new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    initiateGroup(object);
+                } else {
+                    e.printStackTrace();
+                }
+            }
 
-        //RecyclerView setup (layout manager, use adapter)
-        rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
-        rvPosts.setAdapter(postAdapter);
+        });
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -193,35 +196,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 cpFragment.setTargetFragment(GroupFeedFragment.this, 1);
                 mListener.navigateToDialog(cpFragment);
             }
-        });
-
-        query.getInBackground(groupObjectId, new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    Toast.makeText(getContext(), object.getString("groupName") + " Successfully Loaded", Toast.LENGTH_SHORT).show();
-                    group = (Group) object;
-
-                    groupName = object.getString("groupName");
-                    tvGroupName.setText(groupName);
-                    groupId = convert(object.getObjectId());
-
-                    ParseFile groupImage = object.getParseFile("groupImage");
-
-                    if (groupImage != null) {
-                        /*shows group image on gridView*/
-                        Glide.with(getContext())
-                                .load(groupImage.getUrl())
-                                .apply(RequestOptions.circleCropTransform())
-                                .into(ivGroupPic);
-                    }
-
-                    loadTopPosts();
-
-                } else {
-                    e.printStackTrace();
-                }
-            }
-
         });
 
         ivStartChat.setOnClickListener(new View.OnClickListener() {
@@ -302,6 +276,33 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                     displayStory(R.id.preview_frame);
             }
         });
+    }
+
+    private void initiateGroup(ParseObject object) {
+        group = (Group) object;
+        groupName = object.getString("groupName");
+        tvGroupName.setText(groupName);
+        groupId = convert(object.getObjectId());
+
+        ParseFile groupImage = object.getParseFile("groupImage");
+
+        if (groupImage != null) {
+            /*shows group image on gridView*/
+            Glide.with(getContext())
+                    .load(groupImage.getUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(ivGroupPic);
+        }
+
+        //displaying the posts
+        posts = new ArrayList<>();
+        postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict());
+
+        //RecyclerView setup (layout manager, use adapter)
+        rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
+        rvPosts.setAdapter(postAdapter);
+
+        loadTopPosts();
     }
 
     /*Removes the story preview fragment*/
@@ -394,21 +395,15 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     private void loadTopPosts() {
-
         final Post.Query postsQuery = new Post.Query();
-
         postsQuery.getTop().withUser().forGroup(group);
-
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-
                     postAdapter.notifyDataSetChanged();
                     posts.addAll(objects);
-
                     swipeContainer.setRefreshing(false);
-
                 } else {
                     e.printStackTrace();
                 }
@@ -418,7 +413,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     private void refreshFeed() {
-        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
+        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict());
 
         adapter.clear();
         loadTopPosts();

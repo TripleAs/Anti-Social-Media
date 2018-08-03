@@ -23,6 +23,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,11 +33,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     private List<Post> mPosts;
     Context context;
     FragmentManager manager;
+    HashMap<String, String> nicknames;
 
-    public PostAdapter(FragmentManager m, Context c, List<Post> posts){
+    public PostAdapter(FragmentManager m, Context c, List<Post> posts, HashMap<String, String> hashMap){
         manager = m;
         context = c;
         mPosts = posts;
+        nicknames = hashMap;
     }
 
     public interface OnFragmentInteractionListener {
@@ -88,24 +91,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder viewHolder, int position) {
         // get the data according to this position
         final Post post = mPosts.get(position);
-        ParseUser sender1 = null;
+        ParseUser sender = null;
 
         //added this because debugger asked us to
         try {
-            sender1 = post.getSender().fetchIfNeeded();
+            sender = post.getSender().fetchIfNeeded();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         String message = post.getMessage();
-        String sender = sender1.getString("fullName");
+        String senderName = sender.getString("fullName");
         String number = Integer.toString(post.getCommentsCount());
-        String propicUrl = sender1.getString("propicUrl");
-        ParseFile propicParse = sender1.getParseFile("profileImage");
 
-        //populate the views according to this (username, body)
+        String objectId = sender.getObjectId();
+        if (nicknames != null) {
+            String nickname = nicknames.get(objectId);
+            if (nickname != null) {
+                viewHolder.tvFullName.setText(nickname);
+            } else {
+                viewHolder.tvFullName.setText(senderName);
+            }
+        } else {
+            viewHolder.tvFullName.setText(senderName);
+        }
+
         viewHolder.tvPostText.setText(message);
-        viewHolder.tvFullName.setText(sender);
         viewHolder.tvNumberComments.setText(number);
 
         //picture with post
@@ -115,16 +126,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
                     .into(viewHolder.imagePost);
         }
 
-        //profile picture
-        if (propicUrl != null && !(propicUrl.equals("")))  {
-            Glide.with(context)
-                    .load(propicUrl)
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
-                    .into(viewHolder.ivPostPic);
-        }
-        else if(propicParse != null){
-            Glide.with(context).load(propicParse.getUrl()).into(viewHolder.ivPostPic);
-        }
+        PhotoHelper.displayPropic(sender, viewHolder.ivPostPic, context);
 
         //goes to the comment fragment
         final ImageButton commentExpandButton = viewHolder.btCommentExpand;
