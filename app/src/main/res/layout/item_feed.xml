@@ -86,7 +86,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_below="@id/ivImagePost"
                 android:layout_toLeftOf="@+id/btCommentIcon" />
-          
+
+            <ImageView
+                android:id="@+id/ivDirectMessage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="5dp"
+                android:layout_alignStart="@+id/btCommentIcon"
+                app:srcCompat="@drawable/mobicom_ic_action_send_now" />
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
