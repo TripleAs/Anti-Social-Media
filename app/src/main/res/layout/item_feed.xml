@@ -11,47 +11,44 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:cardCornerRadius="6dp"
-        app:cardElevation="4dp"
-        >
+        app:cardElevation="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <FrameLayout
+                android:id="@+id/feedFrameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_alignParentTop="true"
-                android:id="@+id/feedFrameLayout"
-                >
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
                     android:id="@+id/ivProPicPost"
-                    app:srcCompat="@drawable/ic_prof_default"/>
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:srcCompat="@drawable/ic_prof_default" />
 
-             </FrameLayout>
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvFullNameFeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/feedFrameLayout"
-                android:text="Firstname Lastname" />
+                android:text="Firstname Lastname"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPostBody"
-                android:layout_width="235dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivImagePost"
                 android:layout_marginLeft="10dp"
@@ -63,10 +60,9 @@
                 android:id="@+id/btCommentIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/ivImagePost"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="-5dp"
                 android:background="@color/transparent"
                 app:srcCompat="@drawable/ic_comment" />
 
@@ -82,24 +78,31 @@
                 android:id="@+id/tvNumberOfComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" "
-                android:layout_marginTop="8dp"
-                android:layout_below="@id/ivImagePost"
-                android:layout_toLeftOf="@+id/btCommentIcon" />
+                android:layout_alignTop="@+id/btCommentIcon"
+                android:layout_toStartOf="@+id/btCommentIcon"
+                android:text=" " />
 
             <ImageView
                 android:id="@+id/ivDirectMessage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_alignEnd="@+id/tvPostBody"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
-                android:layout_alignStart="@+id/btCommentIcon"
                 app:srcCompat="@drawable/mobicom_ic_action_send_now" />
+
+            <ImageView
+                android:id="@+id/ivLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="-5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/feedFrameLayout"
+                app:srcCompat="@drawable/ic_heart_empty" />
 
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
-
 
 
 </RelativeLayout>

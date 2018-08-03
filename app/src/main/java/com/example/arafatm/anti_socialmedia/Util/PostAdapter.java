@@ -130,7 +130,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             if (position != RecyclerView.NO_POSITION) {
                 Post post = mPosts.get(position);
                 if (view.getId() == btCommentExpand.getId()) {
-                    CommentFragment commentFragment = CommentFragment.newInstance(post);     //need a method to remember the post from previous screen
+                    CommentFragment commentFragment = CommentFragment.newInstance(post);
                     manager.beginTransaction()
                             .replace(R.id.layout_child_activity, commentFragment)
                             .commit();
