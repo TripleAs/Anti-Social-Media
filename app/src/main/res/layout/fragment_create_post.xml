@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.CreatePostFragment">
+    <RelativeLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/showShareFragment">
     <EditText
         android:id="@+id/etNewPost"
         android:layout_width="match_parent"
@@ -34,25 +38,25 @@
         android:layout_below="@+id/etNewPost"
         android:src="@drawable/ic_photo" />
 
-    <ImageButton
-        android:id="@+id/ivShareFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/ivUpload"
-        android:layout_marginLeft="20dp"
-        android:layout_below="@+id/etNewPost"
-        android:background="@color/transparent"
-        android:src="@drawable/mobicom_social_share"
-        android:tint="@color/ads_manager_subtitle_color" />
+        <ImageButton
+            android:id="@+id/ivShareFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etNewPost"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/ivUpload"
+            android:background="@color/transparent"
+            android:src="@drawable/mobicom_social_share"
+            android:tint="@color/ads_manager_subtitle_color" />
 
-    <ImageView
-        android:id="@+id/ivCreatePost"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/etNewPost"
-        android:layout_marginEnd="0dp"
-        android:src="@drawable/mobicom_ic_action_send_now" />
+        <ImageView
+            android:id="@+id/ivCreatePost"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/etNewPost"
+            android:layout_marginEnd="0dp"
+            android:src="@drawable/mobicom_ic_action_send_now" />
 
     <ImageView
         android:id="@+id/ivPreview"
@@ -63,5 +67,5 @@
         android:layout_centerHorizontal="true"
         android:src="@android:color/background_dark" />
 
-
 </RelativeLayout>
+    </FrameLayout>

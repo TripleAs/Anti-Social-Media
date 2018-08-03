@@ -49,6 +49,8 @@ import com.example.arafatm.anti_socialmedia.Fragments.GroupSettingsFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.PictureFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.ProfileFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.SettingsFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.ShareFromFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.UploadedImages;
 import com.example.arafatm.anti_socialmedia.Fragments.UserGroupList;
 import com.example.arafatm.anti_socialmedia.Fragments.VideoFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
@@ -65,6 +67,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
         GroupManagerFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
+        ShareFromFragment.OnFragmentInteractionListener, UploadedImages.OnFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener, GroupCreationFragment.OnFragmentInteractionListener,
         GroupFeedFragment.OnFragmentInteractionListener, MessageCommunicator, MobiComKitActivityInterface,
         UserGroupList.OnFragmentInteractionListener, GroupCustomizationFragment.OnFragmentInteractionListener,

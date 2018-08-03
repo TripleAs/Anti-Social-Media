@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +35,18 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreatePostFragment extends DialogFragment {
 
-    @BindView(R.id.etNewPost) EditText etNewPost;
-    @BindView(R.id.ivCamera) ImageView ivCamera;
-    @BindView(R.id.ivUpload) ImageView ivUpload;
-    @BindView(R.id.ivPreview) ImageView ivPreview;
-    @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
-    @BindView(R.id.ivShareFrom) ImageButton ivShareFrom;
+    @BindView(R.id.etNewPost)
+    EditText etNewPost;
+    @BindView(R.id.ivCamera)
+    ImageView ivCamera;
+    @BindView(R.id.ivUpload)
+    ImageView ivUpload;
+    @BindView(R.id.ivPreview)
+    ImageView ivPreview;
+    @BindView(R.id.ivCreatePost)
+    ImageView ivCreatePost;
+    @BindView(R.id.ivShareFrom)
+    ImageButton ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -106,7 +114,14 @@ public class CreatePostFragment extends DialogFragment {
         ivShareFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //change to share from fragment
+                GroupFeedFragment.goToShare = true;
+                // come back after lunch!
+                Fragment shareFromFragment = new GroupFeedFragment();
+                FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.preview_frame, shareFromFragment)
+                        .commit();
+                dismiss();
             }
         });
 

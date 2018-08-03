@@ -49,7 +49,7 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 import static com.facebook.FacebookSdk.getCacheDir;
 
-public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener, ShareFromFragment.OnFragmentInteractionListener {
+public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "text";
     private static final String ARG_PARAM3 = "caption";
@@ -63,26 +63,35 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private Group group;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
+    private FrameLayout frameLayoutPreview;
     private int storyIndex = 0;
     private ImageView next_story;
     private VideoView storyView;
+    public static boolean goToShare = false;
+    public static boolean goToUpload = false;
     ArrayList<Story> allStories;
     private ImageView prev_story;
     private String videoFilePath;
 
-    @BindView(R.id.tvGroupName) TextView tvGroupName;
+    @BindView(R.id.tvGroupName)
+    TextView tvGroupName;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
-    @BindView(R.id.ivStartChat) ImageView ivStartChat;
-    @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
-    @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
-
+    @BindView(R.id.ivCoverPhoto)
+    ImageView ivGroupPic;
+    @BindView(R.id.ivStartChat)
+    ImageView ivStartChat;
+    @BindView(R.id.ivThreeDots)
+    ImageView ivThreeDots;
+    @BindView(R.id.ivLaunchNewPost)
+    ImageView ivLaunchNewPost;
 
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
-    @BindView(R.id.rvPostsFeed) RecyclerView rvPosts;
-    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvPostsFeed)
+    RecyclerView rvPosts;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
     String themeName;
 
 
@@ -131,38 +140,51 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             themeName = bundle.getString("theme", KEY_BLUE);
         }
 
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // Equivalent to setContentView
-        // create ContextThemeWrapper from the original Activity Context with the custom theme
-        Context contextThemeWrapper = null;
-        switch (themeName) {
-            case KEY_RED:
-                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
-                break;
-            case KEY_GREEN:
-                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupGreenTheme);
-                break;
-            case KEY_BLUE:
-                contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
-                break;
+        if (goToShare) {
+            goToShare = false;
+            ShareFromFragment shareFromFragment = ShareFromFragment.newInstance();
+            shareFromFragment.setTargetFragment(GroupFeedFragment.this, 1);
+            mListener.navigateToDialog(shareFromFragment);
+        } else if (goToUpload) {
+            goToUpload = false;
+            UploadedImages uploadedImages = UploadedImages.newInstance();
+            uploadedImages.setTargetFragment(GroupFeedFragment.this, 1);
+            mListener.navigateToDialog(uploadedImages);
+        } else  {
+            // Inflate the layout for this fragment
+            // Equivalent to setContentView
+            // create ContextThemeWrapper from the original Activity Context with the custom theme
+            Context contextThemeWrapper = null;
+            if (themeName != null)
+                switch (themeName) {
+                    case KEY_RED:
+                        contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
+                        break;
+                    case KEY_GREEN:
+                        contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupGreenTheme);
+                        break;
+                    case KEY_BLUE:
+                        contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+                        break;
+                }
+            // clone the inflater using the ContextThemeWrapper
+            LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+            // inflate the layout using the cloned inflater, not default inflater
+            return localInflater.inflate(R.layout.fragment_group_feed, container, false);
         }
-        // clone the inflater using the ContextThemeWrapper
-        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-
-        // inflate the layout using the cloned inflater, not default inflater
-        return localInflater.inflate(R.layout.fragment_group_feed, container, false);
+        return null;
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
 
         allStories = new ArrayList<>();
@@ -170,6 +192,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
+        frameLayoutPreview = (FrameLayout) view.findViewById(R.id.preview_frame);
+
 
         //displaying the posts
         posts = new ArrayList<>();
@@ -264,8 +288,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-        next_story.setOnClickListener(new View.OnClickListener()
-        {
+        next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
@@ -290,8 +313,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-        prev_story.setOnClickListener(new View.OnClickListener()
-        {
+        prev_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
