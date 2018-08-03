@@ -1,7 +1,7 @@
 package com.example.arafatm.anti_socialmedia.Models;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
 public class InstaPost {
 
