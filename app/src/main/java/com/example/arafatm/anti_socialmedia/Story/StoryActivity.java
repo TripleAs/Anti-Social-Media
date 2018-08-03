@@ -52,6 +52,7 @@ import com.example.arafatm.anti_socialmedia.Util.OnSwipeTouchListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -97,6 +98,7 @@ public class StoryActivity extends AppCompatActivity {
     private Size mImageSize;
     private ImageReader mImageReader;
     private static SparseIntArray ORIENTATIONS = new SparseIntArray();
+    public static byte[] compressedImageByte;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 0);
@@ -226,16 +228,14 @@ public class StoryActivity extends AppCompatActivity {
                 mImage.close();
 
                 Bitmap _bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                //creates the temporary file and gets the path
-                String filePath = tempFileImage(getApplicationContext(), _bitmap, "name");
+                String imageFilePath = tempFileImage(getApplicationContext(), _bitmap, "name");
 
-                //TODO: GET BYTE ARRAY FROM URI AND PASS THROUGH INTENT
-
+                compressedImageByte = convertImageToBytes(_bitmap);
                 //naviagtes to the preview page
                 Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
                 //send the just taken picture
-                intent.putExtra("imagePath", filePath);
-                intent.putExtra("result", "picture");
+                intent.putExtra("imagePath", imageFilePath);
+                intent.putExtra("dataType", "picture");
                 startActivity(intent);
                 if (fileOutputStream != null) {
                     try {
@@ -246,6 +246,14 @@ public class StoryActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private byte[] convertImageToBytes( Bitmap bitmap){
+        byte[] data = null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        data = baos.toByteArray();
+        return data;
     }
 
     //creates a temporary file and return the absolute file path
@@ -350,19 +358,38 @@ public class StoryActivity extends AppCompatActivity {
 
                     String videoPath = videoFile.getAbsolutePath();
 
-                    //TODO: GET BYTE ARRAY FROM URI AND PASS THROUGH INTENT
+                    byte[] videoByte = new byte[0];
+                    try {
+                        videoByte = convertToByte(videoPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     //navigates to preview activity
                     Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
                     //pass the video path to preview activity
-                    intent.putExtra("result", "video");
+                    intent.putExtra("dataType", "video");
                     intent.putExtra("videoPath", videoPath);
+                    intent.putExtra("byteData", videoByte);
                     startActivity(intent);
                 } else {
                     lockFocus();
                 }
             }
         });
+    }
+
+    public byte[] convertToByte(String path) throws IOException {
+        FileInputStream fis = new FileInputStream(path);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] b = new byte[1024];
+
+        for (int readNum; (readNum = fis.read(b)) != -1;) {
+            bos.write(b, 0, readNum);
+        }
+
+        byte[] bytes = bos.toByteArray();
+        return bytes;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

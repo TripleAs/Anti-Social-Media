@@ -43,7 +43,6 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(friendListView);
         return viewHolder;
-
     }
 
     @Override

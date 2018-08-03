@@ -46,9 +46,11 @@ import com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupManagerFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupSettingsFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.PictureFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.ProfileFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.SettingsFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.UserGroupList;
+import com.example.arafatm.anti_socialmedia.Fragments.VideoFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         SettingsFragment.OnFragmentInteractionListener, GroupCreationFragment.OnFragmentInteractionListener,
         GroupFeedFragment.OnFragmentInteractionListener, MessageCommunicator, MobiComKitActivityInterface,
         UserGroupList.OnFragmentInteractionListener, GroupCustomizationFragment.OnFragmentInteractionListener,
-        GroupSettingsFragment.OnFragmentInteractionListener {
+        GroupSettingsFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener, PictureFragment.OnFragmentInteractionListener {
 
     // for chat fragment
     private static int retry;
@@ -96,14 +98,17 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
             // Extract name value from result extras
             Fragment fragment = new UserGroupList();
             Bundle args = new Bundle();
-//            String dataType = getIntent().getStringExtra("dataType");
-//            byte[] bytes = getIntent().getByteArrayExtra("byteData");
-//
-//            args.putString("dataType", dataType); //pass story dataType
-//            args.putByteArray("byteData", bytes); //pass story
-//
-            fragment.setArguments(args);
+            String dataType = getIntent().getStringExtra("dataType");
+            String caption = getIntent().getStringExtra("caption");
+            String text = getIntent().getStringExtra("text");
+            byte[] bytes = getIntent().getByteArrayExtra("byteData");
 
+            args.putString("caption", caption);
+            args.putString("text", text);
+            args.putString("dataType", dataType); //pass story dataType
+            args.putByteArray("byteData", bytes); //pass story
+
+            fragment.setArguments(args);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
         } else {

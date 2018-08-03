@@ -15,12 +15,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
+import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.GroupListAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +42,9 @@ public class UserGroupList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "dataType";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM2 = "caption";
+    private static final String ARG_PARAM3 = "text";
+
     private ArrayList<ParseObject> groupList;
     private RecyclerView recyclerView;
     private GroupListAdapter groupListAdapter;
@@ -46,7 +52,8 @@ public class UserGroupList extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String dataType;
-    private String mParam2;
+    private String text;
+    private String caption;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,7 +90,8 @@ public class UserGroupList extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             dataType = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            caption = getArguments().getString(ARG_PARAM2);
+            text = getArguments().getString(ARG_PARAM3);
             String storyId = getArguments().getString(ARG_PARAM1);
             Toast.makeText(getContext(), storyId, Toast.LENGTH_SHORT).show();
         }
@@ -157,6 +165,7 @@ public class UserGroupList extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
         void navigate_to_fragment(Fragment fragment);
     }
 
@@ -172,41 +181,46 @@ public class UserGroupList extends Fragment {
 
                 ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
 
-                //TODO: make sure you pass in the dataByte
+                if (allGroupWithStories != null) {
+                    //Create a new story
+                    Story story = new Story();
+                    story.setSender(ParseUser.getCurrentUser());
+                    ParseFile parseFile = null;
 
-//                if (allGroupWithStories != null) {
-//                    //Create a new story
-//                    Story story = new Story();
-//                    story.setSender(ParseUser.getCurrentUser());
-//                    ParseFile parseFile = null;
-//
-//                    if (dataType.compareTo("video") == 0) {
-//                        byte[] videoBytes = getArguments().getByteArray("byteData");
-//                        parseFile = new ParseFile("mynewStory.mp3", videoBytes);
-//                    } else {
-//                        byte[] imageBytes = getArguments().getByteArray("byteData");
-//                        parseFile = new ParseFile("mynewStory.png", imageBytes);
-//                    }
-//
-//                    story.setStory(parseFile);
-//
-//                    //adds the group's id to the recipient list of story
-//                    for (ParseObject group : allGroupWithStories) {
-//                        story.addRecipient(group.getObjectId());
-//                    }
-//                    story.saveInBackground();
+                    if (dataType.compareTo("video") == 0) {
+                        byte[] videoBytes = getArguments().getByteArray("byteData");
+                        parseFile = new ParseFile("mynewStory.mp3", videoBytes);
 
-                    Intent i = new Intent(getActivity(), StoryActivity.class);
-                    startActivity(i);
-                    ((Activity) getActivity()).overridePendingTransition(0,0);//               }
+                    } else {
+                        final byte[] imageBytes = StoryActivity.compressedImageByte;
+                        parseFile = new ParseFile("mynewStory.png", imageBytes);
+
+                    }
+                    story.setStoryType(dataType);
+                    story.setStory(parseFile);
+
+                    story.setStoryCaption(caption);
+                    story.setStoryText(text);
+
+                    //adds the group's id to the recipient list of story
+                    for (ParseObject group : allGroupWithStories) {
+                        story.addRecipient(group.getObjectId());
+                    }
+                    story.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Intent i = new Intent(getActivity(), StoryActivity.class);
+                            startActivity(i);
+                            ((Activity) getActivity()).overridePendingTransition(0, 0);//
+                        }
+                    });
+                }
             }
         });
     }
 
-
     //TODO
     //implement next and prev
     //add caption
-
 }
 

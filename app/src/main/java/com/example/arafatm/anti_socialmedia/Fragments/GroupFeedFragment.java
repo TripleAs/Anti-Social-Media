@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +23,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
+import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Story.PreviewStoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -29,7 +34,11 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,32 +47,47 @@ import butterknife.ButterKnife;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
+import static com.facebook.FacebookSdk.getCacheDir;
 
 public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "text";
+    private static final String ARG_PARAM3 = "caption";
 
     private String groupObjectId;
     private String groupName;
+    private String text;
+    private String caption;
+    private boolean selected = false;
     private int groupId;
     private Group group;
-
+    private String PREVIEW_TAG = "previewStory";
+    private FrameLayout frameLayout;
+    private int storyIndex = 0;
     private ImageView next_story;
     private VideoView storyView;
+    ArrayList<Story> allStories;
     private ImageView prev_story;
     private String videoFilePath;
 
-    @BindView(R.id.tvGroupName) TextView tvGroupName;
+    @BindView(R.id.tvGroupName)
+    TextView tvGroupName;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
-    @BindView(R.id.ivStartChat) ImageView ivStartChat;
-    @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
-    @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
+    @BindView(R.id.ivCoverPhoto)
+    ImageView ivGroupPic;
+    @BindView(R.id.ivStartChat)
+    ImageView ivStartChat;
+    @BindView(R.id.ivThreeDots)
+    ImageView ivThreeDots;
+    @BindView(R.id.ivLaunchNewPost)
+    ImageView ivLaunchNewPost;
 
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
     RecyclerView rvPosts;
-    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
     String themeName;
 
 
@@ -76,7 +100,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void navigate_to_fragment(Fragment fragment);
+
         void startGroupChat(int groupId, String groupName);
+
         void navigateToDialog(DialogFragment dialogFragment);
     }
 
@@ -106,8 +132,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         Bundle bundle = this.getArguments();
 
         if (bundle != null) {
-             groupObjectId = bundle.getString(ARG_PARAM1, groupObjectId);
-             themeName = bundle.getString("theme", KEY_BLUE);
+            groupObjectId = bundle.getString(ARG_PARAM1, groupObjectId);
+            themeName = bundle.getString("theme", KEY_BLUE);
         }
 
     }
@@ -144,11 +170,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
 
-
+        allStories = new ArrayList<>();
         next_story = view.findViewById(R.id.iv_next);
         prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
-        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
+        frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
 
         //displaying the posts
         posts = new ArrayList<>();
@@ -221,48 +247,151 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         //TODO: ARAFAT'S IMPLEMENTATION
 
-        storyView = (VideoView) view.findViewById(R.id.vv_groupStory);
-//        storyView.setVideoPath(videoFilePath);
-//        storyView.setMediaController(null);
-//        storyView.requestFocus();
-     //   storyView.start();
-
-        storyView.setOnClickListener(new View.OnClickListener() {
+        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
+        /*Gets all the stories*/
+        final Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
             @Override
-            public void onClick(View view) {
-        //        storyView.start();
+            public void done(List<Story> objects, ParseException e) {
+                if (e == null) {
+                    //fetches all stories for current group
+//                   for (int i = 0; i < objects.size(); i++) {
+//                       if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
+//                           allStories.add(objects.get(i));
+//                       }
+//                   }
+
+                    allStories.addAll(objects);
+                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
+                    displayStory(R.id.fragment_child);
+                } else {
+                    e.printStackTrace();
+                }
             }
         });
 
-        next_story.setOnClickListener(new View.OnClickListener() {
+        next_story.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
-               Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
+                if (storyIndex < allStories.size() - 1) //checks out of bounce exception
+                    storyIndex++;
+                displayStory(R.id.fragment_child);
+                if (selected) //checks if in preview mode
+                    displayStory(R.id.preview_frame);
             }
         });
 
-        storyView.setOnClickListener(new View.OnClickListener() {
+        frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "playing story", Toast.LENGTH_SHORT).show();
+                if (selected) { //checks if in preview mode
+                    selected = false;
+                    clearPreviewFragment(PREVIEW_TAG); // clears preview fragment
+                } else {
+                    selected = true;
+                    displayStory(R.id.preview_frame); // display story on default fragment
+                }
             }
         });
 
-        prev_story.setOnClickListener(new View.OnClickListener() {
+        prev_story.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "prev story", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
+                if (storyIndex > 1)  //checks out of bounce exception
+                    storyIndex--;
+                displayStory(R.id.fragment_child);
+                if (selected)
+                    displayStory(R.id.preview_frame);
             }
         });
-
-        //TODO: ARAFAT'S IMPLEMENTATION
-
-
-
-
-
-
     }
+
+    /*Removes the story preview fragment*/
+    private void clearPreviewFragment(String TAG_FRAGMENT) {
+        Fragment fragment = getFragmentManager().findFragmentByTag(TAG_FRAGMENT);
+        if (fragment != null)
+            getFragmentManager().beginTransaction().remove(fragment).commit();
+    }
+
+
+    /*gets current story, checks if its a video or picture, gets the right fragment to display the story*/
+    private void displayStory(int view_id) {
+        final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        Story currentStory = allStories.get(storyIndex); //selects a story
+        text = currentStory.getStoryCaption();
+        caption = currentStory.getStoryText();
+
+        if (currentStory.getStoryType().compareTo("video") == 0) {
+            try {
+                videoFilePath = getVideoPath(currentStory);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            navigateToVideoFragment(videoFilePath, fragmentTransaction, view_id);
+        } else {
+            String imageFilePath = null;
+            try {
+                imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+
+            navigateToPictureFragment(imageFilePath, fragmentTransaction, view_id);
+        }
+    }
+
+    /*gets the video path from video byte*/
+    private String getVideoPath(Story currentStory) throws ParseException {
+        File outputFile = null;
+        try {
+            byte[] videoByte = currentStory.getStory().getData();
+            outputFile = File.createTempFile("file", "mp4", getCacheDir());
+            outputFile.deleteOnExit();
+            FileOutputStream fileoutputstream = new FileOutputStream("myVideo.mp4");
+            fileoutputstream.write(videoByte);
+            fileoutputstream.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return outputFile.getAbsolutePath();
+    }
+
+    /*navigates to the Picture fragment and display the story*/
+    private void navigateToPictureFragment(String imageFilePath,
+                                           FragmentTransaction fragmentTransaction, int view_id) {
+        Fragment pictureFragment = new PictureFragment();
+        Bundle args = new Bundle();
+        args.putString("imagePath", imageFilePath);
+        args.putString("text", text);
+        args.putString("caption", caption);
+
+        pictureFragment.setArguments(args);
+        fragmentTransaction.replace(view_id, pictureFragment, PREVIEW_TAG)
+                .commit();
+    }
+
+    /*navigates to the Video fragment and display the story*/
+    private void navigateToVideoFragment(String videoFilePath,
+                                         FragmentTransaction fragmentTransaction, int view_id) {
+        final Fragment videoFragment = new VideoFragment();
+        Bundle args = new Bundle();
+        args.putString("text", text);
+        args.putString("caption", caption);
+        args.putString("videoPath", PreviewStoryActivity.url); // FAKE
+        //    args.putString("videoPath", videoFilePath); // Real
+        videoFragment.setArguments(args);
+        fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
+                .commit();
+    }
+
+
+    //TODO: ARAFAT'S IMPLEMENTATION
 
     @Override
     public void onDetach() {
@@ -294,7 +423,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     }
 
-    private void refreshFeed(){
+    private void refreshFeed() {
         PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts);
 
         adapter.clear();
@@ -307,18 +436,18 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private static final String CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private static int convertChar(char c) {
-        int ret = CHARS.indexOf( c );
+        int ret = CHARS.indexOf(c);
         if (ret == -1)
-            throw new IllegalArgumentException( "Invalid character encountered: "+c);
+            throw new IllegalArgumentException("Invalid character encountered: " + c);
         return ret;
     }
 
     public static int convert(String s) {
         if (s.length() != 10)
-            throw new IllegalArgumentException( "String length must be 10, was "+s.length() );
+            throw new IllegalArgumentException("String length must be 10, was " + s.length());
         int ret = 0;
         for (int i = 0; i < s.length(); i++) {
-            ret = (ret << 6) + convertChar( s.charAt( i ));
+            ret = (ret << 6) + convertChar(s.charAt(i));
         }
         return ret;
     }

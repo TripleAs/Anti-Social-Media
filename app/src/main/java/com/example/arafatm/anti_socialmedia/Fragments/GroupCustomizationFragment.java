@@ -199,6 +199,7 @@ public class GroupCustomizationFragment extends Fragment {
                 saveNewGroup(newGroup, newGroupPic);
             }
         });
+
         sendGroupRequests(newGroup);
     }
 
