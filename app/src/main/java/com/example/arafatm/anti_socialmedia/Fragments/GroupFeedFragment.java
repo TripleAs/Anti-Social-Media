@@ -39,7 +39,7 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
-public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
+public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener, ShareFromFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
 
     private String groupObjectId;

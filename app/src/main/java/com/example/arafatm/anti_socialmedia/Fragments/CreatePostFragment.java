@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class CreatePostFragment extends DialogFragment {
     @BindView(R.id.ivUpload) ImageView ivUpload;
     @BindView(R.id.ivPreview) ImageView ivPreview;
     @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
-    @BindView(R.id.ivShareFrom) ImageView ivShareFrom;
+    @BindView(R.id.ivShareFrom) ImageButton ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -99,6 +100,13 @@ public class CreatePostFragment extends DialogFragment {
                 photoHelper = new PhotoHelper(getContext());
                 Intent intent = photoHelper.takePhoto();
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        ivShareFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //change to share from fragment
             }
         });
 
