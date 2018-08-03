@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:cardCornerRadius="6dp"
-        app:cardElevation="5dp"
+        app:cardElevation="4dp"
         >
 
         <RelativeLayout
@@ -51,9 +51,9 @@
 
             <TextView
                 android:id="@+id/tvPostBody"
-                android:layout_width="241dp"
+                android:layout_width="235dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvFullNameFeed"
+                android:layout_below="@+id/ivImagePost"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@+id/feedFrameLayout"
@@ -64,11 +64,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvFullNameFeed"
+                android:layout_below="@+id/ivImagePost"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="1dp"
                 android:background="@color/transparent"
                 app:srcCompat="@drawable/ic_comment" />
+
+            <ImageView
+                android:id="@+id/ivImagePost"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvFullNameFeed"
+                android:layout_below="@id/tvFullNameFeed"
+                app:srcCompat="@color/transparent" />
 
             <TextView
                 android:id="@+id/tvNumberOfComments"
@@ -76,9 +84,9 @@
                 android:layout_height="wrap_content"
                 android:text=" "
                 android:layout_marginTop="8dp"
-                android:layout_below="@+id/tvFullNameFeed"
+                android:layout_below="@id/ivImagePost"
                 android:layout_toLeftOf="@+id/btCommentIcon" />
-
+          
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

@@ -18,8 +18,8 @@
 
         <TextView
             android:id="@+id/tv_showText"
-            android:layout_width="127dp"
-            android:layout_height="21dp"
+            android:layout_width="239dp"
+            android:layout_height="170dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
@@ -35,8 +35,8 @@
 
         <TextView
             android:id="@+id/tv_showCaption"
-            android:layout_width="4dp"
-            android:layout_height="wrap_content"
+            android:layout_width="225dp"
+            android:layout_height="88dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"

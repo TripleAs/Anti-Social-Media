@@ -22,7 +22,18 @@ import com.example.arafatm.anti_socialmedia.Fragments.VideoFragment;
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
 import com.example.arafatm.anti_socialmedia.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class PreviewStoryActivity extends AppCompatActivity implements PictureFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener {
+    @BindView(R.id.iv_camera) ImageButton backToCamera;
+    @BindView(R.id.iv_share) ImageButton shareButton;
+    @BindView(R.id.iv_close) ImageButton closeToCamera;
+    @BindView(R.id.iv_text) ImageButton text;
+    @BindView(R.id.iv_emoji) ImageButton emoji;
+    @BindView(R.id.iv_rotate) ImageButton rotate;
+    @BindView(R.id.tv_caption) EditText caption;
+
 
     public static String url;
     private boolean enabled = false;
@@ -31,15 +42,9 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_story);
 
-        ImageButton backToCamera = (ImageButton) findViewById(R.id.iv_camera);
-        ImageButton shareButton = (ImageButton) findViewById(R.id.iv_share);
-        ImageButton closeToCamera = (ImageButton) findViewById(R.id.iv_close);
-        final ImageButton text = (ImageButton) findViewById(R.id.iv_text);
-        ImageButton emoji = (ImageButton) findViewById(R.id.iv_emoji);
-        ImageButton rotate = (ImageButton) findViewById(R.id.iv_rotate);
-        final EditText caption = (EditText) findViewById(R.id.tv_caption);
         final TextView captionShow = (TextView) findViewById(R.id.tv_captionShow);
         final TextView addText = (TextView) findViewById(R.id.tv_addText);
+        ButterKnife.bind(this);
 
         rotate.setOnClickListener(new View.OnClickListener() {
             @Override

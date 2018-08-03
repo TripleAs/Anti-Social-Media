@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class CreatePostFragment extends DialogFragment {
     @BindView(R.id.ivUpload) ImageView ivUpload;
     @BindView(R.id.ivPreview) ImageView ivPreview;
     @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
-    @BindView(R.id.ivShareFrom) ImageView ivShareFrom;
+    @BindView(R.id.ivShareFrom) ImageButton ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -102,6 +103,13 @@ public class CreatePostFragment extends DialogFragment {
             }
         });
 
+        ivShareFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //change to share from fragment
+            }
+        });
+
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,8 +147,13 @@ public class CreatePostFragment extends DialogFragment {
     private void sendPostToParse() {
         final Post newPost = new Post();
         if (hasNewPic) {
-            ParseFile image = photoHelper.grabImage();
-            newPost.setImage(image);
+            final ParseFile image = photoHelper.grabImage();
+            image.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    newPost.setImage(image);
+                }
+            });
         }
         String newMessage = etNewPost.getText().toString();
         newPost.initPost(newMessage, currentGroup);

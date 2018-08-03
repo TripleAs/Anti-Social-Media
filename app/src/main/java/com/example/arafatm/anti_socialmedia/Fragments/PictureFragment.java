@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.example.arafatm.anti_socialmedia.R;
 
 import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,12 +30,12 @@ public class PictureFragment extends Fragment {
     private String imageStoryURL;
     private int currentAngle = 90;
 
-    @BindView(R.id.imagePreview)
-    ImageView displayImage;
+    @BindView(R.id.imagePreview) ImageView displayImage;
     private String caption;
     private String text;
     private String param1;
     private String param2;
+
     private OnFragmentInteractionListener mListener;
 
     public PictureFragment() {
@@ -108,7 +107,6 @@ public class PictureFragment extends Fragment {
         Bitmap rotated = rotateImage(currentAngle, bitmap);
         //displays the image
         displayImage.setImageBitmap(rotated);
-
 
         TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
         TextView showText = (TextView) view.findViewById(R.id.tv_showText);

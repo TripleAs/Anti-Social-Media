@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,13 +34,14 @@
         android:layout_below="@+id/etNewPost"
         android:src="@drawable/ic_photo" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/ivShareFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/ivUpload"
         android:layout_marginLeft="20dp"
         android:layout_below="@+id/etNewPost"
+        android:background="@color/transparent"
         android:src="@drawable/mobicom_social_share"
         android:tint="@color/ads_manager_subtitle_color" />
 
@@ -60,5 +62,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@android:color/background_dark" />
+
 
 </RelativeLayout>

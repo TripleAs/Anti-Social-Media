@@ -176,6 +176,7 @@ public class GroupCreationFragment extends Fragment {
         for (int i = 0; i < friendListIds.size(); i++) {
             try {
                 ParseUser user = ParseUser.getQuery().get(friendListIds.get(i));
+
                 if (user.getString("fullName").toLowerCase().contains(friendName)) {
                   friendList.add(user);
                 }

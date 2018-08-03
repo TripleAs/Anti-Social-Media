@@ -1,137 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.GroupSettingsFragment">
 
-    <TextView
-        android:id="@+id/tvNameCommand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:text="Change your group name"
-        android:textSize="18sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etGroupName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tvNameCommand"
-        android:hint="e.g. peas in a pod"
-        android:inputType="textPersonName" />
+        <TextView
+            android:id="@+id/tvNameCommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="Change your group name"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvColorCommand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/ivCamera"
-        android:layout_marginTop="30dp"
-        android:text="Change your color scheme"
-        android:textSize="18sp" />
+        <EditText
+            android:id="@+id/etGroupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNameCommand"
+            android:layout_centerHorizontal="true"
+            android:hint="e.g. peas in a pod"
+            android:inputType="textPersonName" />
 
-    <ImageView
-        android:id="@+id/ivColorRed"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/tvColorCommand"
-        android:layout_marginTop="15dp"
-        android:layout_alignStart="@+id/etGroupName"
-        android:src="@color/alphabet_g" />
+        <TextView
+            android:id="@+id/tvColorCommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivCamera"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Change your color scheme"
+            android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/ivColorGreen"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignTop="@+id/ivColorRed"
-        android:layout_centerHorizontal="true"
-        android:src="@color/alphabet_k" />
+        <ImageView
+            android:id="@+id/ivColorRed"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignStart="@+id/etGroupName"
+            android:layout_below="@+id/tvColorCommand"
+            android:layout_marginTop="15dp"
+            android:src="@color/alphabet_g" />
 
-    <ImageView
-        android:id="@+id/ivColorBlue"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignEnd="@+id/etGroupName"
-        android:layout_alignTop="@+id/ivColorRed"
-        android:src="@color/alphabet_f" />
+        <ImageView
+            android:id="@+id/ivColorGreen"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/ivColorRed"
+            android:layout_centerHorizontal="true"
+            android:src="@color/alphabet_k" />
 
-    <Button
-        android:id="@+id/btSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivColorGreen"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:text="Save" />
+        <ImageView
+            android:id="@+id/ivColorBlue"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@+id/etGroupName"
+            android:layout_alignTop="@+id/ivColorRed"
+            android:src="@color/alphabet_f" />
+
+        <Button
+            android:id="@+id/btSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rvMembers"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Save" />
 
 
-    <ImageView
-        android:id="@+id/ivPreview"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_below="@+id/tvPictureCommand"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_group_default" />
+        <ImageView
+            android:id="@+id/ivPreview"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_below="@+id/tvPictureCommand"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_group_default" />
 
-    <TextView
-        android:id="@+id/tvPictureCommand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etGroupName"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:text="Update your group picture"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tvPictureCommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etGroupName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Update your group picture"
+            android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/ivCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/btSave"
-        android:layout_below="@+id/ivPreview"
-        android:src="@drawable/ic_camera_post" />
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/btSave"
+            android:layout_below="@+id/ivPreview"
+            android:src="@drawable/ic_camera_post" />
 
-    <ImageView
-        android:id="@+id/ivUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btSave"
-        android:layout_below="@+id/ivPreview"
-        android:src="@drawable/ic_photo" />
+        <ImageView
+            android:id="@+id/ivUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/btSave"
+            android:layout_below="@+id/ivPreview"
+            android:src="@drawable/ic_photo" />
 
-    <ImageView
-        android:id="@+id/ivCheckmarkBlue"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignEnd="@+id/etGroupName"
-        android:layout_alignTop="@+id/ivColorBlue"
-        android:src="@drawable/ic_check_mark"
-        android:visibility="invisible"
-        android:tint="@color/white" />
+        <ImageView
+            android:id="@+id/ivCheckmarkBlue"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignEnd="@+id/etGroupName"
+            android:layout_alignTop="@+id/ivColorBlue"
+            android:src="@drawable/ic_check_mark"
+            android:tint="@color/white"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/ivCheckmarkRed"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignStart="@+id/etGroupName"
-        android:layout_alignTop="@+id/ivColorRed"
-        android:src="@drawable/ic_check_mark"
-        android:visibility="invisible"
-        android:tint="@color/white" />
+        <ImageView
+            android:id="@+id/ivCheckmarkRed"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignStart="@+id/etGroupName"
+            android:layout_alignTop="@+id/ivColorRed"
+            android:src="@drawable/ic_check_mark"
+            android:tint="@color/white"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/ivCheckmarkGreen"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignTop="@+id/ivColorGreen"
-        android:layout_centerHorizontal="true"
-        android:visibility="invisible"
-        android:src="@drawable/ic_check_mark"
-        android:tint="@color/white" />
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/ivCheckmarkGreen"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/ivColorGreen"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_check_mark"
+            android:tint="@color/white"
+            android:visibility="invisible" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvMembers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ivColorGreen"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
+
+    </RelativeLayout>
+
+</ScrollView>

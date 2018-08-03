@@ -9,10 +9,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -165,10 +169,30 @@ public class PhotoHelper {
 
     public ParseFile grabImage() {
         if (resizedFile != null) {
-            ParseFile parseFile = new ParseFile(resizedFile);
+            final ParseFile parseFile = new ParseFile(resizedFile);
             return parseFile;
         }
         return null;
+    }
+
+    public static void displayPropic(ParseUser user, ImageView imageView, Context context) {
+        ParseFile propic = user.getParseFile("profileImage");
+        if (propic != null) {
+            Glide.with(context)
+                    .load(propic.getUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imageView);
+        } else {
+            String propicUrl = user.getString("propicUrl");
+            if (propicUrl != null) {
+                Glide.with(context)
+                        .load(propicUrl)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(imageView);
+            } else {
+                imageView.setImageResource(R.drawable.ic_prof_default);
+            }
+        }
     }
 
     public static Bitmap scaleToFitWidth(Bitmap b, int width)

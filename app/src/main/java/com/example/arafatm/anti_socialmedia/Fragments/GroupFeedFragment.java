@@ -49,7 +49,7 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 import static com.facebook.FacebookSdk.getCacheDir;
 
-public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
+public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener, ShareFromFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "text";
     private static final String ARG_PARAM3 = "caption";
@@ -70,24 +70,19 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private ImageView prev_story;
     private String videoFilePath;
 
-    @BindView(R.id.tvGroupName)
-    TextView tvGroupName;
+    @BindView(R.id.tvGroupName) TextView tvGroupName;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivCoverPhoto)
-    ImageView ivGroupPic;
-    @BindView(R.id.ivStartChat)
-    ImageView ivStartChat;
-    @BindView(R.id.ivThreeDots)
-    ImageView ivThreeDots;
-    @BindView(R.id.ivLaunchNewPost)
-    ImageView ivLaunchNewPost;
+    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
+    @BindView(R.id.ivStartChat) ImageView ivStartChat;
+    @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
+    @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
+
 
     //for posting
     PostAdapter postAdapter;
     ArrayList<Post> posts;
-    RecyclerView rvPosts;
-    @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvPostsFeed) RecyclerView rvPosts;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     String themeName;
 
 
@@ -246,7 +241,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
 
         //TODO: ARAFAT'S IMPLEMENTATION
-
         //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
         /*Gets all the stories*/
         final Story.Query storyQuery = new Story.Query();
@@ -433,7 +427,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     // for converting group objectId to integer (used for chat channel ID)
     // credit to https://stackoverflow.com/questions/30404946/how-to-convert-parse-objectid-string-to-long
-    private static final String CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String CHARS = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0";
 
     private static int convertChar(char c) {
         int ret = CHARS.indexOf(c);

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.MemberAdapter;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -30,26 +36,34 @@ import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
-public class GroupSettingsFragment extends Fragment {
+public class GroupSettingsFragment extends Fragment implements EditNicknameFragment.OnFragmentInteractionListener {
     @BindView(R.id.etGroupName) EditText etGroupName;
     @BindView(R.id.ivPreview) ImageView ivPreview;
     @BindView(R.id.ivCamera) ImageView ivCamera;
     @BindView(R.id.ivUpload) ImageView ivUpload;
     @BindView(R.id.btSave) Button btSave;
 
-    private ImageView ivColorRed;
-    private ImageView ivColorGreen;
-    private ImageView ivColorBlue;
-    private ImageView ivCheckmarkRed;
-    private ImageView ivCheckmarkGreen;
-    private ImageView ivCheckmarkBlue;
-    private ArrayList<ImageView> checkmarks = new ArrayList<>();
+    @BindView(R.id.rvMembers) RecyclerView rvMembers;
+    MemberAdapter memberAdapter;
+    ArrayList<ParseUser> members;
+    HashMap<String, String> nicknamesDict;
+
+    @BindView(R.id.ivColorRed) ImageView ivColorRed;
+    @BindView(R.id.ivColorGreen)  ImageView ivColorGreen;
+    @BindView(R.id.ivColorBlue)  ImageView ivColorBlue;
+    @BindView(R.id.ivCheckmarkRed)  ImageView ivCheckmarkRed;
+    @BindView(R.id.ivCheckmarkGreen)  ImageView ivCheckmarkGreen;
+    @BindView(R.id.ivCheckmarkBlue)  ImageView ivCheckmarkBlue;
+    ArrayList<ImageView> checkmarks = new ArrayList<>();
     String theme;
 
     private Group currentGroup;
@@ -58,6 +72,7 @@ public class GroupSettingsFragment extends Fragment {
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private GroupSettingsFragment.OnFragmentInteractionListener mListener;
+    private GroupSettingsFragment.OnSettingsUpdatedListener refreshListener;
 
     public GroupSettingsFragment() {
         // Required empty public constructor
@@ -65,6 +80,10 @@ public class GroupSettingsFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void navigate_to_fragment(Fragment fragment);
+    }
+
+    public interface OnSettingsUpdatedListener {
+        void refreshManager();
     }
 
     public static GroupSettingsFragment newInstance(Group group) {
@@ -81,6 +100,7 @@ public class GroupSettingsFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof GroupSettingsFragment.OnFragmentInteractionListener) {
             mListener = (GroupSettingsFragment.OnFragmentInteractionListener) context;
+            refreshListener = (GroupSettingsFragment.OnSettingsUpdatedListener) new GroupManagerFragment();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -93,6 +113,9 @@ public class GroupSettingsFragment extends Fragment {
         if (getArguments() != null) {
             currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
         }
+        members = new ArrayList<>();
+        nicknamesDict = currentGroup.getNicknamesDict();
+        memberAdapter = new MemberAdapter(members, nicknamesDict, GroupSettingsFragment.this, getActivity().getSupportFragmentManager());
     }
 
     @Override
@@ -107,26 +130,27 @@ public class GroupSettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
+        rvMembers.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMembers.setAdapter(memberAdapter);
+        getGroupMembers();
+
         etGroupName.setText(currentGroup.getGroupName());
-
-        ivColorRed = view.findViewById(R.id.ivColorRed);
-        ivColorGreen = view.findViewById(R.id.ivColorGreen);
-        ivColorBlue = view.findViewById(R.id.ivColorBlue);
-
-        ivCheckmarkRed = view.findViewById(R.id.ivCheckmarkRed);
-        ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
-        ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
         checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
-        switch (currentGroup.getTheme()) {
-            case KEY_RED:
-                ivCheckmarkRed.setVisibility(View.VISIBLE);
-                break;
-            case KEY_GREEN:
-                ivCheckmarkGreen.setVisibility(View.VISIBLE);
-                break;
-            case KEY_BLUE:
-                ivCheckmarkBlue.setVisibility(View.VISIBLE);
-                break;
+
+        if (currentGroup.getTheme() != null) {
+            switch (currentGroup.getTheme()) {
+                case KEY_RED:
+                    ivCheckmarkRed.setVisibility(View.VISIBLE);
+                    break;
+                case KEY_GREEN:
+                    ivCheckmarkGreen.setVisibility(View.VISIBLE);
+                    break;
+                case KEY_BLUE:
+                    ivCheckmarkBlue.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    ivCheckmarkGreen.setVisibility(View.VISIBLE);
+            }
         }
 
         ivColorRed.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +174,6 @@ public class GroupSettingsFragment extends Fragment {
             }
         });
 
-        ivPreview = view.findViewById(R.id.ivPreview);
         ParseFile currentImage = currentGroup.getGroupImage();
         if (currentImage != null) {
             Glide.with(getContext()).load(currentImage.getUrl()).into(ivPreview);
@@ -207,6 +230,7 @@ public class GroupSettingsFragment extends Fragment {
             public void done(ParseException e) {
                 GroupFeedFragment groupFeedFragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
                 mListener.navigate_to_fragment(groupFeedFragment);
+//                refreshListener.refreshManager();
             }
         });
     }
@@ -234,5 +258,29 @@ public class GroupSettingsFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "No picture chosen", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getGroupMembers() {
+        List<String> memberIds = currentGroup.getUsers();
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("objectId", memberIds);
+
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    members.addAll(objects);
+                    memberAdapter.notifyDataSetChanged();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void onFinishEditNickname(String nickname, ParseUser member, int position) {
+        nicknamesDict.put(member.getObjectId(), nickname);
+        currentGroup.setNicknamesDict(nicknamesDict);
+        memberAdapter.notifyItemChanged(position);
     }
 }

@@ -7,7 +7,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @ParseClassName("Group")
 public class Group extends ParseObject {
@@ -18,6 +20,7 @@ public class Group extends ParseObject {
     private static final String KEY_STORIES = "groupStory"; //Name of group story column in parse
     private static final String KEY_PENDING = "pending";
     private static final String KEY_THEME = "theme";
+    private static final String KEY_NICKNAMES = "nicknames";
 
     public String getGroupName() {
         return getString(KEY_NAME);
@@ -59,6 +62,8 @@ public class Group extends ParseObject {
 
     public void setTheme(String theme) { put(KEY_THEME, theme); }
 
+    public String getNicknames() { return getString(KEY_NICKNAMES); }
+
     /*Gets the Array of posts from Parse, updates it, and save it back to parse*/
     public void addPost(Post post) {
         List<Post> posts = getPosts();
@@ -75,6 +80,19 @@ public class Group extends ParseObject {
         List<String> pending = getPending();
         approved.add(userId);
         pending.remove(userId);
+    }
+
+    public HashMap<String, String> getNicknamesDict() {
+        String nicknamesString = getNicknames();
+        if (nicknamesString != null) {
+            return convertToStringToHashMap(nicknamesString);
+        } else {
+            return new HashMap<>();
+        }
+    }
+
+    public void setNicknamesDict(HashMap<String, String> updatedDict) {
+        put(KEY_NICKNAMES, updatedDict.toString());
     }
 
     public void initGroup(String name, List<String> requests, ParseFile image, String theme) {
@@ -106,5 +124,15 @@ public class Group extends ParseObject {
             whereEqualTo("user", user);
             return this;
         }
+    }
+
+    private HashMap<String,String> convertToStringToHashMap(String text){
+        HashMap<String,String> data = new HashMap<String,String>();
+        Pattern p = Pattern.compile("[\\{\\}\\=\\, ]++");
+        String[] split = p.split(text);
+        for ( int i=1; i+2 <= split.length; i+=2 ){
+            data.put( split[i], split[i+1] );
+        }
+        return data;
     }
 }
