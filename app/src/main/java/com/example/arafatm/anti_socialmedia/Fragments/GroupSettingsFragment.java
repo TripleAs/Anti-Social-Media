@@ -36,7 +36,9 @@ import butterknife.ButterKnife;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
@@ -53,6 +55,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     @BindView(R.id.rvMembers) RecyclerView rvMembers;
     MemberAdapter memberAdapter;
     ArrayList<ParseUser> members;
+    HashMap<String, String> nicknamesDict;
 
     @BindView(R.id.ivColorRed) ImageView ivColorRed;
     @BindView(R.id.ivColorGreen)  ImageView ivColorGreen;
@@ -105,7 +108,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
         }
         members = new ArrayList<>();
-        memberAdapter = new MemberAdapter(members, GroupSettingsFragment.this, getActivity().getSupportFragmentManager());
+        memberAdapter = new MemberAdapter(members, currentGroup.getNicknamesDict(), GroupSettingsFragment.this, getActivity().getSupportFragmentManager());
     }
 
     @Override
@@ -267,7 +270,10 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         });
     }
 
-    public void onFinishEditNickname(String nickname, ParseUser member) {
-
+    public void onFinishEditNickname(String nickname, ParseUser member, int position) {
+        nicknamesDict = currentGroup.getNicknamesDict();
+        nicknamesDict.put(member.getObjectId(), nickname);
+        currentGroup.setNicknamesDict(nicknamesDict);
+        memberAdapter.notifyItemChanged(position);
     }
 }

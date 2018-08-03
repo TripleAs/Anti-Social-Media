@@ -29,20 +29,22 @@ public class EditNicknameFragment extends DialogFragment {
     ParseUser member;
     OnFragmentInteractionListener mListener;
     Fragment callback;
+    int position;
 
     public EditNicknameFragment() {
         // Required empty public constructor
     }
 
     public interface OnFragmentInteractionListener {
-        void onFinishEditNickname(String nickname, ParseUser member);
+        void onFinishEditNickname(String nickname, ParseUser member, int position);
     }
 
-    public static EditNicknameFragment newInstance(String name, ParseUser user) {
+    public static EditNicknameFragment newInstance(String name, ParseUser user, int i) {
         EditNicknameFragment fragment = new EditNicknameFragment();
         Bundle args = new Bundle();
         args.putString("oldName", name);
         args.putParcelable("member", Parcels.wrap(user));
+        args.putInt("position", i);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,6 +60,7 @@ public class EditNicknameFragment extends DialogFragment {
         }
         nickname = getArguments().getString("oldName");
         member = Parcels.unwrap(getArguments().getParcelable("member"));
+        position = getArguments().getInt("position");
     }
 
     @Override
@@ -80,7 +83,8 @@ public class EditNicknameFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 nickname = etNickname.getText().toString();
-                mListener.onFinishEditNickname(nickname, member);
+                mListener.onFinishEditNickname(nickname, member, position);
+                dismiss();
             }
         });
     }

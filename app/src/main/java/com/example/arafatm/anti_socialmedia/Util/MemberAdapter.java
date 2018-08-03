@@ -19,17 +19,20 @@ import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder> {
     private Context context;
     private ArrayList<ParseUser> members;
+    private HashMap<String, String> nicknamesDict;
     private FragmentManager fragmentManager;
     private Fragment fragment;
 
-    public MemberAdapter(ArrayList<ParseUser> List, Fragment frag, FragmentManager fm) {
+    public MemberAdapter(ArrayList<ParseUser> List, HashMap<String, String> dict, Fragment frag, FragmentManager fm) {
         this.members = List;
-        fragment = frag;
-        fragmentManager = fm;
+        this.nicknamesDict = dict;
+        this.fragment = frag;
+        this.fragmentManager = fm;
     }
 
     @NonNull
@@ -49,6 +52,16 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         String name = member.getString("fullName");
         viewHolder.tvFullName.setText(name);
 
+        String objectId = member.getObjectId();
+        if (nicknamesDict != null) {
+            String nickname = nicknamesDict.get(objectId);
+            if (nickname != null) {
+                viewHolder.tvNickname.setText(nickname);
+            }
+        } else {
+            viewHolder.tvNickname.setText(name);
+        }
+
         PhotoHelper.displayPropic(member, viewHolder.ivPropic, context);
     }
 
@@ -59,12 +72,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public TextView tvNickname;
         public TextView tvFullName;
         public ImageView ivPropic;
         public ImageButton ibEdit;
 
         public ViewHolder(View view) {
             super(view);
+            tvNickname = view.findViewById(R.id.tvNickname);
             tvFullName = view.findViewById(R.id.tvFullName);
             ivPropic = view.findViewById(R.id.ivPropic);
             ibEdit = view.findViewById(R.id.ibEdit);
@@ -82,7 +97,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
                 if (view.getId() == tvFullName.getId() || view.getId() == ivPropic.getId()) {
                     openProfile(member);
                 } else if (view.getId() == ibEdit.getId()) {
-                    openEditDialog(member.getString("fullName"), member);
+                    openEditDialog(member.getString("fullName"), member, position);
                 }
             }
         }
@@ -95,8 +110,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
                 .commit();
     }
 
-    private void openEditDialog(String name, ParseUser user) {
-        EditNicknameFragment editNicknameFragment = EditNicknameFragment.newInstance(name, user);
+    private void openEditDialog(String name, ParseUser user, int position) {
+        EditNicknameFragment editNicknameFragment = EditNicknameFragment.newInstance(name, user, position);
         editNicknameFragment.setTargetFragment(fragment, 2);
         editNicknameFragment.show(fragmentManager, "fragment_edit_nickname");
     }
