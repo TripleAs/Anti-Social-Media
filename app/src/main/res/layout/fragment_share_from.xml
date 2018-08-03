@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ShareFromFragment">
+
+    <TextView
+        android:id="@+id/tvShareTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:text="Share From:" />
+
+    <ImageView
+        android:id="@+id/ivFacebook"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tvShareTitle"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/sm_facebook"
+        android:background="@drawable/shape_rounded_corners"
+        android:outlineProvider="background"
+        />
+
+    <ImageView
+        android:id="@+id/ivSnapchat"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/ivFacebook"
+        android:layout_below="@+id/tvShareTitle"
+        android:src="@drawable/sm_snapchat" />
+
+    <ImageView
+        android:id="@+id/ivWhatsApp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/ivSnapchat"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/tvShareTitle"
+        android:src="@drawable/sm_whatsapp" />
+
+    <ImageView
+        android:id="@+id/ivTwitter"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ivFacebook"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/sm_twitter" />
+
+    <ImageView
+        android:id="@+id/ivInstagram"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/ivTwitter"
+        android:layout_below="@+id/ivSnapchat"
+        android:src="@drawable/sm_instagram" />
+
+    <ImageView
+        android:id="@+id/ivVkontakte"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/ivWhatsApp"
+        android:layout_toRightOf="@id/ivInstagram"
+        android:src="@drawable/sm_vkontakte" />
+
+    <ImageView
+        android:id="@+id/ivVine"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/ivTwitter"
+        android:src="@drawable/sm_vine" />
+
+    <ImageView
+        android:id="@+id/ivLinkedIn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/ivInstagram"
+        android:layout_toRightOf="@id/ivVine"
+        android:src="@drawable/sm_linkedin" />
+
+    <ImageView
+        android:id="@+id/ivTumblr"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/ivLinkedIn"
+        android:layout_below="@id/ivVkontakte"
+        android:src="@drawable/sm_tumblr" />
+</RelativeLayout>
