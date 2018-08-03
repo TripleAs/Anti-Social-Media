@@ -54,6 +54,7 @@ import com.example.arafatm.anti_socialmedia.Fragments.VideoFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
+import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         SettingsFragment.OnFragmentInteractionListener, GroupCreationFragment.OnFragmentInteractionListener,
         GroupFeedFragment.OnFragmentInteractionListener, MessageCommunicator, MobiComKitActivityInterface,
         UserGroupList.OnFragmentInteractionListener, GroupCustomizationFragment.OnFragmentInteractionListener,
-        GroupSettingsFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener, PictureFragment.OnFragmentInteractionListener {
+        GroupSettingsFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener,
+        PictureFragment.OnFragmentInteractionListener, PostAdapter.OnAdapterInteractionListener {
 
     // for chat fragment
     private static int retry;
