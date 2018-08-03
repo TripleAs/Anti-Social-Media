@@ -71,7 +71,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String videoFilePath;
 
     @BindView(R.id.tvGroupName) TextView tvGroupName;
-    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
     @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
