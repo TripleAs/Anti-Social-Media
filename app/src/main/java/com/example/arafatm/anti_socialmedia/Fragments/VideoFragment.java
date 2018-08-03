@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.example.arafatm.anti_socialmedia.R;
@@ -23,13 +24,18 @@ public class VideoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "videoPath";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM2 = "caption";
+    private static final String ARG_PARAM3 = "text";
+
     private VideoView displayVideo;
     private Uri videoPath;
 
     // TODO: Rename and change types of parameters
     private String videoFilePath;
+    private String mParam1;
     private String mParam2;
+    private String caption;
+    private String text;
 
     private OnFragmentInteractionListener mListener;
 
@@ -115,10 +121,12 @@ public class VideoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
-        displayVideo.setVideoPath(videoFilePath);
-        displayVideo.setMediaController(null);
-        displayVideo.requestFocus();
-        displayVideo.start();
+     if (videoFilePath != null) {
+         displayVideo.setVideoPath(videoFilePath);
+         displayVideo.setMediaController(null);
+         displayVideo.requestFocus();
+         displayVideo.start();
+     }
 
         displayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +134,14 @@ public class VideoFragment extends Fragment {
                 displayVideo.start();
             }
         });
+        TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
+        TextView showText = (TextView) view.findViewById(R.id.tv_showText);
+
+        if (text != null)
+            showText.setText(text);
+
+        if (caption != null)
+            showCaption.setText(caption);
     }
 }
 

@@ -27,8 +27,48 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
-
         </FrameLayout>
+
+        <EditText
+            android:id="@+id/tv_addText"
+            android:layout_width="231dp"
+            android:layout_height="157dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/blue_5"
+            android:textSize="36sp"
+            android:visibility="invisible"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_caption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_container" />
+
+
+        <TextView
+            android:id="@+id/tv_captionShow"
+            android:layout_width="232dp"
+            android:layout_height="94dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:editable="true"
+            android:textColor="@color/solid_white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.879" />
+
 
         <ImageButton
             android:id="@+id/iv_emoji"

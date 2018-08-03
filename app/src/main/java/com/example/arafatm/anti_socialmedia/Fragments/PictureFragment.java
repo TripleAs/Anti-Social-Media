@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.arafatm.anti_socialmedia.R;
 
@@ -22,15 +23,19 @@ import butterknife.ButterKnife;
 public class PictureFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "imagePath";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM2 = "caption";
+    private static final String ARG_PARAM3 = "text";
     private EditText status;
     private String imagePath;
     private String imageStoryURL;
     private int currentAngle = 90;
 
     @BindView(R.id.imagePreview) ImageView displayImage;
-    private String mParam1;
-    private String mParam2;
+    private String caption;
+    private String text;
+    private String param1;
+    private String param2;
+
     private OnFragmentInteractionListener mListener;
 
     public PictureFragment() {
@@ -51,8 +56,8 @@ public class PictureFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             imagePath = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
+            caption = getArguments().getString(ARG_PARAM2);
+            text = getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -93,18 +98,24 @@ public class PictureFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        
-        displayImage = (ImageView) view.findViewById(R.id.imagePreview);
 
+        displayImage = (ImageView) view.findViewById(R.id.imagePreview);
         //loads the file
         File file = new File(imagePath);
         //creates a bitmap out of it
         final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
         Bitmap rotated = rotateImage(currentAngle, bitmap);
-
         //displays the image
         displayImage.setImageBitmap(rotated);
 
+        TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
+        TextView showText = (TextView) view.findViewById(R.id.tv_showText);
+
+        if (text != null)
+            showText.setText(text);
+
+        if (caption != null)
+            showCaption.setText(caption);
     }
 
     private Bitmap rotateImage(int degree, Bitmap bitmap) {
