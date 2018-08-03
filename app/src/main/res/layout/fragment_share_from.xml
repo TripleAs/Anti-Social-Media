@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,98 +13,139 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Share From:"
         android:textSize="20sp"
-        android:text="Share From:" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivFacebook"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/tvShareTitle"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:src="@drawable/sm_facebook"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/shape_rounded_corners"
         android:outlineProvider="background"
-        />
+        android:src="@drawable/sm_facebook"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvShareTitle" />
 
     <ImageView
         android:id="@+id/ivSnapchat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/ivFacebook"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/tvShareTitle"
-        android:src="@drawable/sm_snapchat" />
+        android:layout_marginTop="80dp"
+        android:layout_toRightOf="@+id/ivFacebook"
+        android:src="@drawable/sm_snapchat"
+        app:layout_constraintEnd_toStartOf="@+id/ivWhatsApp"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toEndOf="@+id/ivFacebook"
+        app:layout_constraintTop_toBottomOf="@+id/tvShareTitle" />
 
     <ImageView
         android:id="@+id/ivWhatsApp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_toRightOf="@id/ivSnapchat"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/tvShareTitle"
-        android:src="@drawable/sm_whatsapp" />
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_toRightOf="@id/ivSnapchat"
+        android:src="@drawable/sm_whatsapp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvShareTitle" />
 
     <ImageView
         android:id="@+id/ivTwitter"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/ivFacebook"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:src="@drawable/sm_twitter" />
+        android:layout_marginBottom="72dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="72dp"
+        android:src="@drawable/sm_twitter"
+        app:layout_constraintBottom_toTopOf="@+id/ivVine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivFacebook" />
 
     <ImageView
         android:id="@+id/ivInstagram"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/ivTwitter"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/ivSnapchat"
-        android:src="@drawable/sm_instagram" />
+        android:layout_marginBottom="72dp"
+        android:layout_marginTop="72dp"
+        android:layout_toRightOf="@+id/ivTwitter"
+        android:src="@drawable/sm_instagram"
+        app:layout_constraintBottom_toTopOf="@+id/ivLinkedIn"
+        app:layout_constraintEnd_toStartOf="@+id/ivVkontakte"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toEndOf="@+id/ivTwitter"
+        app:layout_constraintTop_toBottomOf="@+id/ivSnapchat" />
 
     <ImageView
         android:id="@+id/ivVkontakte"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/ivWhatsApp"
+        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="72dp"
         android:layout_toRightOf="@id/ivInstagram"
-        android:src="@drawable/sm_vkontakte" />
+        android:src="@drawable/sm_vkontakte"
+        app:layout_constraintBottom_toTopOf="@+id/ivTumblr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivWhatsApp" />
 
     <ImageView
         android:id="@+id/ivVine"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/ivTwitter"
-        android:src="@drawable/sm_vine" />
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/sm_vine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/ivLinkedIn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/ivInstagram"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_toRightOf="@id/ivVine"
-        android:src="@drawable/sm_linkedin" />
+        android:src="@drawable/sm_linkedin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivTumblr"
+        app:layout_constraintStart_toEndOf="@+id/ivVine" />
 
     <ImageView
         android:id="@+id/ivTumblr"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@id/ivLinkedIn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@id/ivVkontakte"
-        android:src="@drawable/sm_tumblr" />
-</RelativeLayout>
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@id/ivLinkedIn"
+        android:src="@drawable/sm_tumblr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>
