@@ -20,6 +20,7 @@ public class Post extends ParseObject {
     private static final String KEY_MEDIA = "media";
     private static final String KEY_COMMENTS = "comments";
     private static final String KEY_COMMENT = "comment";
+    private static final String KEY_LIKES = "likes";
 
 
     public String getMessage() {
@@ -115,5 +116,23 @@ public class Post extends ParseObject {
     }
     public int getCommentsCount(){
         return getComments().size();
+    }
+
+    public List<String> getLikes() { return getList(KEY_LIKES); }
+    public void setLikes(List<String> likes) { put(KEY_LIKES, likes); }
+
+    public void toggleLikes(ParseUser user) {
+        List<String> likes = getLikes();
+        String objectId = user.getObjectId();
+        if (likes == null) {
+            likes = new ArrayList<>();
+        }
+        if (likes.contains(objectId)) {
+            likes.remove(objectId);
+            setLikes(likes);
+        } else {
+            likes.add(objectId);
+            setLikes(likes);
+        }
     }
 }
