@@ -59,6 +59,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             if (nickname != null) {
                 viewHolder.tvNickname.setText(nickname);
                 workingName = nickname;
+            } else {
+                viewHolder.tvNickname.setText(name);
+                workingName = name;
             }
         } else {
             viewHolder.tvNickname.setText(name);
