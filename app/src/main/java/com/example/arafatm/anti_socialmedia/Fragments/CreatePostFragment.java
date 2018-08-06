@@ -21,8 +21,10 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
@@ -35,18 +37,12 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreatePostFragment extends DialogFragment {
 
-    @BindView(R.id.etNewPost)
-    EditText etNewPost;
-    @BindView(R.id.ivCamera)
-    ImageView ivCamera;
-    @BindView(R.id.ivUpload)
-    ImageView ivUpload;
-    @BindView(R.id.ivPreview)
-    ImageView ivPreview;
-    @BindView(R.id.ivCreatePost)
-    ImageView ivCreatePost;
-    @BindView(R.id.ivShareFrom)
-    ImageButton ivShareFrom;
+    @BindView(R.id.etNewPost) EditText etNewPost;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
+    @BindView(R.id.ivShareFrom) ImageButton ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -55,6 +51,7 @@ public class CreatePostFragment extends DialogFragment {
     private Fragment callback;
 
     private Group currentGroup;
+    private ParseACL acl;
 
     public CreatePostFragment() {
         // Empty constructor is required for DialogFragment
@@ -160,32 +157,61 @@ public class CreatePostFragment extends DialogFragment {
     }
 
     private void sendPostToParse() {
+        prepareACL();
         final Post newPost = new Post();
+        newPost.setACL(acl);
+        newPost.setACL(new ParseACL(ParseUser.getCurrentUser()));
+        String newMessage = etNewPost.getText().toString();
+        newPost.initPost(newMessage, currentGroup);
+
         if (hasNewPic) {
             final ParseFile image = photoHelper.grabImage();
             image.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    newPost.setImage(image);
+                    if (e == null) {
+                        newPost.setImage(image);
+                        saveNewPost(newPost);
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             });
+        } else {
+            saveNewPost(newPost);
         }
-        String newMessage = etNewPost.getText().toString();
-        newPost.initPost(newMessage, currentGroup);
+    }
 
+    private void saveNewPost(final Post newPost) {
         newPost.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                Toast.makeText(getContext(), "Saved post", Toast.LENGTH_SHORT).show();
-                currentGroup.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        mListener.onFinishCreatePost(newPost);
-                        dismiss();
-                    }
-                });
+                if (e == null) {
+                    Toast.makeText(getContext(), "Saved post", Toast.LENGTH_SHORT).show();
+                    currentGroup.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                mListener.onFinishCreatePost(newPost);
+                                dismiss();
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    e.printStackTrace();
+                }
             }
         });
+    }
+
+    private void prepareACL() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.setACL(new ParseACL(currentUser));
+        acl = new ParseACL(currentUser);
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
     }
 
     @Override

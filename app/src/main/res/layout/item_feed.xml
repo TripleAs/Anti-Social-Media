@@ -22,9 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
 
                 <ImageView
                     android:id="@+id/ivProPicPost"
@@ -51,27 +50,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivImagePost"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_toRightOf="@+id/feedFrameLayout"
                 android:text="This is the body of a post" />
 
             <ImageButton
                 android:id="@+id/btCommentIcon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/tvPostBody"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@color/transparent"
                 app:srcCompat="@drawable/ic_comment" />
 
+            <TextView
+                android:id="@+id/tvTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvFullNameFeed"
+                android:layout_alignStart="@+id/tvFullNameFeed"
+                android:text="5 minutes ago"
+                android:textSize="12sp" />
+
             <ImageView
                 android:id="@+id/ivImagePost"
-                android:layout_width="235dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvFullNameFeed"
-                android:layout_below="@id/tvFullNameFeed"
+                android:layout_below="@+id/feedFrameLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 app:srcCompat="@color/transparent" />
 
             <TextView
@@ -80,16 +91,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/btCommentIcon"
                 android:layout_marginBottom="5dp"
-                android:layout_toStartOf="@+id/btCommentIcon"
-                android:text=" " />
+                android:layout_toEndOf="@+id/btCommentIcon"
+                android:text="#" />
 
             <ImageView
                 android:id="@+id/ivDirectMessage"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignEnd="@+id/tvPostBody"
-                android:layout_alignParentTop="true"
-                app:srcCompat="@drawable/mobicom_ic_action_send_now" />
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tvPostBody"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                app:srcCompat="@drawable/ic_direct_message" />
 
             <ImageView
                 android:id="@+id/ivLike"
@@ -98,6 +112,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/tvPostBody"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
                 app:srcCompat="@drawable/ic_heart_empty" />
 
             <TextView
