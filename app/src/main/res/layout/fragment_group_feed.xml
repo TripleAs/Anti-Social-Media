@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/fragment_child"
         android:layout_width="match_parent"
-        android:layout_height="193dp"
+        android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/black"
@@ -25,17 +25,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/fragment_child"
-        android:layout_alignParentStart="true"
-
-        android:text=""
-        android:textSize="24sp" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_toEndOf="@+id/ivCoverPhoto"
+        android:text="Group Name"
+        android:shadowColor="@color/black_60_transparent"
+        android:shadowDx="-5"
+        android:shadowDy="5"
+        android:shadowRadius="0.1"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/ivStartChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/iv_prev"
         android:layout_below="@+id/fragment_child"
+        android:layout_toEndOf="@id/ivCoverPhoto"
+        android:layout_marginLeft="40dp"
         android:src="@drawable/ic_chat_empty"
         android:tint="?attr/colorAccent" />
 
@@ -44,7 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_child"
-        android:layout_centerHorizontal="true"
+        android:layout_toEndOf="@id/ivStartChat"
+        android:layout_marginLeft="65dp"
         android:src="@drawable/ic_create_post"
         android:tint="?attr/colorAccent" />
 
@@ -61,10 +70,12 @@
 
     <ImageView
         android:id="@+id/ivCoverPhoto"
-        android:layout_width="101dp"
-        android:layout_height="77dp"
-        android:layout_above="@+id/ivStartChat"
-        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp"
         android:src="@drawable/com_facebook_profile_picture_blank_square" />
 
     <ImageView
@@ -87,10 +98,11 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="341dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ivLaunchNewPost"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/title_gradient">
+        android:background="?attr/feedBackground">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPostsFeed"

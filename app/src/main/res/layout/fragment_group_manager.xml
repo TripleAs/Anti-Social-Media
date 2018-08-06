@@ -52,6 +52,7 @@
         android:id="@+id/rvGroups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/title_gradient"
         android:layout_below="@id/tb_toolbar" />
 
 </RelativeLayout>
