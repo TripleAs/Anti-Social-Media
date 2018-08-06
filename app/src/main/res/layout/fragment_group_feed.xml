@@ -87,8 +87,10 @@
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="341dp"
+        android:layout_marginTop="35dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivCoverPhoto"
         android:background="@drawable/title_gradient">
 
         <android.support.v7.widget.RecyclerView
@@ -101,9 +103,10 @@
     <FrameLayout
         android:id="@+id/preview_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:background="@color/transparent"></FrameLayout>
+        android:background="@color/transparent">
+    </FrameLayout>
 </RelativeLayout>
