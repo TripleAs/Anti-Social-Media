@@ -92,7 +92,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static PostAdapter postAdapter;
     public static ArrayList<Post> posts;
     public static
-     RecyclerView rvPosts;
+    RecyclerView rvPosts;
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
     String themeName;
@@ -254,13 +254,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             public void done(List<Story> objects, ParseException e) {
                 if (e == null) {
                     //fetches all stories for current group
-//                   for (int i = 0; i < objects.size(); i++) {
-//                       if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
-//                           allStories.add(objects.get(i));
-//                       }
-//                   }
-
-                    allStories.addAll(objects);
+                    for (int i = 0; i < objects.size(); i++) {
+                        if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
+                            allStories.add(objects.get(i));
+                        }
+                    }
                     Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
                     displayStory(R.id.fragment_child);
                 } else {
@@ -348,26 +346,28 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        Story currentStory = allStories.get(storyIndex); //selects a story
-        text = currentStory.getStoryCaption();
-        caption = currentStory.getStoryText();
+        Story currentStory = ((allStories.size() == 0) ? null : allStories.get(storyIndex)); //selects a story
+        if (currentStory != null) {
+            text = currentStory.getStoryCaption();
+            caption = currentStory.getStoryText();
 
-        if (currentStory.getStoryType().compareTo("video") == 0) {
-            try {
-                videoFilePath = getVideoPath(currentStory);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            navigateToVideoFragment(videoFilePath, fragmentTransaction, view_id);
-        } else {
-            String imageFilePath = null;
-            try {
-                imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-            }
 
-            navigateToPictureFragment(imageFilePath, fragmentTransaction, view_id);
+            if (currentStory.getStoryType().compareTo("video") == 0) {
+                try {
+                    videoFilePath = getVideoPath(currentStory);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                navigateToVideoFragment(videoFilePath, fragmentTransaction, view_id);
+            } else {
+                String imageFilePath = null;
+                try {
+                    imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+                navigateToPictureFragment(imageFilePath, fragmentTransaction, view_id);
+            }
         }
     }
 
