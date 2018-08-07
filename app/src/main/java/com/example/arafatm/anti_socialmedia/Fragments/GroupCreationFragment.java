@@ -84,7 +84,8 @@ public class GroupCreationFragment extends Fragment {
         //get current user
         currentUser = ParseUser.getCurrentUser();
         //get the list of friends(Ids)
-        final List<String> friendListIds = currentUser.getList("friendList");
+        List<String> friendListIds = new ArrayList<>();
+        friendListIds = currentUser.getList("friendList");
 
         // use usernames/FB Ids to find users
         ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
