@@ -1,25 +1,35 @@
 package com.example.arafatm.anti_socialmedia.Util;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
+import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 
 import java.util.ArrayList;
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
     private Context context;
     private ArrayList<String> pictureLIst;
+    private FragmentManager fragmentManager;
+    private Group currentGroup;
 
-    public PictureAdapter(Context context, ArrayList<String> List) {
+    public PictureAdapter(Context context, ArrayList<String> List, Group currentGroup, FragmentManager fm) {
         this.pictureLIst = List;
         this.context = context;
+        this.currentGroup = currentGroup;
+        this.fragmentManager = fm;
     }
 
 
@@ -37,10 +47,8 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         String iMageURL = pictureLIst.get(i);
-
         Glide.with(context)
                 .load(iMageURL)
-                .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.instgramPhoto);
     }
 
@@ -61,9 +69,17 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
+                Toast.makeText(context, Integer.toString(position), Toast.LENGTH_SHORT).show();
+                //create a bundle to store the url
+                Bundle bundle = new Bundle();
+                bundle.putString("imageURL", pictureLIst.get(position));
 
-                //TODO: GETS PITCURE AND USE IT TO CREATE POST
-
+                GroupFeedFragment.goToPost = true;
+                // come back after lunch!
+                Fragment groupFeedFragment = new GroupFeedFragment();
+                groupFeedFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentManager.beginTransaction().replace(R.id.preview_frame, groupFeedFragment).addToBackStack(null).commit();
             }
         }
     }

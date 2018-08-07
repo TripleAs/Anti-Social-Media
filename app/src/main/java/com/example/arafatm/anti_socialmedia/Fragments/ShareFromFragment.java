@@ -125,10 +125,10 @@ public class ShareFromFragment extends DialogFragment {
             public void onClick(View view) {
                 GroupFeedFragment.goToUpload = true;
                 // come back after lunch!
-                Fragment uploadedImages = new UploadedImages();
+                Fragment groupFeedFragment = new GroupFeedFragment();
                 FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.preview_frame, uploadedImages)
+                fragmentTransaction.replace(R.id.preview_frame, groupFeedFragment)
                         .commit();
                 dismiss();
             }
