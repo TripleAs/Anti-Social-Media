@@ -80,13 +80,10 @@ public class GroupCreationFragment extends Fragment {
 
     private void fetchAllFriendList() {
         //get current user
-        try {
-            currentUser = ParseUser.getQuery().get("mK88SMmv6C"); //ParseUser.getCurrentUser(); //Change this!
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        currentUser = ParseUser.getCurrentUser();
         //get the list of friends(Ids)
-        final List<String> friendListIds = currentUser.getList("friendList");
+        List<String> friendListIds = new ArrayList<>();
+        friendListIds = currentUser.getList("friendList");
 
         //TODO
         //Change this way to Amy way of finding facebook friends
