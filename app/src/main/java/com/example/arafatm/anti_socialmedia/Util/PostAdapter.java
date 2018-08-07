@@ -79,6 +79,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         String message = post.getMessage();
         String senderName = sender.getString("fullName");
         String number = Integer.toString(post.getCommentsCount());
+        String relativeTime = post.getTimestamp();
 
         String objectId = sender.getObjectId();
         if (nicknames != null) {
@@ -94,6 +95,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         viewHolder.tvPostText.setText(message);
         viewHolder.tvNumberComments.setText(number);
+        viewHolder.tvTimestamp.setText(relativeTime);
         displayLikeImage(viewHolder.ivLike, post);
         displayLikesCount(viewHolder.tvNumLikes, post);
 
@@ -169,6 +171,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         @BindView(R.id.ivDirectMessage) ImageView ivDirectMessage;
         @BindView(R.id.ivLike) ImageView ivLike;
         @BindView(R.id.tvNumLikes) TextView tvNumLikes;
+        @BindView(R.id.tvTimestamp) TextView tvTimestamp;
 
         public ViewHolder(View itemView) {
             super(itemView);
