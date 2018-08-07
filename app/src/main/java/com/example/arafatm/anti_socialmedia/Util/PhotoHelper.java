@@ -104,7 +104,7 @@ public class PhotoHelper {
 
     public Bitmap handleUploadedImage(Uri photoUri) {
         Bitmap selectedImage = null;
-        Bitmap resizedBitmap;
+        Bitmap resizedBitmap = null;
         try {
             selectedImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
             resizedBitmap = scaleToFitWidth(selectedImage, SOME_WIDTH);
@@ -118,7 +118,7 @@ public class PhotoHelper {
 
         writeStreamToFile(stream);
 
-        return selectedImage;
+        return resizedBitmap;
     }
 
     private void writeStreamToFile(ByteArrayOutputStream stream) {
