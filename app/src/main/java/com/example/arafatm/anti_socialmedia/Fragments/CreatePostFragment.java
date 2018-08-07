@@ -39,12 +39,18 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreatePostFragment extends DialogFragment {
 
-    @BindView(R.id.etNewPost) EditText etNewPost;
-    @BindView(R.id.ivCamera) ImageView ivCamera;
-    @BindView(R.id.ivUpload) ImageView ivUpload;
-    @BindView(R.id.ivPreview) ImageView ivPreview;
-    @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
-    @BindView(R.id.ivShareFrom) ImageButton ivShareFrom;
+    @BindView(R.id.etNewPost)
+    EditText etNewPost;
+    @BindView(R.id.ivCamera)
+    ImageView ivCamera;
+    @BindView(R.id.ivUpload)
+    ImageView ivUpload;
+    @BindView(R.id.ivPreview)
+    ImageView ivPreview;
+    @BindView(R.id.ivCreatePost)
+    ImageView ivCreatePost;
+    @BindView(R.id.ivShareFrom)
+    ImageButton ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
@@ -52,6 +58,7 @@ public class CreatePostFragment extends DialogFragment {
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private Fragment callback;
     private String imageURl;
+    private  ParseFile image = null;
 
     private Group currentGroup;
     private ParseACL acl;

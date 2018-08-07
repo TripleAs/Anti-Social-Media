@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,12 +9,10 @@
     android:id="@+id/groupManagerFragament"
     tools:context=".Fragments.GroupManagerFragment">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
+        android:layout_height="37dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         app:titleTextColor="@android:color/white"
@@ -26,6 +25,7 @@
 
             <TextView
                 android:id="@+id/textView"
+                style="@style/TextWithShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -33,21 +33,19 @@
                 android:layout_marginStart="12dp"
                 android:text="Group Manager"
                 android:textColor="@color/solid_white"
-                style="@style/TextWithShadow"
                 android:shadowDx="-3"
                 android:shadowDy="3"
                 android:textSize="18sp" />
 
-        <ImageView
-            android:layout_marginRight="12dp"
-            android:id="@+id/ic_add_icon"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/ic_add_icon"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            <ImageView
+                android:id="@+id/ic_add_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_add_icon" />
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
@@ -55,8 +53,14 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvGroups"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="527dp"
+        android:layout_below="@id/tb_toolbar"
         android:background="@color/transparent"
-        android:layout_below="@id/tb_toolbar" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

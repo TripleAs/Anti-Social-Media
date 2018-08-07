@@ -1,7 +1,5 @@
 package com.example.arafatm.anti_socialmedia.Models;
 
-import android.text.format.DateUtils;
-
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -10,12 +8,9 @@ import com.parse.ParseUser;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
