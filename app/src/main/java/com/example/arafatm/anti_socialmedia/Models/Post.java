@@ -1,21 +1,14 @@
 package com.example.arafatm.anti_socialmedia.Models;
 
-import android.text.format.DateUtils;
-
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
@@ -93,6 +86,11 @@ public class Post extends ParseObject {
             return this;
         }
 
+        public Query withUser(){
+            include("User");
+            return this;
+        }
+
         public Query forGroup(Group group) {
             whereEqualTo("recipient", group);
             return this;
@@ -123,8 +121,18 @@ public class Post extends ParseObject {
     public List<String> getLikes() { return getList(KEY_LIKES); }
     public void setLikes(List<String> likes) { put(KEY_LIKES, likes); }
 
-    public String getTimestamp() {
-        PrettyTime prettyTime = new PrettyTime();
-        return prettyTime.format(getUpdatedAt());
+    public void toggleLikes(ParseUser user) {
+        List<String> likes = getLikes();
+        String objectId = user.getObjectId();
+        if (likes == null) {
+            likes = new ArrayList<>();
+        }
+        if (likes.contains(objectId)) {
+            likes.remove(objectId);
+            setLikes(likes);
+        } else {
+            likes.add(objectId);
+            setLikes(likes);
+        }
     }
 }
