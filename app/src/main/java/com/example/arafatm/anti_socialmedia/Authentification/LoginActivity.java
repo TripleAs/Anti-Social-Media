@@ -192,7 +192,6 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LoginActivity", "Login successful");
                     final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
-//                    getFriends(loginResult);
                     finish();
                 } else {
                     ParseUser parseUser = new ParseUser();

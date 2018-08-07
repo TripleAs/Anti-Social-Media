@@ -34,7 +34,7 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
 
     @Override
     public FriendListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-         context = viewGroup.getContext();
+        context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
@@ -50,16 +50,8 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
         // Get the data model based on position
         final ParseUser friend = allFriends.get(position);
 
-        // Set item views based on your views and data model
-       viewHolder.friendName.setText(friend.getString("fullName"));
-
-        ParseFile file = friend.getParseFile("profileImage"); //verify this
-        if (file != null) {
-            Glide.with(context)
-                    .load(file.getUrl())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(viewHolder.friendPic);
-        }
+        viewHolder.friendName.setText(friend.getString("fullName"));
+        PhotoHelper.displayPropic(friend, viewHolder.friendPic, context);
     }
 
     @Override
