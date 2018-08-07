@@ -134,6 +134,7 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
                 @Override
                 public void done(final List<Group> objects, ParseException e) {
                     if (e == null) {
+                        groupList.clear();
                         groupList.addAll(objects);
 
                         groupAdapter.notifyDataSetChanged();
