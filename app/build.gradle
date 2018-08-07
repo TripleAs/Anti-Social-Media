@@ -120,8 +120,7 @@ dependencies {
 
     // PrettyTime
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
-
-
+    
     // groupie (for comments)
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 //    implementation 'com.xwray:groupie:2.0.3'

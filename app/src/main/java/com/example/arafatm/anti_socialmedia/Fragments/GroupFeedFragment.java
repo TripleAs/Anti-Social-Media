@@ -76,7 +76,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String selectedImageURL;
     private String videoFilePath;
 
-
     @BindView(R.id.tvGroupName)
     TextView tvGroupName;
     @BindView(R.id.ivCoverPhoto)
@@ -88,7 +87,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     @BindView(R.id.ivLaunchNewPost)
     ImageView ivLaunchNewPost;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-
 
     //for posting
     public static PostAdapter postAdapter;
@@ -441,12 +439,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 }
             }
         });
-
     }
 
     private void refreshFeed() {
         PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
-
         adapter.clear();
         loadTopPosts();
         rvPosts.scrollToPosition(0);

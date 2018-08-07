@@ -179,9 +179,14 @@ public class CreatePostFragment extends DialogFragment {
     private void sendPostToParse() {
         prepareACL();
         final Post newPost = new Post();
+        ParseFile image = null;
         newPost.setACL(acl);
         newPost.setACL(new ParseACL(ParseUser.getCurrentUser()));
         String newMessage = etNewPost.getText().toString();
+
+        if (currentGroup == null) {
+            currentGroup = GroupFeedFragment.publicCurrentGroup;
+        }
         newPost.initPost(newMessage, currentGroup);
 
         if (hasNewPic) {
@@ -194,25 +199,19 @@ public class CreatePostFragment extends DialogFragment {
             }
 
             final ParseFile finalImage = image;
-            image.saveInBackground(new SaveCallback() {
+            finalImage.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        newPost.setImage(image);
+                        newPost.setImage(finalImage);
                         saveNewPost(newPost);
                     } else {
                         e.printStackTrace();
                     }
-
-                    String newMessage = etNewPost.getText().toString();
-
-                    if (currentGroup == null) {
-                        currentGroup = GroupFeedFragment.publicCurrentGroup;
-                    }
-
-                    newPost.initPost(newMessage, currentGroup);
                 }
             });
+        } else {
+            saveNewPost(newPost);
         }
     }
 
