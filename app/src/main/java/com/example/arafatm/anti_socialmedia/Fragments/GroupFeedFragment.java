@@ -78,7 +78,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
-    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
 
     //for posting
     PostAdapter postAdapter;

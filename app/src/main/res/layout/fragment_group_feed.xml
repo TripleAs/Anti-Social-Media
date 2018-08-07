@@ -29,10 +29,7 @@
         android:layout_marginLeft="30dp"
         android:layout_toEndOf="@+id/ivCoverPhoto"
         android:text="Group Name"
-        android:shadowColor="@color/black_60_transparent"
-        android:shadowDx="-5"
-        android:shadowDy="5"
-        android:shadowRadius="0.1"
+        style="@style/TextWithShadow"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold" />

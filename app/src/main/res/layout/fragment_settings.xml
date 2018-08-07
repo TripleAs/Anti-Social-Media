@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.SettingsFragment">
+    tools:context=".Fragments.SettingsFragment"
+    android:background="@drawable/background_gradient">
 
     <RelativeLayout
         android:id="@+id/rlViewProfile"
@@ -57,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_transparent_button"
         android:text="Log out" />
 
     <android.support.v7.widget.RecyclerView
@@ -65,6 +67,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/log_out_button"
         android:layout_alignParentStart="true"
+        android:background="@color/transparent"
         android:layout_below="@+id/rlViewProfile" />
 
 </RelativeLayout>

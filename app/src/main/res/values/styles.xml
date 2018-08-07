@@ -1,21 +1,22 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <attr name="feedBackground" format="reference"/>
+    <attr name="gradientBackground" format="reference"/>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/black</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/alphabet_b</item>
+        <item name="gradientBackground">@drawable/title_gradient</item>
+        <!--<item name="android:windowBackground">@drawable/title_gradient</item>-->
     </style>
 
     <style name="GroupRedTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/alphabet_g</item>
         <item name="android:colorBackground">@color/alphabet_b</item>
-        <!--<item name="android:background">@color/red_1</item>-->
         <item name="colorPrimary">@color/red_9</item>
-        <!--<item name="android:textColor">@color/red_7</item>-->
         <item name="colorAccent">@color/red_7</item>
         <item name="feedBackground">@drawable/red_feed_gradient</item>
     </style>
@@ -23,9 +24,7 @@
     <style name="GroupBlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/alphabet_e</item>
         <item name="android:colorBackground">@color/alphabet_e</item>
-        <!--<item name="android:background">@color/blue_1</item>-->
         <item name="colorPrimary">@color/alphabet_x</item>
-        <!--<item name="android:textColor">@color/alphabet_i</item>-->
         <item name="colorAccent">@color/blue_7</item>
         <item name="feedBackground">@drawable/blue_feed_gradient</item>
     </style>
@@ -33,11 +32,16 @@
     <style name="GroupGreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/alphabet_k</item>
         <item name="android:colorBackground">@color/alphabet_j</item>
-        <!--<item name="android:background">@color/green_1</item>-->
         <item name="colorPrimary">@color/green_4</item>
-        <!--<item name="android:textColor">@color/green_8</item>-->
         <item name="colorAccent">@color/green_8</item>
         <item name="feedBackground">@drawable/green_feed_gradient</item>
+    </style>
+
+    <style name="TextWithShadow">
+        <item name="android:shadowColor">@color/black_60_transparent</item>
+        <item name="android:shadowDx">-5</item>
+        <item name="android:shadowDy">5</item>
+        <item name="android:shadowRadius">0.1</item>
     </style>
 
 </resources>
