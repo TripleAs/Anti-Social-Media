@@ -104,14 +104,15 @@ public class PhotoHelper {
 
     public Bitmap handleUploadedImage(Uri photoUri) {
         Bitmap selectedImage = null;
+        Bitmap resizedBitmap;
         try {
             selectedImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
+            resizedBitmap = scaleToFitWidth(selectedImage, SOME_WIDTH);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        selectedImage.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        selectedImage.compress(Bitmap.CompressFormat.JPEG, 40, stream);
 
         Toast.makeText(context, "Picture uploaded!", Toast.LENGTH_SHORT).show();
 
@@ -195,8 +196,7 @@ public class PhotoHelper {
         }
     }
 
-    public static Bitmap scaleToFitWidth(Bitmap b, int width)
-    {
+    public static Bitmap scaleToFitWidth(Bitmap b, int width) {
         float factor = width / (float) b.getWidth();
         return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);
     }
