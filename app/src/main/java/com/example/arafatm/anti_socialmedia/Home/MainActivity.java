@@ -3,9 +3,12 @@ package com.example.arafatm.anti_socialmedia.Home;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.transition.Transition;
+import android.support.transition.TransitionInflater;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.applozic.mobicomkit.ApplozicClient;
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
@@ -63,7 +67,10 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 //import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
+//please revert
 
 
 public class MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
@@ -82,10 +89,16 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
     MobiComKitBroadcastReceiver mobiComKitBroadcastReceiver;
     ParseUser parseUser;
     private static final String ARG_PARAM1 = "param1";
+    private static final long MOVE_DEFAULT_TIME = 1000;
+    private static final long FADE_DEFAULT_TIME = 300;
+
+//    private Handler mDelayedTransactionHandler = new Handler();
+//    private Runnable mRunnable = this::performTransition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
@@ -121,14 +134,6 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
             tx.commit();
         }
 
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-//        Toolbar toolbar = findViewById(R.id.my_toolbar);
-//        setSupportActionBar(toolbar);
-//        toolbar.setVisibility(View.INVISIBLE);
-//        bottomNavigationView.getMenu().findItem(R.id.ic_group_empty).setChecked(true);
-//        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
-        //sets default fragment
-
         /*gets instance of all fragments here*/
         final Fragment groupFragment = new GroupManagerFragment();
         // final Fragment userGroupList = new UserGroupList();
@@ -146,7 +151,8 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
                                 return true;
                             case R.id.ic_group_empty:
                                 FragmentTransaction fragmentTransactionTwo = fragmentManager.beginTransaction();
-                                fragmentTransactionTwo.replace(R.id.layout_child_activity, groupFragment).commit();
+                                fragmentTransactionTwo.replace(R.id.layout_child_activity, groupFragment)
+                                        .commit();
                                 return true;
                             case R.id.ic_story:
                                 Intent intent = new Intent(MainActivity.this, StoryActivity.class);
@@ -167,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
 
     public void onViewProfileSelected() {
@@ -178,11 +183,48 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
     @Override
     /*Navigates to the groupManagerFragment*/
     public void navigate_to_fragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.layout_child_activity, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.layout_child_activity, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+    }
+
+    public void managerToFeedTransition(Fragment managerFragment, Fragment feedFragment){
+        // Check that the device is running lollipop
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Inflate transitions to apply
+            Transition changeTransform = TransitionInflater.from(this).
+                    inflateTransition(R.transition.change_image_transform);
+            Transition explodeTransform = TransitionInflater.from(this).
+                    inflateTransition(android.R.transition.explode);
+
+            // Setup exit transition on first fragment
+            managerFragment.setSharedElementReturnTransition(changeTransform);
+            managerFragment.setExitTransition(explodeTransform);
+
+            // Setup enter transition on second fragment
+            feedFragment.setSharedElementEnterTransition(changeTransform);
+            feedFragment.setEnterTransition(explodeTransform);
+
+            // Find the shared element (in Fragment A)
+            ImageView ivCoverPhoto = (ImageView) findViewById(R.id.ivPropic);
+
+            // Add second fragment by replacing first
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, feedFragment)
+                    .addToBackStack("transaction")
+                    .addSharedElement(ivCoverPhoto, "groupExpand");
+            // Apply the transaction
+            ft.commit();
+        }
+        else {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.layout_child_activity, feedFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
@@ -312,6 +354,11 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         intent.putExtra(ApplozicMqttIntentService.USER_KEY_STRING, userKeyString);
         intent.putExtra(ApplozicMqttIntentService.DEVICE_KEY_STRING, deviceKeyString);
         startService(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public void chatLogin() {

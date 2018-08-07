@@ -76,6 +76,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String selectedImageURL;
     private String videoFilePath;
 
+
     @BindView(R.id.tvGroupName)
     TextView tvGroupName;
     @BindView(R.id.ivCoverPhoto)
@@ -87,6 +88,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     @BindView(R.id.ivLaunchNewPost)
     ImageView ivLaunchNewPost;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
+
 
     //for posting
     public static PostAdapter postAdapter;
@@ -426,7 +428,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser().forGroup(group);
+        postsQuery.getTop().forGroup(group);
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {

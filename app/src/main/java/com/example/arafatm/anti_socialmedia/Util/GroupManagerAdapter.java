@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
@@ -60,6 +62,10 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
                     .load(groupPic.getUrl())
                     .apply(RequestOptions.circleCropTransform())
                     .into(viewHolder.ivCoverPhoto);
+//            Glide.with(context)
+//                    .load(groupPic.getUrl())
+//                    .apply(new RequestOptions().transforms(new CircleCrop(), new Blur))
+//                    .into(viewHolder.ivCoverPhoto);
         } else {
             viewHolder.ivCoverPhoto.setImageResource(R.drawable.ic_group_default);
         }

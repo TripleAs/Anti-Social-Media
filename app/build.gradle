@@ -106,7 +106,7 @@ dependencies {
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
 
     //for CardView
-    implementation 'com.android.support:cardview-v7:26.0.0-alpha1'
+    implementation 'com.android.support:cardview-v7:28.0.0-beta01'
 
     // Butterknife
     implementation 'com.jakewharton:butterknife:8.4.0'
@@ -117,6 +117,10 @@ dependencies {
 
     //http request
     implementation 'com.loopj.android:android-async-http:1.4.9'
+
+    // PrettyTime
+    implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
+
 
     // groupie (for comments)
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
