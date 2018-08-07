@@ -116,6 +116,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
         android:background="@color/transparent">
-    </FrameLayout>
 
+    </FrameLayout>
 </RelativeLayout>
