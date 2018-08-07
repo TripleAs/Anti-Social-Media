@@ -17,7 +17,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         app:titleTextColor="@android:color/white"
-        android:background="@color/white_20_transparent"
+        android:background="@color/white_30_transparent"
         android:layout_alignParentLeft="true">
 
         <RelativeLayout
@@ -28,9 +28,9 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="12dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
                 android:text="Group Manager"
                 android:textColor="@color/solid_white"
                 style="@style/TextWithShadow"
