@@ -5,7 +5,9 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
 import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -134,5 +136,10 @@ public class Post extends ParseObject {
             likes.add(objectId);
             setLikes(likes);
         }
+    }
+
+    public String getTimestamp() {
+        PrettyTime prettyTime = new PrettyTime();
+        return prettyTime.format(getUpdatedAt());
     }
 }

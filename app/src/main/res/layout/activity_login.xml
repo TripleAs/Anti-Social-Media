@@ -4,22 +4,25 @@
     android:id="@+id/font"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/title_gradient"
     >
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-
+        android:padding="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_above="@+id/etUsername"
         android:gravity="center"
-        android:text="Anti-Social"
+        android:text="Anti-Social
+Media"
         android:textColor="@color/white"
         android:textSize="45sp"
-        app:fontFamily="@font/fredericka_the_great" />
+        android:background="@color/grey_2"
+        app:fontFamily="@font/domine" />
 
 
     <EditText
@@ -29,10 +32,10 @@
         android:layout_centerInParent="true"
         android:ems="10"
         android:hint="Password"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/white"
-        android:textCursorDrawable="@color/white"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        android:textCursorDrawable="@color/black"
         android:inputType="textPassword"/>
 
     <EditText
@@ -40,10 +43,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/etPassword"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/white"
-        android:textCursorDrawable="@color/white"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        android:textCursorDrawable="@color/black"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="Username"
@@ -56,8 +59,7 @@
         android:layout_below="@+id/etPassword"
         android:layout_centerHorizontal="true"
         android:text="Log in"
-        android:fontFamily="@font/domine"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"  
         android:background="@color/transparent"/>
 
@@ -78,8 +80,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="Sign Up"
-        android:fontFamily="@font/domine"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:background="@color/transparent"
         />
@@ -90,7 +91,7 @@
         android:layout_above="@+id/btSwitchToSignup"
         android:layout_centerHorizontal="true"
         android:text="Don't have an account yet?"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         />
 
 </RelativeLayout>

@@ -126,9 +126,9 @@
         <meta-data
             android:name="com.package.name"
             android:value="${applicationId}" />
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" /> <!-- NOTE: Do NOT change this, it should remain same i.e 'com.package.name' -->
+        <!--<meta-data-->
+            <!--android:name="preloaded_fonts"-->
+            <!--android:resource="@array/preloaded_fonts" /> &lt;!&ndash; NOTE: Do NOT change this, it should remain same i.e 'com.package.name' &ndash;&gt;-->
 
 
         <!-- <provider -->
