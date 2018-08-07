@@ -89,10 +89,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
 
     //for posting
-    PostAdapter postAdapter;
-    ArrayList<Post> posts;
-    @BindView(R.id.rvPostsFeed)
-    RecyclerView rvPosts;
+    public static PostAdapter postAdapter;
+    public static ArrayList<Post> posts;
+    public static
+     RecyclerView rvPosts;
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
     String themeName;
@@ -143,8 +143,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             themeName = bundle.getString("theme", KEY_BLUE);
             selectedImageURL = bundle.getString("imageURL");
         }
-
-
     }
 
     @Override
@@ -152,7 +150,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                              Bundle savedInstanceState) {
         if (goToPost) {
             goToPost = false;
-            //naviage to create post fragment
             CreatePostFragment cpFragment = CreatePostFragment.newInstance(selectedImageURL);
             cpFragment.setTargetFragment(GroupFeedFragment.this, 1);
             mListener.navigateToDialog(cpFragment);

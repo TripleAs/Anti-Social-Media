@@ -10,7 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +29,10 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
-import java.io.ByteArrayOutputStream;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
-import static com.facebook.GraphRequest.TAG;
 // ...
 
 public class CreatePostFragment extends DialogFragment {
@@ -180,8 +177,9 @@ public class CreatePostFragment extends DialogFragment {
         ParseFile image = null;
         if (hasNewPic) {
             if (imageURl != null) {
-                byte[] imageByte = createByteArrayFromURL(imageURl);
-                image = new ParseFile("image", imageByte);
+                byte[] img = Base64.decode(imageURl, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+                image = new ParseFile("image", img);
             } else {
                 image = photoHelper.grabImage();
             }
@@ -215,30 +213,6 @@ public class CreatePostFragment extends DialogFragment {
                 });
             }
         });
-    }
-
-    private byte[] createByteArrayFromURL(String imageURL) {
-        try {
-            java.net.URL img_value = new java.net.URL(imageURL);
-            Bitmap mIcon = BitmapFactory
-                    .decodeStream(img_value.openConnection()
-                            .getInputStream());
-            if (mIcon != null)
-                return encodeToByteArray(mIcon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public byte[] encodeToByteArray(Bitmap image) {
-        Log.d(TAG, "encodeToByteArray");
-        Bitmap b = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        b.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imgByteArray = baos.toByteArray();
-
-        return imgByteArray;
     }
 
     @Override

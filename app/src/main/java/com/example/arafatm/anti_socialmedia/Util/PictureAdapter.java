@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.UploadedImages;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 
@@ -24,12 +25,14 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
     private ArrayList<String> pictureLIst;
     private FragmentManager fragmentManager;
     private Group currentGroup;
+    UploadedImages uploadedImages;
 
-    public PictureAdapter(Context context, ArrayList<String> List, Group currentGroup, FragmentManager fm) {
+    public PictureAdapter(Context context, ArrayList<String> List, Group currentGroup, FragmentManager fm, UploadedImages uploadedImages) {
         this.pictureLIst = List;
         this.context = context;
         this.currentGroup = currentGroup;
         this.fragmentManager = fm;
+        this.uploadedImages = uploadedImages;
     }
 
 
@@ -80,6 +83,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHold
                 groupFeedFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentManager.beginTransaction().replace(R.id.preview_frame, groupFeedFragment).addToBackStack(null).commit();
+                uploadedImages.dismiss();
             }
         }
     }

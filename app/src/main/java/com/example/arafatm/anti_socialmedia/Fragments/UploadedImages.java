@@ -89,7 +89,7 @@ public class UploadedImages extends DialogFragment {
         Group currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
 
         pictureList = new ArrayList<>();
-        pictureAdapter = new PictureAdapter(getContext(), pictureList, currentGroup, getActivity().getSupportFragmentManager());
+        pictureAdapter = new PictureAdapter(getContext(), pictureList, currentGroup, getActivity().getSupportFragmentManager(), UploadedImages.this);
     }
 
     @Override
