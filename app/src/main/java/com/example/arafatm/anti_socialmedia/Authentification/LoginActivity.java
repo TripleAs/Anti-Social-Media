@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         persistLogin();
 
         //title
-        title.setText("Anti-Social\nMedia");
+        title.setText("Anti-Social Media");
 
         // Login via Parse
         parseLoginButton.setOnClickListener(new View.OnClickListener() {
