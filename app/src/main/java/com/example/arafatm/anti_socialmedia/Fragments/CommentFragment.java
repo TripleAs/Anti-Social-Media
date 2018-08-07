@@ -135,7 +135,7 @@ public class CommentFragment extends Fragment{
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser();
+        postsQuery.getTop();
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override

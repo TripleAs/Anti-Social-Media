@@ -32,7 +32,7 @@ public class PhotoHelper {
     private Uri uri;
     String imagePath;
     File resizedFile;
-    int SOME_WIDTH = 240;
+    int SOME_WIDTH = 480;
 
     public final String APP_TAG = "MyCustomApp";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;

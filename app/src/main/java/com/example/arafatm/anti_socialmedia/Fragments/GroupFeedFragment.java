@@ -79,7 +79,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
     @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
-    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
 
     //for posting
     PostAdapter postAdapter;
@@ -414,7 +413,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser().forGroup(group);
+        postsQuery.getTop().forGroup(group);
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
