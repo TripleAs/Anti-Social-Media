@@ -14,7 +14,9 @@ import android.widget.SearchView;
 
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.FriendListAdapter;
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -85,26 +87,21 @@ public class GroupCreationFragment extends Fragment {
         List<String> friendListIds = new ArrayList<>();
         friendListIds = currentUser.getList("friendList");
 
-        //TODO
-        //Change this way to Amy way of finding facebook friends
+        // use usernames/FB Ids to find users
+        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
+        friendsQuery.whereContainedIn("username", friendListIds);
 
-        // use Ids to find users
-        for (int i = 0; i < friendListIds.size(); i++) {
-            //   for each id, find corresponding use
-            try {
-                ParseUser user = ParseUser.getQuery().get(friendListIds.get(i));
-//                ParseUser.getQuery().whereEqualTo("username", friendListIds.get(i))
-                friendList.add(user);
-            } catch (ParseException e) {
-                e.printStackTrace();
+        friendsQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    friendList.addAll(objects);
+                    friendListAdapter.notifyDataSetChanged();
+                } else {
+                    e.printStackTrace();
+                }
             }
-        }
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        });
     }
 
     @Override
