@@ -439,12 +439,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 }
             }
         });
-
     }
 
     private void refreshFeed() {
         PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
-
         adapter.clear();
         loadTopPosts();
         rvPosts.scrollToPosition(0);
