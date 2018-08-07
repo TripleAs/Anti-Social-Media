@@ -60,6 +60,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String caption;
     private boolean selected = false;
     private int groupId;
+    public static Group publicCurrentGroup;
     private Group group;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
@@ -71,20 +72,27 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static boolean goToUpload = false;
     ArrayList<Story> allStories;
     private ImageView prev_story;
+    public static boolean goToPost = false;
+    private String selectedImageURL;
     private String videoFilePath;
 
-    @BindView(R.id.tvGroupName) TextView tvGroupName;
+    @BindView(R.id.tvGroupName)
+    TextView tvGroupName;
+    @BindView(R.id.ivCoverPhoto)
+    ImageView ivGroupPic;
+    @BindView(R.id.ivStartChat)
+    ImageView ivStartChat;
+    @BindView(R.id.ivThreeDots)
+    ImageView ivThreeDots;
+    @BindView(R.id.ivLaunchNewPost)
+    ImageView ivLaunchNewPost;
     //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-    @BindView(R.id.ivCoverPhoto) ImageView ivGroupPic;
-    @BindView(R.id.ivStartChat) ImageView ivStartChat;
-    @BindView(R.id.ivThreeDots) ImageView ivThreeDots;
-    @BindView(R.id.ivLaunchNewPost) ImageView ivLaunchNewPost;
 
     //for posting
-    PostAdapter postAdapter;
-    ArrayList<Post> posts;
-    @BindView(R.id.rvPostsFeed)
-    RecyclerView rvPosts;
+    public static PostAdapter postAdapter;
+    public static ArrayList<Post> posts;
+    public static
+     RecyclerView rvPosts;
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
     String themeName;
@@ -133,25 +141,29 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         if (bundle != null) {
             groupObjectId = bundle.getString(ARG_PARAM1, groupObjectId);
             themeName = bundle.getString("theme", KEY_BLUE);
+            selectedImageURL = bundle.getString("imageURL");
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (goToShare) {
+        if (goToPost) {
+            goToPost = false;
+            CreatePostFragment cpFragment = CreatePostFragment.newInstance(selectedImageURL);
+            cpFragment.setTargetFragment(GroupFeedFragment.this, 1);
+            mListener.navigateToDialog(cpFragment);
+        } else if (goToShare) {
             goToShare = false;
             ShareFromFragment shareFromFragment = ShareFromFragment.newInstance();
             shareFromFragment.setTargetFragment(GroupFeedFragment.this, 1);
             mListener.navigateToDialog(shareFromFragment);
         } else if (goToUpload) {
             goToUpload = false;
-            UploadedImages uploadedImages = UploadedImages.newInstance();
+            UploadedImages uploadedImages = UploadedImages.newInstance(group);
             uploadedImages.setTargetFragment(GroupFeedFragment.this, 1);
             mListener.navigateToDialog(uploadedImages);
-        } else  {
+        } else {
             // Inflate the layout for this fragment
             // Equivalent to setContentView
             // create ContextThemeWrapper from the original Activity Context with the custom theme
@@ -211,7 +223,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         ivLaunchNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreatePostFragment cpFragment = CreatePostFragment.newInstance(group);
+                CreatePostFragment cpFragment = CreatePostFragment.newInstance(null);
                 cpFragment.setTargetFragment(GroupFeedFragment.this, 1);
                 mListener.navigateToDialog(cpFragment);
             }
@@ -297,6 +309,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void initiateGroup(ParseObject object) {
         group = (Group) object;
+        publicCurrentGroup = group;
         groupName = object.getString("groupName");
         tvGroupName.setText(groupName);
         groupId = convert(object.getObjectId());

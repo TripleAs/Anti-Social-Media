@@ -40,9 +40,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class LoginActivity extends AppCompatActivity {
     private TextView title;
     private EditText usernameInput;
@@ -114,9 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     // Every activity/fragment with FacebookSDK Login should forward onActivityResult to the callbackManager.

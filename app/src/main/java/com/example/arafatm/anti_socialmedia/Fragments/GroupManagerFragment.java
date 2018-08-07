@@ -127,13 +127,14 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
 
         ParseUser user = ParseUser.getCurrentUser();
         List<Group> groups = user.getList("groups");
-
+            groupList.clear();
         if (groups == null) {
             final Group.Query postQuery = new Group.Query();
             postQuery.findInBackground(new FindCallback<Group>() {
                 @Override
                 public void done(final List<Group> objects, ParseException e) {
                     if (e == null) {
+                        groupList.clear();
                         groupList.addAll(objects);
 
                         groupAdapter.notifyDataSetChanged();

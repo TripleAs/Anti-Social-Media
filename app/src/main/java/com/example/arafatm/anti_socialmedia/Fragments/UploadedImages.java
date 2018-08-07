@@ -13,11 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.PictureAdapter;
 import com.example.arafatm.anti_socialmedia.Util.SpacesItemDecoration;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +57,8 @@ public class UploadedImages extends DialogFragment {
     public UploadedImages() {
         // Required empty public constructor
     }
-//
+
+    //
 //    /**
 //     * Use this factory method to create a new instance of
 //     * this fragment using the provided parameters.
@@ -55,11 +68,12 @@ public class UploadedImages extends DialogFragment {
 //     * @return A new instance of fragment UploadedImages.
 //     */
     // TODO: Rename and change types and number of parameters
-    public static UploadedImages newInstance() {
+    public static UploadedImages newInstance(Group group) {
         UploadedImages fragment = new UploadedImages();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(Group.class.getSimpleName(), Parcels.wrap(group));
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,8 +86,10 @@ public class UploadedImages extends DialogFragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        Group currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
+
         pictureList = new ArrayList<>();
-        pictureAdapter = new PictureAdapter(getContext(), pictureList);
+        pictureAdapter = new PictureAdapter(getContext(), pictureList, currentGroup, getActivity().getSupportFragmentManager(), UploadedImages.this);
     }
 
     @Override
@@ -123,9 +139,40 @@ public class UploadedImages extends DialogFragment {
     }
 
     /*loads all groups from parse and display it*/
-    private void loadAllPIctureURL(final View view, final RecyclerView recyclerView) {
+    private void loadAllPIctureURL() {
+        String accessToken = "8379540590.7601641.40a698a312bd4027b4d9548b746a8f0e";
+        String url = "https://api.instagram.com/v1/users/self/media/recent?access_token="
+                + accessToken;
 
+        //makes api call
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        client.get(url, params, new JsonHttpResponseHandler() {
 
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                try {
+                    JSONArray object = response.getJSONArray("data");
+                    for (int i = 0; i < object.length(); i++) {
+                        JSONObject userData = (JSONObject) object.get(i);
+                        JSONObject images = (JSONObject) userData.getJSONObject("images");
+                        JSONObject pictureThumbnail = (JSONObject) images.getJSONObject("thumbnail");
+                        String pictureUrl = pictureThumbnail.getString("url");
+                        pictureList.add(pictureUrl);
+                    }
+                    pictureAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 
 
@@ -139,5 +186,6 @@ public class UploadedImages extends DialogFragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         rvPictures.setLayoutManager(gridLayoutManager);
         rvPictures.setAdapter(pictureAdapter);
+        loadAllPIctureURL();
     }
 }

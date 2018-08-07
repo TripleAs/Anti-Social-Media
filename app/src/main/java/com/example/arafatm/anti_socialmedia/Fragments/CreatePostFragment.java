@@ -1,6 +1,8 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.R;
@@ -26,8 +30,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +51,7 @@ public class CreatePostFragment extends DialogFragment {
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private Fragment callback;
+    private String imageURl;
 
     private Group currentGroup;
     private ParseACL acl;
@@ -63,10 +66,10 @@ public class CreatePostFragment extends DialogFragment {
         void onFinishCreatePost(Post post);
     }
 
-    public static CreatePostFragment newInstance(Group group) {
+    public static CreatePostFragment newInstance(String imageURL) {
         CreatePostFragment frag = new CreatePostFragment();
         Bundle args = new Bundle();
-        args.putParcelable(Group.class.getSimpleName(), Parcels.wrap(group));
+        args.putString("imageURL", imageURL);
         frag.setArguments(args);
         return frag;
     }
@@ -74,7 +77,14 @@ public class CreatePostFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
+        imageURl = this.getArguments().getString("imageURL"); //get image url
+
+
+        if (imageURl != null) {
+            //set hasMew to true
+            hasNewPic = true;
+        }
+
         try {
             callback = getTargetFragment();
             mListener = (CreatePostFragment.OnFragmentInteractionListener) callback;
@@ -93,6 +103,9 @@ public class CreatePostFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        if (hasNewPic)
+            Glide.with(getContext()).load(imageURl).into(ivPreview);
 
         // Show soft keyboard automatically and request focus to field
         etNewPost.requestFocus();
@@ -113,10 +126,10 @@ public class CreatePostFragment extends DialogFragment {
             public void onClick(View view) {
                 GroupFeedFragment.goToShare = true;
                 // come back after lunch!
-                Fragment shareFromFragment = new GroupFeedFragment();
+                Fragment groupFeedFragment = new GroupFeedFragment();
                 FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.preview_frame, shareFromFragment)
+                fragmentTransaction.replace(R.id.preview_frame, groupFeedFragment)
                         .commit();
                 dismiss();
             }
@@ -159,18 +172,31 @@ public class CreatePostFragment extends DialogFragment {
     private void sendPostToParse() {
         prepareACL();
         final Post newPost = new Post();
+        ParseFile image = null;
         newPost.setACL(acl);
         newPost.setACL(new ParseACL(ParseUser.getCurrentUser()));
         String newMessage = etNewPost.getText().toString();
+
+        if (currentGroup == null) {
+            currentGroup = GroupFeedFragment.publicCurrentGroup;
+        }
         newPost.initPost(newMessage, currentGroup);
 
         if (hasNewPic) {
-            final ParseFile image = photoHelper.grabImage();
-            image.saveInBackground(new SaveCallback() {
+            if (imageURl != null) {
+                byte[] img = Base64.decode(imageURl, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+                image = new ParseFile("image", img);
+            } else {
+                image = photoHelper.grabImage();
+            }
+
+            final ParseFile finalImage = image;
+            finalImage.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        newPost.setImage(image);
+                        newPost.setImage(finalImage);
                         saveNewPost(newPost);
                     } else {
                         e.printStackTrace();
