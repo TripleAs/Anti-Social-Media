@@ -351,7 +351,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             text = currentStory.getStoryCaption();
             caption = currentStory.getStoryText();
 
-
             if (currentStory.getStoryType().compareTo("video") == 0) {
                 try {
                     videoFilePath = getVideoPath(currentStory);
