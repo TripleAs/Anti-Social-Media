@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.FriendListAdapter;
@@ -155,7 +156,11 @@ public class GroupCreationFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                passToCustomization();
+                if (friendList.size() != 0) {
+                    passToCustomization();
+                } else {
+                    Toast.makeText(getContext(), "Cannot create a group with no members", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

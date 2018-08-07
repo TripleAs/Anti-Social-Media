@@ -19,7 +19,6 @@ import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.GroupListAdapter;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -107,24 +106,25 @@ public class UserGroupList extends Fragment {
         //RECYCLERVIEW SETUP
         // Lookup the recyclerview in activity layout
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_groupList);
-
         groupList = new ArrayList<>();
-        final Group.Query postQuery = new Group.Query();
-        postQuery.findInBackground(new FindCallback<Group>() {
-            @Override
-            public void done(final List<Group> objects, ParseException e) {
-                if (e == null) {
-                    groupList.addAll(objects);
-                    // Create adapter passing in the sample user data
-                    groupListAdapter = new GroupListAdapter(getContext(), groupList);
-                    // Attach the adapter to the recyclerview to populate items
-                    recyclerView.setAdapter(groupListAdapter);
-                    // Set layout manager to position the items
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        List<Group> groups = ParseUser.getCurrentUser().getList("groups");
+        groupList.clear();
+        if (groups != null) {
+            for (int i = 0; i < groups.size(); i++) {
+                try {
+                    Group group = groups.get(i).fetchIfNeeded();
+                    groupList.add(group);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
-        });
-
+            // Create adapter passing in the sample user data
+            groupListAdapter = new GroupListAdapter(getContext(), groupList);
+            // Attach the adapter to the recyclerview to populate items
+            recyclerView.setAdapter(groupListAdapter);
+            // Set layout manager to position the items
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
         return view;
     }
 
