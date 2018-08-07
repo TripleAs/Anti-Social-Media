@@ -3,7 +3,6 @@ package com.example.arafatm.anti_socialmedia.Util;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,10 +98,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         displayLikeImage(viewHolder.ivLike, post);
         displayLikesCount(viewHolder.tvNumLikes, post);
 
+        if (post.getImage() != null || post.getImageURL() != null ) {
+        String imageURL = null;
+        if (post.getImageURL() != null) {
+            imageURL = post.getImageURL();
+        } else {
+             imageURL = post.getImage().getUrl();
+        }
         //picture with post
-        if (post.getImage() != null) {
             Glide.with(context)
-                    .load(post.getImage().getUrl())
+                    .load(imageURL)
                     .into(viewHolder.imagePost);
         }
 

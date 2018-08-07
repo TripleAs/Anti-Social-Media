@@ -1,8 +1,6 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +27,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +57,7 @@ public class CreatePostFragment extends DialogFragment {
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private Fragment callback;
     private String imageURl;
-    private  ParseFile image = null;
+    private ParseFile image = null;
 
     private Group currentGroup;
     private ParseACL acl;
@@ -154,7 +153,11 @@ public class CreatePostFragment extends DialogFragment {
         ivCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendPostToParse();
+                try {
+                    sendPostToParse();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -176,7 +179,7 @@ public class CreatePostFragment extends DialogFragment {
         }
     }
 
-    private void sendPostToParse() {
+    private void sendPostToParse() throws IOException {
         prepareACL();
         final Post newPost = new Post();
         ParseFile image = null;
@@ -190,26 +193,25 @@ public class CreatePostFragment extends DialogFragment {
         newPost.initPost(newMessage, currentGroup);
 
         if (hasNewPic) {
-            if (imageURl != null) {
-                byte[] img = Base64.decode(imageURl, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-                image = new ParseFile("image", img);
-            } else {
+            if (imageURl == null) {
                 image = photoHelper.grabImage();
+                final ParseFile finalImage = image;
+                finalImage.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                                newPost.setImage(finalImage);
+                                saveNewPost(newPost);
+                        } else {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } else {
+                newPost.setImageURL(imageURl);
+                saveNewPost(newPost);
             }
 
-            final ParseFile finalImage = image;
-            finalImage.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        newPost.setImage(finalImage);
-                        saveNewPost(newPost);
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
         } else {
             saveNewPost(newPost);
         }
@@ -220,7 +222,6 @@ public class CreatePostFragment extends DialogFragment {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getContext(), "Saved post", Toast.LENGTH_SHORT).show();
                     currentGroup.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {

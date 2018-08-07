@@ -255,7 +255,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 if (e == null) {
                     //fetches all stories for current group
                     for (int i = 0; i < objects.size(); i++) {
-                        if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
+                        if (objects.get(i).getAllRecipient().contains(publicCurrentGroup.getObjectId())) {
                             allStories.add(objects.get(i));
                         }
                     }
