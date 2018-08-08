@@ -244,29 +244,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-
-        //TODO: ARAFAT'S IMPLEMENTATION
-        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
-        /*Gets all the stories*/
-        final Story.Query storyQuery = new Story.Query();
-        storyQuery.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> objects, ParseException e) {
-                if (e == null) {
-                    //fetches all stories for current group
-                    for (int i = 0; i < objects.size(); i++) {
-                        if (objects.get(i).getAllRecipient().contains(publicCurrentGroup.getObjectId())) {
-                            allStories.add(objects.get(i));
-                        }
-                    }
-                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
-                    displayStory(R.id.fragment_child);
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -331,6 +308,28 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts.setAdapter(postAdapter);
 
         loadTopPosts();
+
+        //TODO: ARAFAT'S IMPLEMENTATION
+        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
+        /*Gets all the stories*/
+        final Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                if (e == null) {
+                    //fetches all stories for current group
+                    for (int i = 0; i < objects.size(); i++) {
+                        if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
+                            allStories.add(objects.get(i));
+                        }
+                    }
+                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
+                    displayStory(R.id.fragment_child);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /*Removes the story preview fragment*/
@@ -425,7 +424,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().forGroup(group);
+        postsQuery.getTop().withUser().forGroup(group);
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
