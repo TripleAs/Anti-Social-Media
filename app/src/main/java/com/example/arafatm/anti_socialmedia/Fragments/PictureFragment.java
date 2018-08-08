@@ -105,8 +105,19 @@ public class PictureFragment extends Fragment {
         //creates a bitmap out of it
         final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
         Bitmap rotated = rotateImage(currentAngle, bitmap);
+
+        int currentBitmapWidth = rotated.getWidth();
+        int currentBitmapHeight = rotated.getHeight();
+
+        int ivWidth = 3200;
+        int ivHeight = 1300;
+        int newWidth = ivWidth;
+
+        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+
+        Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
         //displays the image
-        displayImage.setImageBitmap(rotated);
+        displayImage.setImageBitmap(newbitMap);
 
         TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
         TextView showText = (TextView) view.findViewById(R.id.tv_showText);
