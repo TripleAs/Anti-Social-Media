@@ -245,27 +245,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         });
 
 
-        //TODO: ARAFAT'S IMPLEMENTATION
-        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
-        /*Gets all the stories*/
-        final Story.Query storyQuery = new Story.Query();
-        storyQuery.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> objects, ParseException e) {
-                if (e == null) {
-                    //fetches all stories for current group
-                    for (int i = 0; i < objects.size(); i++) {
-                        if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
-                            allStories.add(objects.get(i));
-                        }
-                    }
-                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
-                    displayStory(R.id.fragment_child);
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
+
 
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,6 +311,28 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts.setAdapter(postAdapter);
 
         loadTopPosts();
+
+        //TODO: ARAFAT'S IMPLEMENTATION
+        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
+        /*Gets all the stories*/
+        final Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                if (e == null) {
+                    //fetches all stories for current group
+                    for (int i = 0; i < objects.size(); i++) {
+                        if (objects.get(i).getAllRecipient().contains(group.getObjectId())) {
+                            allStories.add(objects.get(i));
+                        }
+                    }
+                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
+                    displayStory(R.id.fragment_child);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /*Removes the story preview fragment*/

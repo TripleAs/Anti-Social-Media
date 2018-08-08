@@ -12,7 +12,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         app:titleTextColor="@android:color/white"
@@ -30,12 +30,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="12dp"
+                android:layout_marginLeft="10dp"
                 android:text="Group Manager"
                 android:textColor="@color/solid_white"
                 android:shadowDx="-3"
                 android:shadowDy="3"
-                android:textSize="18sp" />
+                android:textSize="25sp" />
 
             <ImageView
                 android:id="@+id/ic_add_icon"
@@ -53,14 +53,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvGroups"
         android:layout_width="match_parent"
-        android:layout_height="527dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/tb_toolbar"
         android:background="@color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tb_toolbar"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -17,6 +17,11 @@
 
     </style>
 
+    <style name="EditTextColorCustom" parent="@style/AppBaseTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/gray</item>
+    </style>
+
     <style name="GroupRedTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/alphabet_g</item>
         <item name="android:colorBackground">@color/alphabet_b</item>
