@@ -228,8 +228,8 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             @Override
             public void done(ParseException e) {
                 GroupFeedFragment groupFeedFragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
+                GroupManagerFragment.groupAdapter.notifyDataSetChanged();
                 mListener.navigate_to_fragment(groupFeedFragment);
-//                refreshListener.refreshManager();
             }
         });
     }

@@ -62,6 +62,7 @@ import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -99,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setContentView(R.layout.activity_main);
+
+        ParseACL parseACL = new ParseACL(ParseUser.getCurrentUser());
+        parseACL.setPublicReadAccess(true);
+        parseACL.setPublicWriteAccess(true);
+        ParseUser.getCurrentUser().setACL(parseACL);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
         Toolbar toolbar = findViewById(R.id.my_toolbar);
