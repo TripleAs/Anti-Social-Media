@@ -125,7 +125,6 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
 
     /*loads all groups from parse and display it*/
     private void loadAllGroups(final View view, final RecyclerView recyclerView) {
-
         ParseUser user = ParseUser.getCurrentUser();
         List<Group> groups = user.getList("groups");
         groupList.clear();

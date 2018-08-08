@@ -58,7 +58,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String groupName;
     private String text;
     private String caption;
-    private boolean selected = false;
+    public static boolean selected = false;
     private int groupId;
     public static Group publicCurrentGroup;
     private Group group;
@@ -248,7 +248,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
                 if (storyIndex < allStories.size() - 1) //checks out of bounce exception
                     storyIndex++;
                 displayStory(R.id.fragment_child);
@@ -273,7 +273,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         prev_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "prev story", Toast.LENGTH_SHORT).show();
                 if (storyIndex > 1)  //checks out of bounce exception
                     storyIndex--;
                 displayStory(R.id.fragment_child);
