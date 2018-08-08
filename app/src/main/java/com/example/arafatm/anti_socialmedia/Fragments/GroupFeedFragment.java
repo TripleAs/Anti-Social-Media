@@ -206,11 +206,12 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
                     initiateGroup(object);
+
+
                 } else {
                     e.printStackTrace();
                 }
             }
-
         });
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -306,12 +307,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
-
         loadTopPosts();
-
-        //TODO: ARAFAT'S IMPLEMENTATION
-        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
-        /*Gets all the stories*/
+      
         final Story.Query storyQuery = new Story.Query();
         storyQuery.findInBackground(new FindCallback<Story>() {
             @Override
@@ -319,7 +316,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 if (e == null) {
                     //fetches all stories for current group
                     for (int i = 0; i < objects.size(); i++) {
-                        if (objects.get(i).getAllRecipient().contains(publicCurrentGroup.getObjectId())) {
+                        List<String> recIDs = objects.get(i).getAllRecipient();
+                        if (recIDs != null && recIDs.contains(publicCurrentGroup.getObjectId())) {
                             allStories.add(objects.get(i));
                         }
                     }
@@ -413,8 +411,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 .commit();
     }
 
-
-    //TODO: ARAFAT'S IMPLEMENTATION
 
     @Override
     public void onDetach() {
