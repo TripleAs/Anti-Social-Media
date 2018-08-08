@@ -46,7 +46,7 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.ViewHolder
 
         ParseObject group = request.getRequestedGroup();
         String groupName = group.getString("groupName");
-        String senderName = request.getSender().getString("fullName");
+        String senderName = (request.getSender()== null) ? null: request.getSender().getString("fullName");
         String requestMessage = String.format("%s invites you to join the group %s.", senderName, groupName);
         viewHolder.tvRequest.setText(requestMessage);
 

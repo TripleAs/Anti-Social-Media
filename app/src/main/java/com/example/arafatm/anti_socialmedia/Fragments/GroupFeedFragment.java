@@ -244,9 +244,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-
-
-
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -352,7 +349,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         if (currentStory != null) {
             text = currentStory.getStoryCaption();
             caption = currentStory.getStoryText();
-
 
             if (currentStory.getStoryType().compareTo("video") == 0) {
                 try {

@@ -23,6 +23,7 @@ public class Post extends ParseObject {
     private static final String KEY_COMMENTS = "comments";
     private static final String KEY_COMMENT = "comment";
     private static final String KEY_LIKES = "likes";
+    private static final String KEY_IMAGEURL = "imageURL";
 
 
     public String getMessage() {
@@ -45,6 +46,13 @@ public class Post extends ParseObject {
         put(KEY_MEDIA, image);
     }
 
+    public String getImageURL() {
+        return getString(KEY_IMAGEURL);
+    }
+
+    public void setImageURL(String imageURL) {
+        put(KEY_IMAGEURL, imageURL);
+    }
 
     public ParseUser getSender() {
         if (getParseUser(KEY_SENDER) == null) return null;

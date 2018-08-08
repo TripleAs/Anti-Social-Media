@@ -1,6 +1,6 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
-        import android.content.Context;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,7 +18,6 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.GroupManagerAdapter;
 import com.example.arafatm.anti_socialmedia.Util.SpacesItemDecoration;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -36,7 +35,8 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
     ArrayList<Group> groupList;
     Context mContext;
 
-    @BindView(R.id.ic_add_icon) ImageView add_group;
+    @BindView(R.id.ic_add_icon)
+    ImageView add_group;
     RecyclerView rvGroups;
     Toolbar toolbar;
     private String mParam1;
@@ -95,6 +95,7 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+
         void navigate_to_fragment(Fragment fragment);
     }
 
@@ -127,23 +128,8 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
 
         ParseUser user = ParseUser.getCurrentUser();
         List<Group> groups = user.getList("groups");
-            groupList.clear();
-        if (groups == null) {
-            final Group.Query postQuery = new Group.Query();
-            postQuery.findInBackground(new FindCallback<Group>() {
-                @Override
-                public void done(final List<Group> objects, ParseException e) {
-                    if (e == null) {
-                        groupList.clear();
-                        groupList.addAll(objects);
-
-                        groupAdapter.notifyDataSetChanged();
-                    } else {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } else {
+        groupList.clear();
+        if (groups != null) {
             for (int i = 0; i < groups.size(); i++) {
                 try {
                     Group group = groups.get(i).fetchIfNeeded();
