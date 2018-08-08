@@ -180,11 +180,13 @@ public class CreatePostFragment extends DialogFragment {
     }
 
     private void sendPostToParse() throws IOException {
-        prepareACL();
         final Post newPost = new Post();
         ParseFile image = null;
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseACL acl = new ParseACL(currentUser);
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
         newPost.setACL(acl);
-        newPost.setACL(new ParseACL(ParseUser.getCurrentUser()));
         String newMessage = etNewPost.getText().toString();
 
         if (currentGroup == null) {
@@ -238,14 +240,6 @@ public class CreatePostFragment extends DialogFragment {
                 }
             }
         });
-    }
-
-    private void prepareACL() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        currentUser.setACL(new ParseACL(currentUser));
-        acl = new ParseACL(currentUser);
-        acl.setPublicReadAccess(true);
-        acl.setPublicWriteAccess(true);
     }
 
     @Override

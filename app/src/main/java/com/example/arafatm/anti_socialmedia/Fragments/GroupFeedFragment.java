@@ -307,9 +307,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
-
         loadTopPosts();
-
+      
         final Story.Query storyQuery = new Story.Query();
         storyQuery.findInBackground(new FindCallback<Story>() {
             @Override
@@ -421,7 +420,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().forGroup(group);
+        postsQuery.getTop().withUser().forGroup(group);
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
