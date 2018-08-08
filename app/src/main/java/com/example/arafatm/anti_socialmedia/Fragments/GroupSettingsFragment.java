@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.MemberAdapter;
@@ -175,7 +176,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
 
         ParseFile currentImage = currentGroup.getGroupImage();
         if (currentImage != null) {
-            Glide.with(getContext()).load(currentImage.getUrl()).into(ivPreview);
+            Glide.with(getContext()).load(currentImage.getUrl()).apply(RequestOptions.centerCropTransform()).into(ivPreview);
         } else {
             ivPreview.setImageResource(R.drawable.ic_group_default);
         }
