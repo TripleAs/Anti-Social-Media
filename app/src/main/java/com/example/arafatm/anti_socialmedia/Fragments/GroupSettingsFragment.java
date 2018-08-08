@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.GroupManagerAdapter;
 import com.example.arafatm.anti_socialmedia.Util.MemberAdapter;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.parse.FindCallback;
@@ -83,7 +84,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     }
 
     public interface OnSettingsUpdatedListener {
-        void refreshManager();
+        void refreshManager(int position, Group currentGroup);
     }
 
     public static GroupSettingsFragment newInstance(Group group) {
@@ -100,7 +101,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         super.onAttach(context);
         if (context instanceof GroupSettingsFragment.OnFragmentInteractionListener) {
             mListener = (GroupSettingsFragment.OnFragmentInteractionListener) context;
-            refreshListener = (GroupSettingsFragment.OnSettingsUpdatedListener) new GroupManagerFragment();
+//            refreshListener = (GroupSettingsFragment.OnSettingsUpdatedListener) new GroupManagerFragment();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -229,7 +230,8 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             @Override
             public void done(ParseException e) {
                 GroupFeedFragment groupFeedFragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
-                GroupManagerFragment.groupAdapter.notifyDataSetChanged();
+                int position = GroupManagerFragment.groupAdapter.currentGroupPosition;
+                GroupManagerFragment.refreshManager(position, currentGroup);
                 mListener.navigate_to_fragment(groupFeedFragment);
             }
         });

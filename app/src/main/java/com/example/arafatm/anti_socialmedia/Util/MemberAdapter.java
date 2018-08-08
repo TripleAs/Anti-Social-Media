@@ -27,7 +27,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     private HashMap<String, String> nicknamesDict;
     private FragmentManager fragmentManager;
     private Fragment fragment;
-    private String workingName;
 
     public MemberAdapter(ArrayList<ParseUser> List, HashMap<String, String> dict, Fragment frag, FragmentManager fm) {
         this.members = List;
@@ -58,14 +57,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             String nickname = nicknamesDict.get(objectId);
             if (nickname != null) {
                 viewHolder.tvNickname.setText(nickname);
-                workingName = nickname;
+                viewHolder.workingName = nickname;
             } else {
                 viewHolder.tvNickname.setText(name);
-                workingName = name;
+                viewHolder.workingName = name;
             }
         } else {
             viewHolder.tvNickname.setText(name);
-            workingName = name;
+            viewHolder.workingName = name;
         }
 
         PhotoHelper.displayPropic(member, viewHolder.ivPropic, context);
@@ -82,6 +81,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         public TextView tvFullName;
         public ImageView ivPropic;
         public ImageButton ibEdit;
+        public String workingName;
 
         public ViewHolder(View view) {
             super(view);

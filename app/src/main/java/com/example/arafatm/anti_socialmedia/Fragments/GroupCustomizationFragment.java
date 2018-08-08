@@ -209,14 +209,8 @@ public class GroupCustomizationFragment extends Fragment {
         newGroup.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                //bundle the group objectId and send to groupfeed fragment for later use
-                Bundle args = new Bundle();
                 String objectId = newGroup.getObjectId();
-                args.putString("param1", objectId);
-
-                /*Navigates to the GroupFeedFragment*/
-                Fragment fragment = new GroupFeedFragment();
-                fragment.setArguments(args);
+                Fragment fragment = GroupFeedFragment.newInstance(objectId, theme);
                 mListener.navigate_to_fragment(fragment);
             }
         });
