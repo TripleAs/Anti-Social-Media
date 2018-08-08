@@ -244,7 +244,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -425,7 +424,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().forGroup(group);
+        postsQuery.getTop().withUser().forGroup(group);
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
