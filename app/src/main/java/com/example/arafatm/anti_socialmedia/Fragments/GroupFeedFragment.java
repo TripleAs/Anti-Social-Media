@@ -206,11 +206,12 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
                     initiateGroup(object);
+
+
                 } else {
                     e.printStackTrace();
                 }
             }
-
         });
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -241,29 +242,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             public void onClick(View view) {
                 GroupSettingsFragment groupSettingsFragment = GroupSettingsFragment.newInstance(group);
                 mListener.navigate_to_fragment(groupSettingsFragment);
-            }
-        });
-
-
-        //TODO: ARAFAT'S IMPLEMENTATION
-        //TODO:: :::::: Get video to show! , Take care of resizing images, make sure sharing works well
-        /*Gets all the stories*/
-        final Story.Query storyQuery = new Story.Query();
-        storyQuery.findInBackground(new FindCallback<Story>() {
-            @Override
-            public void done(List<Story> objects, ParseException e) {
-                if (e == null) {
-                    //fetches all stories for current group
-                    for (int i = 0; i < objects.size(); i++) {
-                        if (objects.get(i).getAllRecipient().contains(publicCurrentGroup.getObjectId())) {
-                            allStories.add(objects.get(i));
-                        }
-                    }
-                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
-                    displayStory(R.id.fragment_child);
-                } else {
-                    e.printStackTrace();
-                }
             }
         });
 
@@ -331,6 +309,26 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts.setAdapter(postAdapter);
 
         loadTopPosts();
+
+        final Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                if (e == null) {
+                    //fetches all stories for current group
+                    for (int i = 0; i < objects.size(); i++) {
+                        List<String> recIDs = objects.get(i).getAllRecipient();
+                        if (recIDs != null && recIDs.contains(publicCurrentGroup.getObjectId())) {
+                            allStories.add(objects.get(i));
+                        }
+                    }
+                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
+                    displayStory(R.id.fragment_child);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /*Removes the story preview fragment*/
@@ -414,8 +412,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 .commit();
     }
 
-
-    //TODO: ARAFAT'S IMPLEMENTATION
 
     @Override
     public void onDetach() {
