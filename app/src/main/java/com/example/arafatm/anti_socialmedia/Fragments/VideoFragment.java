@@ -122,18 +122,19 @@ public class VideoFragment extends Fragment {
 
         displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
      if (videoFilePath != null) {
-         displayVideo.setVideoPath(videoFilePath);
-         displayVideo.setMediaController(null);
-         displayVideo.requestFocus();
-         displayVideo.start();
+//         displayVideo.setVideoPath(videoFilePath);
+//         displayVideo.setMediaController(null);
+//         displayVideo.requestFocus();
+//         displayVideo.start();
      }
 
-        displayVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayVideo.start();
-            }
-        });
+//        displayVideo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                displayVideo.start();
+//            }
+//        });
+
         TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
         TextView showText = (TextView) view.findViewById(R.id.tv_showText);
 

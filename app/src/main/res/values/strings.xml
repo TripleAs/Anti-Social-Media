@@ -5,7 +5,8 @@
 
     <string name="ig_client_id">cda0c44f26ef4c20a8344dd39a1ee711</string>
     <string name="ig_client_secret">d6165f0610584100b5cef3615a703ba6</string>
-    <string name="ig_access_token">1353614808.cda0c44.3760ef013171446192da32e4e64fc39c</string>
+    <string name="ig_access_token">"8379540590.7601641.40a698a312bd4027b4d9548b746a8f0e"</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

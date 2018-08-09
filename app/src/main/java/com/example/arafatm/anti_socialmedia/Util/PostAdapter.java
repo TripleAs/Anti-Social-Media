@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Fragments.CommentFragment;
@@ -66,7 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final PostAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final PostAdapter.ViewHolder viewHolder, final int position) {
         // get the data according to this position
         final Post post = mPosts.get(position);
 
@@ -132,6 +133,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             }
         });
 
+        viewHolder.ivDeletePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "deleting post", Toast.LENGTH_SHORT).show();
+                Post toBeRemoved = mPosts.get(position);
+                mPosts.remove(position);
+                notifyDataSetChanged();
+                toBeRemoved.deleteInBackground();
+            }
+        });
+
         viewHolder.tvFullName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +191,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         @BindView(R.id.ivLike) ImageView ivLike;
         @BindView(R.id.tvNumLikes) TextView tvNumLikes;
         @BindView(R.id.tvTimestamp) TextView tvTimestamp;
+        @BindView(R.id.iv_delete) ImageView ivDeletePost;
 
         public ViewHolder(View itemView) {
             super(itemView);

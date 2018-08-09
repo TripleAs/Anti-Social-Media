@@ -1,7 +1,9 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +27,6 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Story.PreviewStoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -58,7 +59,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String groupName;
     private String text;
     private String caption;
-    private boolean selected = false;
+    public static boolean selected = false;
     private int groupId;
     public static Group publicCurrentGroup;
     private Group group;
@@ -75,6 +76,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static boolean goToPost = false;
     private String selectedImageURL;
     private String videoFilePath;
+    private String dataType;
+    private String imageFilePath = null;
 
     @BindView(R.id.tvGroupName)
     TextView tvGroupName;
@@ -221,7 +224,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
+
         ivLaunchNewPost.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 CreatePostFragment cpFragment = CreatePostFragment.newInstance(null);
@@ -248,37 +253,43 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
                 if (storyIndex < allStories.size() - 1) //checks out of bounce exception
                     storyIndex++;
                 displayStory(R.id.fragment_child);
-                if (selected) //checks if in preview mode
-                    displayStory(R.id.preview_frame);
             }
         });
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selected) { //checks if in preview mode
-                    selected = false;
-                    clearPreviewFragment(PREVIEW_TAG); // clears preview fragment
-                } else {
-                    selected = true;
-                    displayStory(R.id.preview_frame); // display story on default fragment
-                }
+                selected = true;
+                //create a bundle
+                Bundle bundle = new Bundle();
+                //save all necessary info for story display
+                bundle.putString("text", text);
+                bundle.putString("caption", caption);
+                bundle.putString("imagePath", imageFilePath);
+                bundle.putString("videoPath", videoFilePath);
+                bundle.putString("dataType", dataType);
+
+                //create StoryDisplayfragment
+                StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
+                //add bundle to it
+                sFragment.setArguments(bundle);
+                //navigate to StoryDisplayfragment
+                sFragment.setTargetFragment(GroupFeedFragment.this, 1);
+                mListener.navigateToDialog(sFragment);
             }
         });
 
         prev_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "story " + storyIndex, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "prev story", Toast.LENGTH_SHORT).show();
                 if (storyIndex > 1)  //checks out of bounce exception
                     storyIndex--;
                 displayStory(R.id.fragment_child);
-                if (selected)
-                    displayStory(R.id.preview_frame);
             }
         });
     }
@@ -330,14 +341,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         });
     }
 
-    /*Removes the story preview fragment*/
-    private void clearPreviewFragment(String TAG_FRAGMENT) {
-        Fragment fragment = getFragmentManager().findFragmentByTag(TAG_FRAGMENT);
-        if (fragment != null)
-            getFragmentManager().beginTransaction().remove(fragment).commit();
-    }
-
-
     /*gets current story, checks if its a video or picture, gets the right fragment to display the story*/
     private void displayStory(int view_id) {
         final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
@@ -347,8 +350,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         if (currentStory != null) {
             text = currentStory.getStoryCaption();
             caption = currentStory.getStoryText();
-
-            if (currentStory.getStoryType().compareTo("video") == 0) {
+            dataType = currentStory.getStoryType();
+            if (dataType.compareTo("video") == 0) {
                 try {
                     videoFilePath = getVideoPath(currentStory);
                 } catch (ParseException e) {
@@ -356,7 +359,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 }
                 navigateToVideoFragment(videoFilePath, fragmentTransaction, view_id);
             } else {
-                String imageFilePath = null;
                 try {
                     imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
                 } catch (ParseException e1) {
@@ -372,7 +374,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         File outputFile = null;
         try {
             byte[] videoByte = currentStory.getStory().getData();
-            outputFile = File.createTempFile("file", "mp4", getCacheDir());
+            outputFile = File.createTempFile("file", ".mp4", getCacheDir());
             outputFile.deleteOnExit();
             FileOutputStream fileoutputstream = new FileOutputStream("myVideo.mp4");
             fileoutputstream.write(videoByte);
@@ -404,8 +406,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        args.putString("videoPath", PreviewStoryActivity.url); // FAKE
-        //    args.putString("videoPath", videoFilePath); // Real
+        //args.putString("videoPath", PreviewStoryActivity.url); // FAKE
+        args.putString("videoPath", videoFilePath); // Real
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
                 .commit();

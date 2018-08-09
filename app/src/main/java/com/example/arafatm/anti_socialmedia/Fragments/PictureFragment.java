@@ -20,6 +20,8 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.selected;
+
 public class PictureFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "imagePath";
@@ -106,18 +108,23 @@ public class PictureFragment extends Fragment {
         final Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
         Bitmap rotated = rotateImage(currentAngle, bitmap);
 
-        int currentBitmapWidth = rotated.getWidth();
-        int currentBitmapHeight = rotated.getHeight();
+        if (!selected) { // resize this to fit the cover framelayout on the feed
+            int currentBitmapWidth = rotated.getWidth();
+            int currentBitmapHeight = rotated.getHeight();
 
-        int ivWidth = 3200;
-        int ivHeight = 1300;
-        int newWidth = ivWidth;
+            int ivWidth = 3200;
+            int ivHeight = 1300;
+            int newWidth = ivWidth;
 
-        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
-
-        Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
-        //displays the image
-        displayImage.setImageBitmap(newbitMap);
+            int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+            Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
+            //displays the image
+            displayImage.setImageBitmap(newbitMap);
+        } else {
+            //displays the image
+            displayImage.setImageBitmap(rotated);
+            selected = false;
+        }
 
         TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
         TextView showText = (TextView) view.findViewById(R.id.tv_showText);

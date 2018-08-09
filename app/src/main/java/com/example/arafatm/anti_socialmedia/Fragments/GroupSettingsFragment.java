@@ -177,7 +177,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
 
         ParseFile currentImage = currentGroup.getGroupImage();
         if (currentImage != null) {
-            Glide.with(getContext()).load(currentImage.getUrl()).apply(RequestOptions.centerCropTransform()).into(ivPreview);
+            Glide.with(getContext()).load(currentImage.getUrl()).apply(RequestOptions.circleCropTransform()).into(ivPreview);
         } else {
             ivPreview.setImageResource(R.drawable.ic_group_default);
         }

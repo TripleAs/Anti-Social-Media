@@ -125,7 +125,6 @@ public class GroupManagerFragment extends Fragment {
 
     /*loads all groups from parse and display it*/
     private void loadAllGroups() {
-
         ParseUser user = ParseUser.getCurrentUser();
         List<Group> groups = user.getList("groups");
         groupList.clear();

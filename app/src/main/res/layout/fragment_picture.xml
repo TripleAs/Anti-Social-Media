@@ -19,22 +19,23 @@
 
         <TextView
             android:id="@+id/tv_showText"
-            android:layout_width="239dp"
-            android:layout_height="170dp"
+            android:layout_width="229dp"
+            android:layout_height="72dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
+            android:textColor="@color/solid_white"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imagePreview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.38" />
+            app:layout_constraintVertical_bias="0.707" />
 
         <TextView
             android:id="@+id/tv_showCaption"
@@ -50,8 +51,10 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_showText" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_showText"
+            app:layout_constraintVertical_bias="0.178" />
 
     </android.support.constraint.ConstraintLayout>
 

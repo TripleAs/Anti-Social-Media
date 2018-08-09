@@ -13,6 +13,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        renderscriptTargetApi 22
+        renderscriptSupportModeEnabled true
     }
 
     //for groupie, comment function
@@ -120,7 +123,7 @@ dependencies {
 
     // PrettyTime
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
-
+    
     //Circular ImageView
     implementation 'com.mikhaellopez:circularimageview:2.0.1'
     
@@ -129,4 +132,9 @@ dependencies {
 //    implementation 'com.xwray:groupie:2.0.3'
 //    implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
 //    implementation 'com.xwray:groupie-databinding:2.0.3'
+
+    //blur effect of fragment
+    implementation 'fr.tvbarthel.blurdialogfragment:lib:2.2.0'
+    //circular imageView
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
