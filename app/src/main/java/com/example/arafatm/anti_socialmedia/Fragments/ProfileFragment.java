@@ -29,13 +29,10 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.tvGroupName) TextView tvFullName;
     @BindView(R.id.gvProfileGroups) GridView profileGroups;
     @BindView(R.id.ivStartChat) ImageView ivStartChat;
-    private String mParam1;
     private ParseUser user;
     private Context mContext;
-    PictureAdapter groupAdapter;
     ArrayList<Group> groupList;
 
-    private static final String ARG_PARAM1 = "param1";
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
@@ -69,9 +66,6 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Get back arguments
         user = Parcels.unwrap(getArguments().getParcelable(ParseUser.class.getSimpleName()));
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
     }
 
     @Override
