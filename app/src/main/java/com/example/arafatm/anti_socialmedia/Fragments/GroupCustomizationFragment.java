@@ -2,8 +2,10 @@ package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -173,7 +176,7 @@ public class GroupCustomizationFragment extends Fragment {
             if (data != null) {
                 hasNewPic = true;
                 if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-                    ivPreview.setImageBitmap(photoHelper.handleTakenPhoto());
+                    ivPreview.setImageBitmap(photoHelper.handleTakenPhoto(data));
                 } else if (requestCode == UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE) {
                     Uri photoUri = data.getData();
                     ivPreview.setImageBitmap(photoHelper.handleUploadedImage(photoUri));

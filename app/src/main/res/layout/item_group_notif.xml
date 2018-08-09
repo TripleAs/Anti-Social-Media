@@ -16,14 +16,15 @@
 
     <TextView
         android:id="@+id/tvRequest"
-        android:layout_width="200dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ivCoverPhoto"
+        android:layout_toLeftOf="@id/btAccept"
         android:layout_toRightOf="@+id/btAccept"
-        android:text="TextView" />
+        android:text="A long request message so I can look at the layout" />
 
     <Button
         android:id="@+id/btAccept"

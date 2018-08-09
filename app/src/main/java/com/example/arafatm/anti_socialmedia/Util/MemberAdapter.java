@@ -112,7 +112,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     private void openProfile(ParseUser friend) {
         ProfileFragment profileFragment = ProfileFragment.newInstance(friend);
         fragmentManager.beginTransaction()
-                .replace(R.id.layout_child_activity, profileFragment)
+                .replace(R.id.layout_child_activity, profileFragment).addToBackStack(null)
                 .commit();
     }
 
