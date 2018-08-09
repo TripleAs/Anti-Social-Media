@@ -107,6 +107,8 @@ public class CommentFragment extends Fragment{
 
     private void createComment(String commentString, final ArrayList<Post> pointToComment){
         final Post comment = new Post();
+        comment.pinInBackground("comments");
+        comment.saveEventually();
 
         // save comment to Parse
         comment.setUser(ParseUser.getCurrentUser());

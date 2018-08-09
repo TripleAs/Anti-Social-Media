@@ -199,6 +199,8 @@ public class GroupCustomizationFragment extends Fragment {
     private void createNewGroup() {
         //Create new group and initialize it
         final Group newGroup = new Group();
+        newGroup.pinInBackground("groups");
+        newGroup.saveEventually();
         if (!hasNewPic) {
             // TODO - fix known issue with creating group without group picture
             photoHelper = new PhotoHelper(getContext());
@@ -241,6 +243,8 @@ public class GroupCustomizationFragment extends Fragment {
 
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
+            newRequest.pinInBackground();
+            newRequest.saveEventually();
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.fromLocalDatastore();
             query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {

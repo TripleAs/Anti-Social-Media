@@ -171,6 +171,8 @@ public class UserGroupList extends Fragment {
                 if (allGroupWithStories != null) {
                     //Create a new story
                     Story story = new Story();
+                    story.pinInBackground();
+                    story.saveEventually();
                     story.setSender(ParseUser.getCurrentUser());
                     ParseFile parseFile = null;
 

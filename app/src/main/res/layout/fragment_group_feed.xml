@@ -87,6 +87,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp" />
 
+
     <android.support.v4.widget.SwipeRefreshLayout
     android:id="@+id/swipeContainer"
     android:layout_width="match_parent"
@@ -97,11 +98,98 @@
     android:layout_marginTop="2dp"
     android:background="?attr/feedBackground">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvPostsFeed"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+         
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvDefaultPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rvPostsFeed"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <FrameLayout
+                        android:id="@+id/feedFrameLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/ivProPicPost"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            app:srcCompat="@drawable/ic_antisocial" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tvFullNameFeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/feedFrameLayout"
+                        android:text="antisocial media"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPostBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivImagePost"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Welcome to your new group!" />
+
+                    <TextView
+                        android:id="@+id/tvTimestamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/tvFullNameFeed"
+                        android:layout_below="@+id/tvFullNameFeed"
+                        android:text="5 minutes ago"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:id="@+id/ivImagePost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/feedFrameLayout"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        app:srcCompat="@color/transparent" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvPostsFeed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"/>
+
+        </RelativeLayout>
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <FrameLayout
         android:id="@+id/preview_frame"
