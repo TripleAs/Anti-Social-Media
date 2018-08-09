@@ -206,7 +206,7 @@ public class SettingsFragment extends Fragment {
         ParseObject.unpinAllInBackground("friends");
         ParseObject.unpinAllInBackground("groups");
         ParseObject.unpinAllInBackground("posts");
-//        ParseObject.unpinAllInBackground("comments");
+        ParseObject.unpinAllInBackground("comments");
         ParseObject.unpinAllInBackground("notifs");
         ParseObject.unpinAllInBackground("stories");
 

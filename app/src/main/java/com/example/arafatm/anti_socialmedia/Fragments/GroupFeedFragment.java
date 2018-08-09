@@ -65,6 +65,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private Group group;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
+    private FrameLayout frameLayoutPreview;
     private int storyIndex = 0;
     private ImageView next_story;
     public static boolean goToShare = false;
