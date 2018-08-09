@@ -356,8 +356,7 @@ public class StoryActivity extends AppCompatActivity {
                     mMediaRecorder.stop();
                     mMediaRecorder.reset();
 
-                    String videoPath = videoFile.getAbsolutePath();
-
+                    Uri videoUri = Uri.fromFile(videoFile);
                     byte[] videoByte = new byte[0];
                     try {
                         videoByte = convertToByte();
@@ -367,9 +366,9 @@ public class StoryActivity extends AppCompatActivity {
 
                     //navigates to preview activity
                     Intent intent = new Intent(StoryActivity.this, PreviewStoryActivity.class);
-                    //pass the video path to preview activity
+                    //pass the video uri and byte to preview activity
                     intent.putExtra("dataType", "video");
-                    intent.putExtra("videoPath", videoPath);
+                    intent.putExtra("videoPath", videoUri.toString());
                     intent.putExtra("byteData", videoByte);
                     startActivity(intent);
                 } else {

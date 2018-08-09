@@ -21,7 +21,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,8 +30,10 @@ public class GroupCreationFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @BindView(R.id.rvFriends) RecyclerView recyclerView;
-    @BindView(R.id.btNext) Button nextButton;
+    @BindView(R.id.rvFriends)
+    RecyclerView recyclerView;
+    @BindView(R.id.btNext)
+    Button nextButton;
 
     private FriendListAdapter friendListAdapter;
     private ArrayList<ParseUser> friendList;
@@ -88,7 +89,7 @@ public class GroupCreationFragment extends Fragment {
         //get the list of friends(Ids)
         List<String> friendListIds = new ArrayList<>();
         friendListIds = currentUser.getList("friendList");
-
+        friendList.clear();
         // use usernames/FB Ids to find users
         ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
         friendsQuery.whereContainedIn("username", friendListIds);
@@ -126,6 +127,7 @@ public class GroupCreationFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+
         void navigate_to_fragment(Fragment fragment);
     }
 
@@ -134,6 +136,13 @@ public class GroupCreationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -148,7 +157,7 @@ public class GroupCreationFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String friendName) {
                 if (friendName == null || friendName.isEmpty()) {
-                        fetchAllFriendList();
+                    fetchAllFriendList();
                     friendListAdapter.notifyDataSetChanged(); //updates the adapter
                     return true;
                 }
@@ -167,25 +176,28 @@ public class GroupCreationFragment extends Fragment {
         });
     }
 
-    private void fetchFriend(String friendName) {
+    private void fetchFriend(final String friendName) {
         //get the list of friends(Ids)
         final List<String> friendListIds = currentUser.getList("friendList");
-
-        //TODO
-        //Change this way to Amy way of finding facebook friends
+        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery().whereEqualTo("username", friendListIds);
+        friendsQuery.whereContainedIn("username", friendListIds);
         friendList.clear();
-        for (int i = 0; i < friendListIds.size(); i++) {
-            try {
-                ParseUser user = ParseUser.getQuery().get(friendListIds.get(i));
-
-                if (user.getString("fullName").toLowerCase().contains(friendName)) {
-                  friendList.add(user);
+        friendsQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < objects.size(); i++) {
+                        ParseUser user = objects.get(i);
+                        if (user.getString("fullName").toLowerCase().contains(friendName.toLowerCase())) {
+                            friendList.add(user);
+                        }
+                    }
+                    friendListAdapter.notifyDataSetChanged(); //updates the adapter
+                } else {
+                    e.printStackTrace();
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
-        }
-        friendListAdapter.notifyDataSetChanged(); //updates the adapter
+        });
     }
 
     private void passToCustomization() {

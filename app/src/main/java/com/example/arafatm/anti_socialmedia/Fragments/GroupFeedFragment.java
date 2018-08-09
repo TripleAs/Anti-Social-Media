@@ -1,6 +1,7 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -19,7 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -65,17 +65,15 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private Group group;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
-    private FrameLayout frameLayoutPreview;
     private int storyIndex = 0;
     private ImageView next_story;
-    private VideoView storyView;
     public static boolean goToShare = false;
+    public static Uri VideouUri;
     public static boolean goToUpload = false;
     ArrayList<Story> allStories;
     private ImageView prev_story;
     public static boolean goToPost = false;
     private String selectedImageURL;
-    private String videoFilePath;
     private String dataType;
     private String imageFilePath = null;
 
@@ -195,7 +193,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+      
         allStories = new ArrayList<>();
         next_story = view.findViewById(R.id.iv_next);
         prev_story = view.findViewById(R.id.iv_prev);
@@ -221,7 +219,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 refreshFeed();
             }
         });
-
 
         ivLaunchNewPost.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -251,7 +248,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
                 if (storyIndex < allStories.size() - 1) //checks out of bounce exception
                     storyIndex++;
                 displayStory(R.id.fragment_child);
@@ -268,7 +264,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 bundle.putString("text", text);
                 bundle.putString("caption", caption);
                 bundle.putString("imagePath", imageFilePath);
-                bundle.putString("videoPath", videoFilePath);
+                bundle.putString("videoPath", VideouUri.toString());
                 bundle.putString("dataType", dataType);
 
                 //create StoryDisplayfragment
@@ -284,8 +280,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         prev_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "prev story", Toast.LENGTH_SHORT).show();
-                if (storyIndex > 1)  //checks out of bounce exception
+                int jadal = storyIndex;
+                if (storyIndex >= 1)  //checks out of bounce exception
                     storyIndex--;
                 displayStory(R.id.fragment_child);
             }
@@ -317,7 +313,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
         loadTopPosts();
-      
+
         final Story.Query storyQuery = new Story.Query();
         storyQuery.fromLocalDatastore();
         storyQuery.findInBackground(new FindCallback<Story>() {
@@ -350,13 +346,15 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             text = currentStory.getStoryCaption();
             caption = currentStory.getStoryText();
             dataType = currentStory.getStoryType();
+
+            try {
+                VideouUri = Uri.fromFile(currentStory.getStory().getFile());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (dataType.compareTo("video") == 0) {
-                try {
-                    videoFilePath = getVideoPath(currentStory);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                navigateToVideoFragment(videoFilePath, fragmentTransaction, view_id);
+                navigateToVideoFragment(VideouUri, fragmentTransaction, view_id);
             } else {
                 try {
                     imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
@@ -399,19 +397,17 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     /*navigates to the Video fragment and display the story*/
-    private void navigateToVideoFragment(String videoFilePath,
+    private void navigateToVideoFragment(Uri videoFilePath,
                                          FragmentTransaction fragmentTransaction, int view_id) {
         final Fragment videoFragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        //args.putString("videoPath", PreviewStoryActivity.url); // FAKE
-        args.putString("videoPath", videoFilePath); // Real
+        args.putString("videoPath", videoFilePath.toString());
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
                 .commit();
     }
-
 
     @Override
     public void onDetach() {

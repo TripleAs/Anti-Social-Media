@@ -4,6 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 //apply plugin: 'kotlin-android-extensions'
 
 android {
+    compileSdkVersion >= 25
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.arafatm.anti_socialmedia"
@@ -137,4 +138,6 @@ dependencies {
     implementation 'fr.tvbarthel.blurdialogfragment:lib:2.2.0'
     //circular imageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 }
