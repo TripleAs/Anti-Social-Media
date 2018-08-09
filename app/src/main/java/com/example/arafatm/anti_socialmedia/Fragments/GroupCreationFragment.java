@@ -104,23 +104,6 @@ public class GroupCreationFragment extends Fragment {
                 }
             }
         });
-
-//        for (int i = 0; i < friendListIds.size(); i++) {
-//            ParseQuery<ParseUser> friendQuery = ParseUser.getQuery();
-//            friendQuery.whereEqualTo("username", friendListIds.get(i));
-//
-//            friendQuery.findInBackground(new FindCallback<ParseUser>() {
-//                @Override
-//                public void done(List<ParseUser> objects, ParseException e) {
-//                    if (e == null) {
-//                        friendList.addAll(objects);
-//                        friendListAdapter.notifyDataSetChanged();
-//                    } else {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//        }
     }
 
     @Override
