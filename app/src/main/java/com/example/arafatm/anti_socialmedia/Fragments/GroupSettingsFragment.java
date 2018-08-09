@@ -191,6 +191,15 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             }
         });
 
+        ivPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoHelper = new PhotoHelper(getContext());
+                Intent intent = photoHelper.takePhoto();
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -273,6 +282,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
                     members.addAll(objects);
+                    members.add(ParseUser.getCurrentUser());
                     memberAdapter.notifyDataSetChanged();
                 } else {
                     e.printStackTrace();

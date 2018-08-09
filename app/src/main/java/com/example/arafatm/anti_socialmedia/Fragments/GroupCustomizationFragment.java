@@ -132,6 +132,15 @@ public class GroupCustomizationFragment extends Fragment {
             }
         });
 
+        ivPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoHelper = new PhotoHelper(getContext());
+                Intent intent = photoHelper.takePhoto();
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
