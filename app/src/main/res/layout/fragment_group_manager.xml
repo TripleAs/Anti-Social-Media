@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/gradientBackground"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/groupManagerFragament"
     tools:context=".Fragments.GroupManagerFragment">
@@ -16,7 +15,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         app:titleTextColor="@android:color/white"
-        android:background="@color/white_30_transparent"
+        android:background="@drawable/border_bottom_gray"
         android:layout_alignParentLeft="true">
 
         <RelativeLayout
@@ -25,16 +24,11 @@
 
             <TextView
                 android:id="@+id/textView"
-                style="@style/TextWithShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="Group Manager"
-                android:textColor="@color/solid_white"
-                android:shadowDx="-3"
-                android:shadowDy="3"
                 android:textSize="25sp" />
 
             <ImageView
@@ -55,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tb_toolbar"
-        android:background="@color/transparent" />
+        android:background="@color/grey_1_30_transparent" />
 
 
 </RelativeLayout>

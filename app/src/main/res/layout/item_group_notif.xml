@@ -2,38 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_settings_for_items">
 
     <ImageView
         android:id="@+id/ivCoverPhoto"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@android:color/background_dark" />
 
     <TextView
         android:id="@+id/tvRequest"
-        android:layout_width="220dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ivCoverPhoto"
+        android:layout_toLeftOf="@id/btAccept"
         android:layout_toRightOf="@+id/btAccept"
-        android:text="TextView" />
+        android:text="A long request message so I can look at the layout" />
 
     <Button
         android:id="@+id/btAccept"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_transparent_button"
         android:text="Accept" />
 
     <Button
         android:id="@+id/btReject"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/btAccept"
+        android:layout_alignStart="@id/btAccept"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_transparent_button"
         android:text="Reject" />
 </RelativeLayout>

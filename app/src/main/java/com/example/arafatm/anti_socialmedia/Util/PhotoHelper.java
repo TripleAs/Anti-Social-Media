@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -23,13 +25,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 public class PhotoHelper {
 
     private File photoFile;
     public String photoFileName = "photo";
     private Context context;
-    private Uri uri;
+    Uri fileProvider;
     String imagePath;
     File resizedFile;
     int SOME_WIDTH = 240;
@@ -51,14 +54,18 @@ public class PhotoHelper {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference to access to future access
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
+        photoFileName = "JPEG_" + timeStamp;
         photoFile = getPhotoFileUri(photoFileName);
 
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
 
-        Uri fileProvider = FileProvider.getUriForFile(context, "com.antisocialmedia.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        fileProvider = FileProvider.getUriForFile(context, "com.antisocialmedia.fileprovider", photoFile);
+        if (Build.MODEL.equals("Pixel 2")) {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        }
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
@@ -148,9 +155,20 @@ public class PhotoHelper {
 
     }
 
-    public Bitmap handleTakenPhoto() {
+    public Bitmap handleTakenPhoto(Intent data) {
         // by this point we have the camera photo on disk
         Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+        if (takenImage == null) {
+            if (data.getData() != null) {
+                try {
+                    takenImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(), data.getData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                takenImage = (Bitmap) data.getExtras().get("data");
+            }
+        }
 
         // RESIZE BITMAP, see section below
         // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb

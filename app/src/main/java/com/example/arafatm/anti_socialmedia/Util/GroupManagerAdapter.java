@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupManagerFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupSettingsFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseException;
@@ -23,11 +25,12 @@ import java.util.ArrayList;
 
 public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Group> groups;
+    public ArrayList<Group> groups;
     private FragmentManager fragmentManager;
+    public int currentGroupPosition;
 
     public GroupManagerAdapter(ArrayList<Group> List, FragmentManager fm) {
-        this.groups = List;
+        groups = List;
         fragmentManager = fm;
     }
 
@@ -86,6 +89,7 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
+                currentGroupPosition = position;
                 try {
                     Group currentGroup = groups.get(position).fetchIfNeeded();
                     Fragment fragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
@@ -104,5 +108,11 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
             initials += Character.toUpperCase(s.charAt(0));
         }
         return initials;
+    }
+
+    public void updateGroup(Group updatedGroup) {
+        groups.remove(currentGroupPosition);
+        groups.add(currentGroupPosition, updatedGroup);
+        this.notifyItemChanged(currentGroupPosition);
     }
 }

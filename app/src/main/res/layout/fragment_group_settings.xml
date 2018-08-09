@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:text="Change your group name"
             android:textSize="18sp" />
 
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivCamera"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Change your color scheme"
             android:textSize="18sp" />
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rvMembers"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Save" />
 
 
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/etGroupName"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:text="Update your group picture"
             android:textSize="18sp" />
 
@@ -148,6 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivColorGreen"
+            android:layout_below="@+id/tvNicknameCommand"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp">
 
@@ -162,6 +163,16 @@
             android:layout_marginTop="10dp"
             android:text="Group Members" />
 
+
+        <TextView
+            android:id="@+id/tvNicknameCommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivColorRed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="Edit your group members' nicknames"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

@@ -166,10 +166,10 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         if (resultCode == RESULT_OK) {
             if (data != null) {
                 hasNewPic = true;
+                Uri photoUri = data.getData();
                 if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-                    ivPreview.setImageBitmap(photoHelper.handleTakenPhoto());
+                    ivPreview.setImageBitmap(photoHelper.handleTakenPhoto(data));
                 } else if (requestCode == UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE) {
-                    Uri photoUri = data.getData();
                     ivPreview.setImageBitmap(photoHelper.handleUploadedImage(photoUri));
                 }
             }

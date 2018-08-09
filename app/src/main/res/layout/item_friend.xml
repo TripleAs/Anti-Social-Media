@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_settings_for_items">
 
     <ImageView
         android:id="@+id/ivPropic"
@@ -11,6 +12,7 @@
         android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
         android:src="@drawable/ic_prof_default"
         app:srcCompat="@android:color/background_dark" />
 
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/ivPropic"
+        android:layout_marginLeft="5dp"
         android:text="Friend McFrienderson"
         android:textSize="24sp" />
 
@@ -29,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
         app:srcCompat="@drawable/ic_add_icon" />
 
 </RelativeLayout>

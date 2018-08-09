@@ -28,11 +28,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class GroupManagerFragment extends Fragment implements GroupSettingsFragment.OnSettingsUpdatedListener {
+public class GroupManagerFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static GroupManagerAdapter groupAdapter;
-    ArrayList<Group> groupList;
+    public static ArrayList<Group> groupList;
     Context mContext;
 
     @BindView(R.id.ic_add_icon)
@@ -109,7 +109,7 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         rvGroups.setLayoutManager(gridLayoutManager);
         rvGroups.setAdapter(groupAdapter);
-        loadAllGroups(view, rvGroups);
+        loadAllGroups();
 
         add_group.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +124,7 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
 
 
     /*loads all groups from parse and display it*/
-    private void loadAllGroups(final View view, final RecyclerView recyclerView) {
+    private void loadAllGroups() {
         ParseUser user = ParseUser.getCurrentUser();
         List<Group> groups = user.getList("groups");
         groupList.clear();
@@ -141,8 +141,9 @@ public class GroupManagerFragment extends Fragment implements GroupSettingsFragm
         }
     }
 
-    public void refreshManager() {
-        groupAdapter.notifyDataSetChanged();
+    public static void refreshManager(int position, Group currentGroup) {
+        groupList.remove(position);
+        groupList.add(position, currentGroup);
+        groupAdapter.notifyItemChanged(position);
     }
-
 }
