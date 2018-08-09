@@ -233,6 +233,7 @@ public class GroupCustomizationFragment extends Fragment {
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
             ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.fromLocalDatastore();
             query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser object, ParseException e) {

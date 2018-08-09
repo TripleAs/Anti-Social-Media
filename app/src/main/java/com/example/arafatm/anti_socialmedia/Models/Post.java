@@ -55,7 +55,9 @@ public class Post extends ParseObject {
     }
 
     public ParseUser getSender() {
-        if (getParseUser(KEY_SENDER) == null) return null;
+        if (getParseUser(KEY_SENDER) == null) {
+            return null;
+        }
         return getParseUser(KEY_SENDER);
 
     }
@@ -130,21 +132,6 @@ public class Post extends ParseObject {
 
     public List<String> getLikes() { return getList(KEY_LIKES); }
     public void setLikes(List<String> likes) { put(KEY_LIKES, likes); }
-
-    public void toggleLikes(ParseUser user) {
-        List<String> likes = getLikes();
-        String objectId = user.getObjectId();
-        if (likes == null) {
-            likes = new ArrayList<>();
-        }
-        if (likes.contains(objectId)) {
-            likes.remove(objectId);
-            setLikes(likes);
-        } else {
-            likes.add(objectId);
-            setLikes(likes);
-        }
-    }
 
     public String getTimestamp() {
         PrettyTime prettyTime = new PrettyTime();

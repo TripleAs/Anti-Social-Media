@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     Log.d("LoginActivity", "Login successful");
                     final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    setUpLocalDatastore1();
+                    setUpLocalDatastore();
                     startActivity(intent);
                     finish();
                 } else {
@@ -293,7 +293,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpLocalDatastore1() {
+    private void setUpLocalDatastore() {
         ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
         userQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
@@ -360,17 +360,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpLocalDatastore() {
+    private void setUpLocalDatastore1() {
         ParseUser user = ParseUser.getCurrentUser();
-//        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        //get the list of friends(Ids)
-        List<String> friendListIds = currentUser.getList("friendList");
-
-        // use usernames/FB Ids to find users
         ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
-        friendsQuery.whereContainedIn("username", friendListIds);
-//        friendsQuery.whereContainedIn("username", user.getList("friendsList"));
+        friendsQuery.whereContainedIn("username", user.getList("friendsList"));
         friendsQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {

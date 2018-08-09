@@ -204,7 +204,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         frameLayoutPreview = (FrameLayout) view.findViewById(R.id.preview_frame);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
-        query.fromLocalDatastore().ignoreACLs();
+        query.fromLocalDatastore();
         query.getInBackground(groupObjectId, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {

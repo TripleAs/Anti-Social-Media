@@ -44,7 +44,6 @@ import com.applozic.mobicomkit.uiwidgets.conversation.fragment.MobiComQuickConve
 import com.applozic.mobicommons.commons.core.utils.Utils;
 import com.applozic.mobicommons.people.channel.Channel;
 import com.applozic.mobicommons.people.contact.Contact;
-import com.example.arafatm.anti_socialmedia.Fragments.ChatFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupCreationFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
@@ -74,14 +73,15 @@ import butterknife.ButterKnife;
 //import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
 
 
-public class MainActivity extends AppCompatActivity implements ChatFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements
         GroupManagerFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
         ShareFromFragment.OnFragmentInteractionListener, UploadedImages.OnFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener, GroupCreationFragment.OnFragmentInteractionListener,
         GroupFeedFragment.OnFragmentInteractionListener, MessageCommunicator, MobiComKitActivityInterface,
         UserGroupList.OnFragmentInteractionListener, GroupCustomizationFragment.OnFragmentInteractionListener,
         GroupSettingsFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener,
-        PictureFragment.OnFragmentInteractionListener, PostAdapter.OnAdapterInteractionListener, StoryDIsplayFragment.OnFragmentInteractionListener{
+        PictureFragment.OnFragmentInteractionListener, PostAdapter.OnAdapterInteractionListener,
+        StoryDIsplayFragment.OnFragmentInteractionListener {
 
     // for chat fragment
     private static int retry;
@@ -409,6 +409,7 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         List<Group> groups = user.getList("groups");
         if (groups == null) {
             Group.Query groupQuery = new Group.Query();
+            groupQuery.fromLocalDatastore();
             groupQuery.findInBackground(new FindCallback<Group>() {
                 @Override
                 public void done(List<Group> objects, ParseException e) {

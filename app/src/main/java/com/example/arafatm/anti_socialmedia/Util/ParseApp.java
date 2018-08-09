@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.GroupRequestNotif;
-import com.example.arafatm.anti_socialmedia.Models.Message;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.parse.Parse;
@@ -29,7 +28,6 @@ public class ParseApp extends Application {
 
         /*register each of the model classes*/
         ParseObject.registerSubclass(Post.class);
-        ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(Group.class);
         ParseObject.registerSubclass(Story.class);
         ParseObject.registerSubclass(GroupRequestNotif.class);
