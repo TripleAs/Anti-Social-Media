@@ -201,8 +201,8 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
-                                newPost.setImage(finalImage);
-                                saveNewPost(newPost);
+                            newPost.setImage(finalImage);
+                            saveNewPost(newPost);
                         } else {
                             e.printStackTrace();
                         }
@@ -239,51 +239,5 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
-    protected float getDownScaleFactor() {
-        // Allow to customize the down scale factor.
-        return (float) 5.0;
-    }
-
-    @Override
-    protected int getBlurRadius() {
-        // Allow to customize the blur radius factor.
-        return 7;
-    }
-
-    @Override
-    protected boolean isActionBarBlurred() {
-        // Enable or disable the blur effect on the action bar.
-        // Disabled by default.
-        return true;
-    }
-
-    @Override
-    protected boolean isDimmingEnable() {
-        // Enable or disable the dimming effect.
-        // Disabled by default.
-        return true;
-    }
-
-    @Override
-    protected boolean isRenderScriptEnable() {
-        // Enable or disable the use of RenderScript for blurring effect
-        // Disabled by default.
-        return true;
-    }
-
-    @Override
-    protected boolean isDebugEnable() {
-        // Enable or disable debug mode.
-        // False by default.
-        return false;
     }
 }

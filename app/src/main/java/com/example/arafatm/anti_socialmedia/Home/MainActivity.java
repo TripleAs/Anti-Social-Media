@@ -71,6 +71,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.currentGroup;
+
 //import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
 
 
@@ -136,9 +138,14 @@ public class MainActivity extends AppCompatActivity implements
             fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
         } else {
             //sets default fragment
-            FragmentTransaction tx = fragmentManager.beginTransaction();
-            tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
-            tx.commit();
+            if (currentGroup != null) {
+                Fragment fragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
+                fragmentManager.beginTransaction().replace(R.id.layout_child_activity, fragment).addToBackStack(null).commit();
+            } else {
+                FragmentTransaction tx = fragmentManager.beginTransaction();
+                tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
+                tx.commit();
+            }
         }
 
         /*gets instance of all fragments here*/

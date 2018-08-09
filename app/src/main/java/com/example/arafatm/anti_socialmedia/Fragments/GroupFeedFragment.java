@@ -63,6 +63,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private int groupId;
     public static Group publicCurrentGroup;
     private Group group;
+    public static Group currentGroup;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
     private int storyIndex = 0;
@@ -70,7 +71,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static boolean goToShare = false;
     public static Uri VideouUri;
     public static boolean goToUpload = false;
-    ArrayList<Story> allStories;
+    private ArrayList<Story> allStories;
     private ImageView prev_story;
     public static boolean goToPost = false;
     private String selectedImageURL;
@@ -199,7 +200,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
-        frameLayoutPreview = (FrameLayout) view.findViewById(R.id.preview_frame);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
         query.fromLocalDatastore();
@@ -248,9 +248,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (storyIndex < allStories.size() - 1) //checks out of bounce exception
+                if (storyIndex < allStories.size() - 1) {  //checks out of bounce exception
                     storyIndex++;
-                displayStory(R.id.fragment_child);
+                    selected = false;
+                    displayStory(R.id.fragment_child);
+                }
             }
         });
 
@@ -281,9 +283,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             @Override
             public void onClick(View view) {
                 int jadal = storyIndex;
-                if (storyIndex >= 1)  //checks out of bounce exception
+                if (storyIndex >= 1) {  //checks out of bounce exception
                     storyIndex--;
-                displayStory(R.id.fragment_child);
+                    selected = false;
+                    displayStory(R.id.fragment_child);
+                }
             }
         });
     }
@@ -291,6 +295,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private void initiateGroup(ParseObject object) {
         group = (Group) object;
         publicCurrentGroup = group;
+        currentGroup = group;
         groupName = object.getString("groupName");
         tvGroupName.setText(groupName);
         groupId = convert(object.getObjectId());

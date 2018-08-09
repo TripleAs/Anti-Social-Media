@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/fragment_child"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="239dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/black"></FrameLayout>
@@ -20,14 +20,13 @@
 
     <TextView
         android:id="@+id/tvGroupName"
+        style="@style/TextWithShadow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/fragment_child"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_toEndOf="@+id/ivCoverPhoto"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="88dp"
         android:text="Group Name"
-        style="@style/TextWithShadow"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -38,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/fragment_child"
-        android:layout_marginEnd="115dp"
+        android:layout_marginEnd="112dp"
         android:src="@drawable/ic_chat_empty"
         android:tint="?attr/colorAccent" />
 
@@ -46,8 +45,9 @@
         android:id="@+id/ivLaunchNewPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvGroupName"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/fragment_child"
+        android:layout_marginStart="147dp"
         android:src="@drawable/ic_create_post"
         android:tint="?attr/colorAccent" />
 
@@ -55,9 +55,8 @@
         android:id="@+id/ivThreeDots"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/ivStartChat"
-        android:layout_marginEnd="28dp"
+        android:layout_alignStart="@+id/iv_next"
+        android:layout_below="@+id/fragment_child"
         android:src="@drawable/ic_three_dots"
         android:tint="?attr/colorAccent" />
 
@@ -66,10 +65,9 @@
         android:id="@+id/ivCoverPhoto"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_alignBottom="@+id/ivStartChat"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="20dp"
         android:src="@drawable/com_facebook_profile_picture_blank_square" />
 
     <ImageView
@@ -90,19 +88,19 @@
         android:layout_marginTop="0dp" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ivLaunchNewPost"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="?attr/feedBackground">
+    android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="276dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentStart="true"
+    android:layout_below="@+id/ivLaunchNewPost"
+    android:layout_marginTop="2dp"
+    android:background="?attr/feedBackground">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPostsFeed"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout
