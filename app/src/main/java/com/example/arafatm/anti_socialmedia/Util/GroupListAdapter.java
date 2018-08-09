@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -92,14 +91,12 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
                 @Override
                 public void onClick(View view) {
                     if (addButton.isChecked()) {
-                        Toast.makeText(mContext, "Group disselected" + getLayoutPosition(), Toast.LENGTH_SHORT).show();
                         addButton.setChecked(false);
                         //remove from list
                         allGroupsWithStories.remove(groupList.get(getLayoutPosition()));
                         int size = allGroupsWithStories.size();
 
                     } else {
-                        Toast.makeText(mContext, "Group selected" + getLayoutPosition(), Toast.LENGTH_SHORT).show();
                         addButton.setChecked(true);
                         //add to list
                         allGroupsWithStories.add(groupList.get(getLayoutPosition()));
@@ -112,14 +109,13 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
         @Override
         public void onClick(View view) {
             if (addButton.isChecked()) {
-                Toast.makeText(mContext, "Group disselected" + getLayoutPosition(), Toast.LENGTH_SHORT).show();
                 addButton.setChecked(false);
                 //remove from list
                 allGroupsWithStories.remove(groupList.get(getLayoutPosition()));
                 int size = allGroupsWithStories.size();
 
             } else {
-                Toast.makeText(mContext, "Group selected" + getLayoutPosition(), Toast.LENGTH_SHORT).show();
+
                 addButton.setChecked(true);
                 //add to list
                 allGroupsWithStories.add(groupList.get(getLayoutPosition()));

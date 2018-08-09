@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.R;
 
@@ -100,9 +102,24 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImageView next_story = (ImageView) view.findViewById(R.id.iv_next);
+        ImageView prev_story = (ImageView) view.findViewById(R.id.iv_prev);
+
+        next_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        prev_story.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         FrameLayout frameLayout = view.findViewById(R.id.fl_showStory);
-
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +135,6 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
         if (getDataType.compareTo("picture") == 0) {
             //pass all required info
             //navigate to right fragment
-
             navigateToPictureFragment(imageFilePath, fragmentTransaction, R.id.fl_showStory);
         } else {
             //pass all required info
@@ -147,8 +163,7 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        //args.putString("videoPath", PreviewStoryActivity.url); // FAKE
-        args.putString("videoPath", videoFilePath); // Real
+        args.putString("videoPath", videoFilePath);
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment)
                 .commit();

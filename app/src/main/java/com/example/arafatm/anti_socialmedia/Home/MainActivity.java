@@ -62,6 +62,7 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Story.StoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.parse.FindCallback;
 import com.parse.ParseACL;
 import com.parse.ParseException;
@@ -107,7 +108,12 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         parseACL.setPublicWriteAccess(true);
         ParseUser.getCurrentUser().setACL(parseACL);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
+        BottomNavigationViewEx bottomNavigationView = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
+        bottomNavigationView.enableAnimation(false);
+        bottomNavigationView.enableShiftingMode(false);
+        bottomNavigationView.enableItemShiftingMode(false);
+        bottomNavigationView.setIconSize(35, 35);
+
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
@@ -120,16 +126,10 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
             // Extract name value from result extras
             Fragment fragment = new UserGroupList();
             Bundle args = new Bundle();
-            String dataType = getIntent().getStringExtra("dataType");
-            String caption = getIntent().getStringExtra("caption");
-            String text = getIntent().getStringExtra("text");
-            byte[] bytes = getIntent().getByteArrayExtra("byteData");
-
-            args.putString("caption", caption);
-            args.putString("text", text);
-            args.putString("dataType", dataType); //pass story dataType
-            args.putByteArray("byteData", bytes); //pass story
-
+            args.putString("caption", getIntent().getStringExtra("caption"));
+            args.putString("text", getIntent().getStringExtra("text"));
+            args.putString("dataType", getIntent().getStringExtra("dataType")); //pass story dataType
+            args.putByteArray("byteData", getIntent().getByteArrayExtra("byteData")); //pass story
             fragment.setArguments(args);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();

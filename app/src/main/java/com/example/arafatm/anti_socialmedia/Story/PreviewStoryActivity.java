@@ -25,18 +25,25 @@ import com.example.arafatm.anti_socialmedia.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.selected;
+
 public class PreviewStoryActivity extends AppCompatActivity implements PictureFragment.OnFragmentInteractionListener, VideoFragment.OnFragmentInteractionListener {
-    @BindView(R.id.iv_camera) ImageButton backToCamera;
-    @BindView(R.id.iv_share) ImageButton shareButton;
-    @BindView(R.id.iv_close) ImageButton closeToCamera;
-    @BindView(R.id.iv_text) ImageButton text;
-    @BindView(R.id.iv_emoji) ImageButton emoji;
-    @BindView(R.id.iv_rotate) ImageButton rotate;
-    @BindView(R.id.tv_caption) EditText caption;
-
-
-    public static String url;
+    @BindView(R.id.iv_camera)
+    ImageButton backToCamera;
+    @BindView(R.id.iv_share)
+    ImageButton shareButton;
+    @BindView(R.id.iv_close)
+    ImageButton closeToCamera;
+    @BindView(R.id.iv_text)
+    ImageButton text;
+    @BindView(R.id.iv_emoji)
+    ImageButton emoji;
+    @BindView(R.id.iv_rotate)
+    ImageButton rotate;
+    @BindView(R.id.tv_caption)
+    EditText caption;
     private boolean enabled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +90,7 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
                 captionShow.setText(charSequence);
                 captionShow.setText(caption.getText());
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -95,7 +103,6 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
                 Toast.makeText(getApplicationContext(), "emoji :)", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         closeToCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,33 +118,28 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         final String intentResult = getIntent().getStringExtra("dataType");
-
         final String imageFilePath = getIntent().getStringExtra("imagePath");
-        final String videoFIlePath = getIntent().getStringExtra("videoPath");
-        url = videoFIlePath;
-
-        final byte[] bytes = getIntent().getByteArrayExtra("byteData");
+        String videoFIlePath = getIntent().getStringExtra("videoPath");
+        final byte[] StoryBytes = getIntent().getByteArrayExtra("byteData");
 
         Bundle args = new Bundle();
         //if it is a picture
         if (intentResult.compareTo("picture") == 0) {
+            selected = true;
             args.putString("imagePath", imageFilePath);
             args.putString("text", addText.getText().toString());
             args.putString("caption", caption.getText().toString());
             pictureFragment.setArguments(args);
             fragmentTransaction.replace(R.id.fragment_container, pictureFragment).commit();
-
             //if it is a video
         } else if (intentResult.compareTo("video") == 0) {
+            selected = true;
             args.putString("videoPath", videoFIlePath);
             args.putString("text", addText.getText().toString());
             args.putString("caption", caption.getText().toString());
             videoFragment.setArguments(args);
             fragmentTransaction.replace(R.id.fragment_container, videoFragment).commit();
-        } else {
-            //This is wouldn't even happen
         }
-
 
         backToCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,15 +152,13 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Sharing story", Toast.LENGTH_SHORT).show();
-
                 //get status from preview fragment
                 Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
                 intent.putExtra("key", intentResult);
                 intent.putExtra("dataType", intentResult);
                 intent.putExtra("text", addText.getText().toString());
                 intent.putExtra("caption", caption.getText().toString());
-                intent.putExtra("byteData", bytes);
+                intent.putExtra("byteData", StoryBytes);
                 startActivity(intent);
             }
         });
