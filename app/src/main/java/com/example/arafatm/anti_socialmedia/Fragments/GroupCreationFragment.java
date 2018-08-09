@@ -93,6 +93,7 @@ public class GroupCreationFragment extends Fragment {
         // use usernames/FB Ids to find users
         ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
         friendsQuery.whereContainedIn("username", friendListIds);
+        friendsQuery.fromLocalDatastore();
 
         friendsQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override

@@ -109,10 +109,4 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
         }
         return initials;
     }
-
-    public void updateGroup(Group updatedGroup) {
-        groups.remove(currentGroupPosition);
-        groups.add(currentGroupPosition, updatedGroup);
-        this.notifyItemChanged(currentGroupPosition);
-    }
 }

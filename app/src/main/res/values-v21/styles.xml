@@ -30,7 +30,7 @@
         <item name="android:colorBackground">@color/alphabet_e</item>
         <item name="colorPrimary">@color/alphabet_x</item>
         <item name="colorAccent">@color/blue_7</item>
-        <item name="feedBackground">@drawable/feed_green_gradient</item>
+        <item name="feedBackground">@drawable/feed_blue_gradient</item>
     </style>
 
     <style name="GroupGreenTheme" parent="Theme.AppCompat.Light.NoActionBar">

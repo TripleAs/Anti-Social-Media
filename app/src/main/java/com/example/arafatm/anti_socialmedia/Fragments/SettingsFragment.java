@@ -27,6 +27,7 @@ import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -176,6 +177,7 @@ public class SettingsFragment extends Fragment {
         GroupRequestNotif.Query query = new GroupRequestNotif.Query();
         ParseUser currentUser = ParseUser.getCurrentUser();
         query.getInvitesReceived(currentUser).withAll();
+        query.fromLocalDatastore();
 
         query.findInBackground(new FindCallback<GroupRequestNotif>() {
             @Override
@@ -199,6 +201,14 @@ public class SettingsFragment extends Fragment {
         if (isLoggedIn){
             LoginManager.getInstance().logOut();
         }
+
+        // unpin everything from local datastore
+        ParseObject.unpinAllInBackground("friends");
+        ParseObject.unpinAllInBackground("groups");
+        ParseObject.unpinAllInBackground("posts");
+//        ParseObject.unpinAllInBackground("comments");
+        ParseObject.unpinAllInBackground("notifs");
+        ParseObject.unpinAllInBackground("stories");
 
         // This will log out for Parse
         ParseUser currentUser = ParseUser.getCurrentUser();

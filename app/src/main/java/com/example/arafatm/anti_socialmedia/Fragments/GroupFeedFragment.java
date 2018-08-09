@@ -193,13 +193,16 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
+      
         allStories = new ArrayList<>();
         next_story = view.findViewById(R.id.iv_next);
         prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
+        frameLayoutPreview = (FrameLayout) view.findViewById(R.id.preview_frame);
 
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
+        query.fromLocalDatastore();
         query.getInBackground(groupObjectId, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -312,6 +315,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         loadTopPosts();
 
         final Story.Query storyQuery = new Story.Query();
+        storyQuery.fromLocalDatastore();
         storyQuery.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> objects, ParseException e) {
@@ -414,6 +418,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
+        postsQuery.fromLocalDatastore();
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {

@@ -80,19 +80,12 @@ public class Story extends ParseObject {
     }
 
     public static class Query extends ParseQuery<Story> {
-        //Query of a post class
-
         public Query() {
             super(Story.class);
         }
 
         public Story.Query getTop() {
             setLimit(20);
-            return this;
-        }
-
-        public Story.Query withUser() {
-            include("User");
             return this;
         }
     }

@@ -132,6 +132,15 @@ public class GroupCustomizationFragment extends Fragment {
             }
         });
 
+        ivPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoHelper = new PhotoHelper(getContext());
+                Intent intent = photoHelper.takePhoto();
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         ivUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -233,6 +242,7 @@ public class GroupCustomizationFragment extends Fragment {
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
             ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.fromLocalDatastore();
             query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser object, ParseException e) {

@@ -68,18 +68,10 @@ public class Group extends ParseObject {
     public void addPost(Post post) {
         List<Post> posts = getPosts();
         if (posts == null) {
-            posts = new ArrayList<Post>();
+            posts = new ArrayList<>();
         }
         posts.add(post);
         put(KEY_POSTS, posts);
-    }
-
-    public void approveUser(ParseUser user) {
-        String userId = user.getObjectId();
-        List<String> approved = getUsers();
-        List<String> pending = getPending();
-        approved.add(userId);
-        pending.remove(userId);
     }
 
     public HashMap<String, String> getNicknamesDict() {
@@ -112,16 +104,6 @@ public class Group extends ParseObject {
 
         public Query getTop() {
             setLimit(20);
-            return this;
-        }
-
-        public Query withUser() {
-            include("user");
-            return this;
-        }
-
-        public Query getGroupForUser(ParseUser user) {
-            whereEqualTo("user", user);
             return this;
         }
     }

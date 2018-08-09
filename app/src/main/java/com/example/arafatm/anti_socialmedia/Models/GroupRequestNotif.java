@@ -70,11 +70,6 @@ public class GroupRequestNotif extends ParseObject {
             return this;
         }
 
-        public GroupRequestNotif.Query getInvitesSent(ParseUser user) {
-            whereEqualTo("sender", user);
-            return this;
-        }
-
         public GroupRequestNotif.Query getInvitesReceived(ParseUser user) {
             whereEqualTo("receiver", user).whereEqualTo("isSeen", false);
             return this;
