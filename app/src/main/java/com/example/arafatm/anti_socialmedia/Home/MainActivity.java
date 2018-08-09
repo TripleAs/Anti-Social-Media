@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ChatFragment.OnFr
         parseACL.setPublicReadAccess(true);
         parseACL.setPublicWriteAccess(true);
         ParseUser.getCurrentUser().setACL(parseACL);
+        ParseUser.getCurrentUser().pinInBackground();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
         Toolbar toolbar = findViewById(R.id.my_toolbar);

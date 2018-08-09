@@ -14,6 +14,10 @@ import android.widget.Toast;
 import com.applozic.mobicomkit.contact.AppContactService;
 import com.applozic.mobicommons.people.contact.Contact;
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
+import com.example.arafatm.anti_socialmedia.Models.Group;
+import com.example.arafatm.anti_socialmedia.Models.GroupRequestNotif;
+import com.example.arafatm.anti_socialmedia.Models.Post;
+import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -25,11 +29,13 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import org.json.JSONArray;
@@ -191,6 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     Log.d("LoginActivity", "Login successful");
                     final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    setUpLocalDatastore1();
                     startActivity(intent);
                     finish();
                 } else {
@@ -284,5 +291,165 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setUpLocalDatastore1() {
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+        userQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                ParseObject.pinAllInBackground("friends", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "friends");
+                    }
+                });
+            }
+        });
+
+        Group.Query groupQuery = new Group.Query();
+        groupQuery.findInBackground(new FindCallback<Group>() {
+            @Override
+            public void done(List<Group> objects, ParseException e) {
+                ParseObject.pinAllInBackground("groups", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "groups");
+                    }
+                });
+            }
+        });
+
+        GroupRequestNotif.Query notifQuery = new GroupRequestNotif.Query();
+        notifQuery.findInBackground(new FindCallback<GroupRequestNotif>() {
+            @Override
+            public void done(List<GroupRequestNotif> objects, ParseException e) {
+                ParseObject.pinAllInBackground("notifs", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "notifs");
+                    }
+                });
+            }
+        });
+
+        Post.Query postQuery = new Post.Query();
+        postQuery.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                ParseObject.pinAllInBackground("posts", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "posts");
+                    }
+                });
+            }
+        });
+
+        Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                ParseObject.pinAllInBackground("stories", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "stories");
+                    }
+                });
+            }
+        });
+    }
+
+    private void setUpLocalDatastore() {
+        ParseUser user = ParseUser.getCurrentUser();
+//        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        //get the list of friends(Ids)
+        List<String> friendListIds = currentUser.getList("friendList");
+
+        // use usernames/FB Ids to find users
+        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
+        friendsQuery.whereContainedIn("username", friendListIds);
+//        friendsQuery.whereContainedIn("username", user.getList("friendsList"));
+        friendsQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                ParseObject.pinAllInBackground("friends", objects);
+                Log.d("ParseLocalDataStore", "friends");
+            }
+        });
+
+        saveGroupsToDatastore(user);
+
+        GroupRequestNotif.Query notifQuery = new GroupRequestNotif.Query();
+        notifQuery.whereEqualTo("receiver", user);
+        notifQuery.findInBackground(new FindCallback<GroupRequestNotif>() {
+            @Override
+            public void done(List<GroupRequestNotif> objects, ParseException e) {
+                ParseObject.pinAllInBackground("notifs", objects);
+                Log.d("ParseLocalDataStore", "notifs");
+            }
+        });
+
+        Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                ParseObject.pinAllInBackground("stories", objects);
+                Log.d("ParseLocalDataStore", "stories");
+            }
+        });
+    }
+
+    private void saveGroupsToDatastore(ParseUser user) {
+        final List<Group> groups = user.getList("groups");
+        if (groups != null) {
+            ParseObject.pinAllInBackground("groups", groups, new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    Log.d("ParseLocalDataStore", "groups");
+                    savePostsToDatastore(groups);
+                }
+            });
+        }
+    }
+
+    private void savePostsToDatastore(List<Group> groups) {
+        for (int i = 0; i < groups.size(); i++) {
+            Group group = groups.get(i);
+            group.fetchFromLocalDatastoreInBackground(new GetCallback<Group>() {
+                @Override
+                public void done(Group object, ParseException e) {
+                    final List<Post> posts = object.getPosts();
+                    if (posts != null) {
+                        ParseObject.pinAllInBackground("posts", posts, new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                Log.d("ParseLocalDataStore", "posts");
+                                saveCommentsToDatastore(posts);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    private void saveCommentsToDatastore(List<Post> posts) {
+        for (int j = 0; j < posts.size(); j++) {
+            Post post = posts.get(j);
+            post.fetchFromLocalDatastoreInBackground(new GetCallback<Post>() {
+                @Override
+                public void done(Post object, ParseException e) {
+                    if (object != null) {
+                        List<Post> comments = object.getComments();
+                        if (comments != null) {
+                            ParseObject.pinAllInBackground("comments", comments);
+                            Log.d("ParseLocalDataStore", "comments");
+                        }
+                    }
+                }
+            });
+        }
     }
 }
