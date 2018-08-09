@@ -65,8 +65,8 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            videoFilePath = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            videoPath = Uri.parse(getArguments().getString(ARG_PARAM1));
         }
     }
 
@@ -121,12 +121,12 @@ public class VideoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
-     if (videoFilePath != null) {
-//         displayVideo.setVideoPath(videoFilePath);
-//         displayVideo.setMediaController(null);
-//         displayVideo.requestFocus();
-//         displayVideo.start();
-     }
+        if (videoPath != null) {
+            displayVideo.setVideoURI(videoPath);
+            displayVideo.setMediaController(null);
+            displayVideo.requestFocus();
+            displayVideo.start();
+        }
 
 //        displayVideo.setOnClickListener(new View.OnClickListener() {
 //            @Override

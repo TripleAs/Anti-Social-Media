@@ -56,12 +56,6 @@ public class UserGroupList extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    //Video
-    private static final int VIDEO_CAPTURE = 101;
-    Uri videoUri;
-    View mainView;
-
-
     public UserGroupList() {
         // Required empty public constructor
     }
@@ -91,8 +85,6 @@ public class UserGroupList extends Fragment {
             dataType = getArguments().getString(ARG_PARAM1);
             caption = getArguments().getString(ARG_PARAM2);
             text = getArguments().getString(ARG_PARAM3);
-            String storyId = getArguments().getString(ARG_PARAM1);
-            Toast.makeText(getContext(), storyId, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -103,7 +95,6 @@ public class UserGroupList extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_group_list, container, false);
 
-        //RECYCLERVIEW SETUP
         // Lookup the recyclerview in activity layout
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_groupList);
         groupList = new ArrayList<>();
@@ -178,9 +169,7 @@ public class UserGroupList extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "It's Sharing!!", Toast.LENGTH_SHORT).show();
-
                 ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
-
                 if (allGroupWithStories != null) {
                     //Create a new story
                     Story story = new Story();
@@ -189,16 +178,15 @@ public class UserGroupList extends Fragment {
 
                     if (dataType.compareTo("video") == 0) {
                         byte[] videoBytes = getArguments().getByteArray("byteData");
-                        parseFile = new ParseFile("mynewStory.mp3", videoBytes);
-
+                           parseFile = new ParseFile("mynewStory.mp3", videoBytes);
                     } else {
                         final byte[] imageBytes = StoryActivity.compressedImageByte;
                         parseFile = new ParseFile("mynewStory.png", imageBytes);
 
                     }
+
                     story.setStoryType(dataType);
                     story.setStory(parseFile);
-
                     story.setStoryCaption(caption);
                     story.setStoryText(text);
 
