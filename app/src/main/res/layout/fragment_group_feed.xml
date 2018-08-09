@@ -46,9 +46,9 @@
         android:id="@+id/ivLaunchNewPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/fragment_child"
-        android:layout_toEndOf="@id/ivStartChat"
-        android:layout_marginLeft="65dp"
+        android:layout_marginEnd="114dp"
         android:src="@drawable/ic_create_post"
         android:tint="?attr/colorAccent" />
 

@@ -76,6 +76,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static boolean goToPost = false;
     private String selectedImageURL;
     private String videoFilePath;
+    private String dataType;
+    private String imageFilePath = null;
 
     @BindView(R.id.tvGroupName)
     TextView tvGroupName;
@@ -229,7 +231,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             public void onClick(View view) {
                 CreatePostFragment cpFragment = CreatePostFragment.newInstance(null);
                 cpFragment.setTargetFragment(GroupFeedFragment.this, 1);
-
                 mListener.navigateToDialog(cpFragment);
             }
         });
@@ -256,21 +257,29 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 if (storyIndex < allStories.size() - 1) //checks out of bounce exception
                     storyIndex++;
                 displayStory(R.id.fragment_child);
-                if (selected) //checks if in preview mode
-                    displayStory(R.id.preview_frame);
             }
         });
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selected) { //checks if in preview mode
-                    selected = false;
-                    clearPreviewFragment(PREVIEW_TAG); // clears preview fragment
-                } else {
-                    selected = true;
-                    displayStory(R.id.preview_frame); // display story on default fragment
-                }
+                selected = true;
+                //create a bundle
+                Bundle bundle = new Bundle();
+                //save all necessary info for story display
+                bundle.putString("text", text);
+                bundle.putString("caption", caption);
+                bundle.putString("imagePath", imageFilePath);
+                bundle.putString("videoPath", videoFilePath);
+                bundle.putString("dataType", dataType);
+
+                //create StoryDisplayfragment
+                StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
+                //add bundle to it
+                sFragment.setArguments(bundle);
+                //navigate to StoryDisplayfragment
+                sFragment.setTargetFragment(GroupFeedFragment.this, 1);
+                mListener.navigateToDialog(sFragment);
             }
         });
 
@@ -281,8 +290,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 if (storyIndex > 1)  //checks out of bounce exception
                     storyIndex--;
                 displayStory(R.id.fragment_child);
-                if (selected)
-                    displayStory(R.id.preview_frame);
             }
         });
     }
@@ -334,14 +341,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         });
     }
 
-    /*Removes the story preview fragment*/
-    private void clearPreviewFragment(String TAG_FRAGMENT) {
-        Fragment fragment = getFragmentManager().findFragmentByTag(TAG_FRAGMENT);
-        if (fragment != null)
-            getFragmentManager().beginTransaction().remove(fragment).commit();
-    }
-
-
     /*gets current story, checks if its a video or picture, gets the right fragment to display the story*/
     private void displayStory(int view_id) {
         final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
@@ -351,8 +350,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         if (currentStory != null) {
             text = currentStory.getStoryCaption();
             caption = currentStory.getStoryText();
-
-            if (currentStory.getStoryType().compareTo("video") == 0) {
+            dataType = currentStory.getStoryType();
+            if (dataType.compareTo("video") == 0) {
                 try {
                     videoFilePath = getVideoPath(currentStory);
                 } catch (ParseException e) {
@@ -360,7 +359,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 }
                 navigateToVideoFragment(videoFilePath, fragmentTransaction, view_id);
             } else {
-                String imageFilePath = null;
                 try {
                     imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
                 } catch (ParseException e1) {

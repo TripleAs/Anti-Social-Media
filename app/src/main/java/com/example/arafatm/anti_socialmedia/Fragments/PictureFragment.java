@@ -123,9 +123,8 @@ public class PictureFragment extends Fragment {
         } else {
             //displays the image
             displayImage.setImageBitmap(rotated);
+            selected = false;
         }
-
-
 
         TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
         TextView showText = (TextView) view.findViewById(R.id.tv_showText);
