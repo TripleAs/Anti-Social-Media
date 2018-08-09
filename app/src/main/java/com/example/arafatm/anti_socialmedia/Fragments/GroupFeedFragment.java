@@ -1,7 +1,9 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +27,6 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Story.PreviewStoryActivity;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -221,11 +222,14 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
+
         ivLaunchNewPost.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 CreatePostFragment cpFragment = CreatePostFragment.newInstance(null);
                 cpFragment.setTargetFragment(GroupFeedFragment.this, 1);
+
                 mListener.navigateToDialog(cpFragment);
             }
         });
@@ -372,7 +376,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         File outputFile = null;
         try {
             byte[] videoByte = currentStory.getStory().getData();
-            outputFile = File.createTempFile("file", "mp4", getCacheDir());
+            outputFile = File.createTempFile("file", ".mp4", getCacheDir());
             outputFile.deleteOnExit();
             FileOutputStream fileoutputstream = new FileOutputStream("myVideo.mp4");
             fileoutputstream.write(videoByte);
@@ -404,8 +408,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        args.putString("videoPath", PreviewStoryActivity.url); // FAKE
-        //    args.putString("videoPath", videoFilePath); // Real
+        //args.putString("videoPath", PreviewStoryActivity.url); // FAKE
+        args.putString("videoPath", videoFilePath); // Real
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
                 .commit();

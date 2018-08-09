@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +15,8 @@ import android.widget.ImageView;
 
 import com.example.arafatm.anti_socialmedia.R;
 
+import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -24,7 +25,7 @@ import com.example.arafatm.anti_socialmedia.R;
  * Use the {@link ShareFromFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShareFromFragment extends DialogFragment {
+public class ShareFromFragment extends SupportBlurDialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -133,5 +134,45 @@ public class ShareFromFragment extends DialogFragment {
                 dismiss();
             }
         });
+    }
+
+    @Override
+    protected float getDownScaleFactor() {
+        // Allow to customize the down scale factor.
+        return (float) 5.0;
+    }
+
+    @Override
+    protected int getBlurRadius() {
+        // Allow to customize the blur radius factor.
+        return 7;
+    }
+
+    @Override
+    protected boolean isActionBarBlurred() {
+        // Enable or disable the blur effect on the action bar.
+        // Disabled by default.
+        return true;
+    }
+
+    @Override
+    protected boolean isDimmingEnable() {
+        // Enable or disable the dimming effect.
+        // Disabled by default.
+        return true;
+    }
+
+    @Override
+    protected boolean isRenderScriptEnable() {
+        // Enable or disable the use of RenderScript for blurring effect
+        // Disabled by default.
+        return true;
+    }
+
+    @Override
+    protected boolean isDebugEnable() {
+        // Enable or disable debug mode.
+        // False by default.
+        return false;
     }
 }

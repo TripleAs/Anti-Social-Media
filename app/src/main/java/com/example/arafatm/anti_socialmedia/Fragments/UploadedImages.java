@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
 
 /**
@@ -39,7 +39,7 @@ import cz.msebera.android.httpclient.Header;
  * Use the {@link UploadedImages#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UploadedImages extends DialogFragment {
+public class UploadedImages extends SupportBlurDialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -140,8 +140,9 @@ public class UploadedImages extends DialogFragment {
 
     /*loads all groups from parse and display it*/
     private void loadAllPIctureURL() {
+        String token = "8379540590.7601641.40a698a312bd4027b4d9548b746a8f0e";
         String url = "https://api.instagram.com/v1/users/self/media/recent?access_token="
-                + R.string.ig_access_token;
+                + token;
 
         //makes api call
         AsyncHttpClient client = new AsyncHttpClient();
@@ -157,7 +158,7 @@ public class UploadedImages extends DialogFragment {
                     for (int i = 0; i < object.length(); i++) {
                         JSONObject userData = (JSONObject) object.get(i);
                         JSONObject images = (JSONObject) userData.getJSONObject("images");
-                        JSONObject pictureThumbnail = (JSONObject) images.getJSONObject("thumbnail");
+                        JSONObject pictureThumbnail = (JSONObject) images.getJSONObject("standard_resolution");
                         String pictureUrl = pictureThumbnail.getString("url");
                         pictureList.add(pictureUrl);
                     }
@@ -200,5 +201,45 @@ public class UploadedImages extends DialogFragment {
             }
         });
         loadAllPIctureURL();
+    }
+
+    @Override
+    protected float getDownScaleFactor() {
+        // Allow to customize the down scale factor.
+        return (float) 5.0;
+    }
+
+    @Override
+    protected int getBlurRadius() {
+        // Allow to customize the blur radius factor.
+        return 7;
+    }
+
+    @Override
+    protected boolean isActionBarBlurred() {
+        // Enable or disable the blur effect on the action bar.
+        // Disabled by default.
+        return true;
+    }
+
+    @Override
+    protected boolean isDimmingEnable() {
+        // Enable or disable the dimming effect.
+        // Disabled by default.
+        return true;
+    }
+
+    @Override
+    protected boolean isRenderScriptEnable() {
+        // Enable or disable the use of RenderScript for blurring effect
+        // Disabled by default.
+        return true;
+    }
+
+    @Override
+    protected boolean isDebugEnable() {
+        // Enable or disable debug mode.
+        // False by default.
+        return false;
     }
 }

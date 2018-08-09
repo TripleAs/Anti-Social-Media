@@ -65,8 +65,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.arafatm.anti_socialmedia.Util.PhotoHelper.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-
 public class StoryActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 0;
     private static final int REQUEST_WRITE_PERMISSION_RESULT = 1;
@@ -362,7 +360,7 @@ public class StoryActivity extends AppCompatActivity {
 
                     byte[] videoByte = new byte[0];
                     try {
-                        videoByte = convertToByte(videoPath);
+                        videoByte = convertToByte();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -381,17 +379,13 @@ public class StoryActivity extends AppCompatActivity {
         });
     }
 
-    public byte[] convertToByte(String path) throws IOException {
-        FileInputStream fis = new FileInputStream(path);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] b = new byte[1024];
+    public byte[] convertToByte() throws IOException {
+        byte[] bytesArray = new byte[(int) videoFile.length()];
 
-        for (int readNum; (readNum = fis.read(b)) != -1;) {
-            bos.write(b, 0, readNum);
-        }
-
-        byte[] bytes = bos.toByteArray();
-        return bytes;
+        FileInputStream fis = new FileInputStream(videoFile);
+        fis.read(bytesArray); //read file into bytes[]
+        fis.close();
+        return bytesArray;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

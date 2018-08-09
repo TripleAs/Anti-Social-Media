@@ -7,39 +7,32 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.example.arafatm.anti_socialmedia.R;
+
+import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link VideoFragment.OnFragmentInteractionListener} interface
+ * {@link storyDIsplayFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link VideoFragment#newInstance} factory method to
+ * Use the {@link storyDIsplayFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoFragment extends Fragment {
+public class storyDIsplayFragment extends SupportBlurDialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "videoPath";
-    private static final String ARG_PARAM2 = "caption";
-    private static final String ARG_PARAM3 = "text";
-
-    private VideoView displayVideo;
-    private Uri videoPath;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String videoFilePath;
     private String mParam1;
     private String mParam2;
-    private String caption;
-    private String text;
 
     private OnFragmentInteractionListener mListener;
 
-    public VideoFragment() {
+    public storyDIsplayFragment() {
         // Required empty public constructor
     }
 
@@ -49,11 +42,11 @@ public class VideoFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment VideoFragment.
+     * @return A new instance of fragment storyDIsplayFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static VideoFragment newInstance(String param1, String param2) {
-        VideoFragment fragment = new VideoFragment();
+    public static storyDIsplayFragment newInstance(String param1, String param2) {
+        storyDIsplayFragment fragment = new storyDIsplayFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +58,7 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            videoFilePath = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -74,7 +67,7 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video, container, false);
+        return inflater.inflate(R.layout.fragment_story_display, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -117,32 +110,43 @@ public class VideoFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected float getDownScaleFactor() {
+        // Allow to customize the down scale factor.
+        return (float) 5.0;
+    }
 
-        displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
-     if (videoFilePath != null) {
-//         displayVideo.setVideoPath(videoFilePath);
-//         displayVideo.setMediaController(null);
-//         displayVideo.requestFocus();
-//         displayVideo.start();
-     }
+    @Override
+    protected int getBlurRadius() {
+        // Allow to customize the blur radius factor.
+        return 7;
+    }
 
-//        displayVideo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                displayVideo.start();
-//            }
-//        });
+    @Override
+    protected boolean isActionBarBlurred() {
+        // Enable or disable the blur effect on the action bar.
+        // Disabled by default.
+        return true;
+    }
 
-        TextView showCaption = (TextView) view.findViewById(R.id.tv_showCaption);
-        TextView showText = (TextView) view.findViewById(R.id.tv_showText);
+    @Override
+    protected boolean isDimmingEnable() {
+        // Enable or disable the dimming effect.
+        // Disabled by default.
+        return true;
+    }
 
-        if (text != null)
-            showText.setText(text);
+    @Override
+    protected boolean isRenderScriptEnable() {
+        // Enable or disable the use of RenderScript for blurring effect
+        // Disabled by default.
+        return true;
+    }
 
-        if (caption != null)
-            showCaption.setText(caption);
+    @Override
+    protected boolean isDebugEnable() {
+        // Enable or disable debug mode.
+        // False by default.
+        return false;
     }
 }
 

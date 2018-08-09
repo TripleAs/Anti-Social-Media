@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.CreatePostFragment">
+
     <RelativeLayout
 
+        android:id="@+id/showShareFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/showShareFragment">
-    <EditText
-        android:id="@+id/etNewPost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivPreview"
-        android:ems="10"
-        android:hint="What's been happening?"
-        android:inputType="textMultiLine"/>
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/ivCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/etNewPost"
-        android:layout_marginBottom="10dp"
-        android:src="@drawable/ic_camera_post"/>
+        <EditText
+            android:id="@+id/etNewPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ivPreview"
+            android:ems="10"
+            android:hint="What's been happening?"
+            android:inputType="textMultiLine" />
 
-    <ImageView
-        android:id="@+id/ivUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/ivCamera"
-        android:layout_marginLeft="20dp"
-        android:layout_below="@+id/etNewPost"
-        android:src="@drawable/ic_photo" />
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/etNewPost"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_camera_post" />
+
+        <ImageView
+            android:id="@+id/ivUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etNewPost"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/ivCamera"
+            android:src="@drawable/ic_photo" />
 
         <ImageButton
             android:id="@+id/ivShareFrom"
@@ -58,14 +60,14 @@
             android:layout_marginEnd="0dp"
             android:src="@drawable/mobicom_ic_action_send_now" />
 
-    <ImageView
-        android:id="@+id/ivPreview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@android:color/background_dark" />
+        <ImageView
+            android:id="@+id/ivPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@android:color/background_dark" />
 
-</RelativeLayout>
-    </FrameLayout>
+    </RelativeLayout>
+</FrameLayout>
