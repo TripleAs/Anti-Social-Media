@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
@@ -114,7 +113,6 @@ public class GroupManagerFragment extends Fragment {
         add_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Adding a new group", Toast.LENGTH_SHORT).show();
                 /*Navigates to the groupManagerFragment*/
                 Fragment fragment = new GroupCreationFragment();
                 mListener.navigate_to_fragment(fragment);

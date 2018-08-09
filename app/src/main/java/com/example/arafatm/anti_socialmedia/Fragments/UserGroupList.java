@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Story;
@@ -168,7 +167,6 @@ public class UserGroupList extends Fragment {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "It's Sharing!!", Toast.LENGTH_SHORT).show();
                 ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
                 if (allGroupWithStories != null) {
                     //Create a new story

@@ -67,6 +67,8 @@ public class VideoFragment extends Fragment {
         if (getArguments() != null) {
             mParam2 = getArguments().getString(ARG_PARAM2);
             videoPath = Uri.parse(getArguments().getString(ARG_PARAM1));
+            caption = getArguments().getString(ARG_PARAM2);
+            text = getArguments().getString(ARG_PARAM3);
         }
     }
 

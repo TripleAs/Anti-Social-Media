@@ -111,9 +111,8 @@ public class PictureFragment extends Fragment {
         if (!selected) { // resize this to fit the cover framelayout on the feed
             int currentBitmapWidth = rotated.getWidth();
             int currentBitmapHeight = rotated.getHeight();
-
             int ivWidth = 3200;
-            int ivHeight = 1300;
+            int ivHeight = 2300;
             int newWidth = ivWidth;
 
             int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
