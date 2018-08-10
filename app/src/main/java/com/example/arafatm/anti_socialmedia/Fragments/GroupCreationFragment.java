@@ -1,7 +1,6 @@
 package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,6 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.GroupRequestNotif;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.FriendListAdapter;
-import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -37,7 +35,7 @@ import butterknife.ButterKnife;
 
 public class GroupCreationFragment extends Fragment {
     @BindView(R.id.rvFriends) RecyclerView recyclerView;
-    @BindView(R.id.btNext) Button nextButton;
+    @BindView(R.id.btCreateGroup) Button btCreateGroup;
 
     private static final String ARGS_GROUP_NAME = "groupName";
     private static final String ARGS_GROUP_THEME = "groupTheme";
@@ -177,7 +175,7 @@ public class GroupCreationFragment extends Fragment {
             }
         });
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        btCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (friendList.size() != 0) {
