@@ -24,6 +24,8 @@
             android:id="@+id/etGroupName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textCursorDrawable="@color/colorPrimary"
             android:layout_below="@id/tvNameCommand"
             android:layout_centerHorizontal="true"
             android:hint="e.g. peas in a pod"
@@ -47,7 +49,7 @@
             android:layout_below="@+id/tvColorCommand"
             android:background="@drawable/roundcorner"
             android:layout_marginTop="15dp"
-            android:src="@color/alphabet_g" />
+            android:src="@color/red_5" />
 
         <ImageView
             android:id="@+id/ivColorGreen"
@@ -56,7 +58,7 @@
             android:layout_height="40dp"
             android:layout_alignTop="@+id/ivColorRed"
             android:layout_centerHorizontal="true"
-            android:src="@color/alphabet_k" />
+            android:src="@color/green_5" />
 
         <ImageView
             android:id="@+id/ivColorBlue"
@@ -65,7 +67,7 @@
             android:layout_alignEnd="@+id/etGroupName"
             android:layout_alignTop="@+id/ivColorRed"
             android:background="@drawable/roundcorner"
-            android:src="@color/alphabet_f" />
+            android:src="@color/blue_5" />
 
         <Button
             android:id="@+id/btSave"
@@ -75,7 +77,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_blueteal_button"
+            android:background="@drawable/rounded_colorprimary_button"
             android:text="Save" />
 
 
