@@ -17,12 +17,18 @@
 
     </style>
 
+    <style name="AppTheme.Toolbar" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textCursorDrawable">@color/white</item>
+    </style>
+
     <style name="GroupRedTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/alphabet_g</item>
         <item name="android:colorBackground">@color/alphabet_b</item>
         <item name="colorPrimary">@color/red_9</item>
         <item name="colorAccent">@color/red_7</item>
-        <item name="feedBackground">@drawable/comment_feed_gradient</item>
+        <item name="feedBackground">@drawable/feed_red_gradient</item>
     </style>
 
     <style name="GroupBlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -38,7 +44,7 @@
         <item name="android:colorBackground">@color/alphabet_j</item>
         <item name="colorPrimary">@color/green_4</item>
         <item name="colorAccent">@color/green_8</item>
-        <item name="feedBackground">@drawable/green_feed_gradient</item>
+        <item name="feedBackground">@drawable/feed_green_gradient</item>
     </style>
 
     <style name="TextWithShadow">
