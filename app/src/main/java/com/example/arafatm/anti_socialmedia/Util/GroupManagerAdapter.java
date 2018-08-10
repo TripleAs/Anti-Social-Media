@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.List;
 public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapter.ViewHolder> {
     private Context context;
     public ArrayList<Group> groups;
+    private ArrayList<ParseUser> memberList;
     private FragmentManager fragmentManager;
     public int currentGroupPosition;
 
@@ -57,28 +62,7 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
         List<String> groupMembers = group.getUsers();
         if(groupMembers != null){
-            String listOfMembers = "";
-            String numberOfMembers = "";
-            int size = groupMembers.size();
-
-            /** for (int i = 0; i < size; i++){  //For whatever reason, I can't get fullname bc it's a string, not a parseUser
-                String something = groupMembers.get(i);
-                String memberName = something;              //.getString("fullName");
-                listOfMembers +=  memberName;
-                if (i != groupMembers.size()-1){
-                    listOfMembers += ", ";
-                }
-            } TODO: note- I tried to do fullnames of members, but it would only do objectid. We'd need to query if we'd want this function. Unnecessary?
-             viewHolder.tvGroupMembers.setText(listOfMembers); **/
-
-            if (size > 0){
-                numberOfMembers = size + " other member";
-                if (size > 1){
-                    numberOfMembers += ("s");
-                }
-            }
-            viewHolder.tvGroupMembers.setText(numberOfMembers);
-
+           getMemberNames(groupMembers, viewHolder.tvGroupMembers);
         } else {
             viewHolder.tvGroupMembers.setText("");
         }
@@ -128,6 +112,30 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
             }
         }
+    }
+
+    public void getMemberNames(final List<String> groupMembers, final TextView groupMemberNames){
+        final int size = groupMembers.size();
+        final List<String> names = new ArrayList<>();
+
+        ParseQuery<ParseUser> membersQuery = ParseUser.getQuery();
+        membersQuery.whereContainedIn("objectId", groupMembers);
+        membersQuery.fromLocalDatastore();
+
+        membersQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < size; i++){
+                        String index = objects.get(i).getString("fullName");
+                        names.add(i, index);
+                        groupMemberNames.setText(TextUtils.join(", ", names));
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private String getInitials(String name) {
