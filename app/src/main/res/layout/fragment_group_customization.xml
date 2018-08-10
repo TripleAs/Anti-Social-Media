@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/tvNameCommand"
-        android:backgroundTint="@color/blueteal_3"
-        android:textCursorDrawable="@color/blueteal_3"
+        android:backgroundTint="@color/colorPrimary"
+        android:textCursorDrawable="@color/colorPrimary"
         android:hint="e.g. the triple a's"
         android:inputType="textPersonName" />
 
