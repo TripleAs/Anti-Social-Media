@@ -2,10 +2,8 @@ package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,22 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.arafatm.anti_socialmedia.Models.Group;
-import com.example.arafatm.anti_socialmedia.Models.GroupRequestNotif;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +29,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class GroupCustomizationFragment extends Fragment {
     @BindView(R.id.etGroupName) EditText etGroupName;
-    @BindView(R.id.btCreateGroup) Button btCreateGroup;
+    @BindView(R.id.btNext) Button btNext;
     @BindView(R.id.ivPreview) ImageView ivPreview;
     @BindView(R.id.ivCamera) ImageView ivCamera;
     @BindView(R.id.ivUpload) ImageView ivUpload;
@@ -161,7 +149,7 @@ public class GroupCustomizationFragment extends Fragment {
             }
         });
 
-        btCreateGroup.setOnClickListener(new View.OnClickListener() {
+        btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!hasNewPic) {

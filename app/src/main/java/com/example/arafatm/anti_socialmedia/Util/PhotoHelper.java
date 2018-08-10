@@ -159,7 +159,7 @@ public class PhotoHelper {
 
     public Bitmap handleTakenPhoto(Intent data) {
         // by this point we have the camera photo on disk
-        Bitmap takenImage = rotateBitmapOrientation(photoFile.getAbsolutePath());
+        Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
         if (takenImage == null) {
             if (data.getData() != null) {
                 try {
@@ -221,31 +221,31 @@ public class PhotoHelper {
         return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);
     }
 
-    public Bitmap rotateBitmapOrientation(String photoFilePath) {
-        // Create and configure BitmapFactory
-        BitmapFactory.Options bounds = new BitmapFactory.Options();
-        bounds.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(photoFilePath, bounds);
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
-        // Read EXIF Data
-        ExifInterface exif = null;
-        try {
-            exif = new ExifInterface(photoFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
-        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
-        int rotationAngle = 0;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
-        // Rotate Bitmap
-        Matrix matrix = new Matrix();
-        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
-        // Return result
-        return rotatedBitmap;
-    }
+//    public Bitmap rotateBitmapOrientation(String photoFilePath) {
+//        // Create and configure BitmapFactory
+//        BitmapFactory.Options bounds = new BitmapFactory.Options();
+//        bounds.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(photoFilePath, bounds);
+//        BitmapFactory.Options opts = new BitmapFactory.Options();
+//        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
+//        // Read EXIF Data
+//        ExifInterface exif = null;
+//        try {
+//            exif = new ExifInterface(photoFilePath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+//        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
+//        int rotationAngle = 0;
+//        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
+//        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
+//        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
+//        // Rotate Bitmap
+//        Matrix matrix = new Matrix();
+//        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+//        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
+//        // Return result
+//        return rotatedBitmap;
+//    }
 }
