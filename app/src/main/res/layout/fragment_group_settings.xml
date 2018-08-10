@@ -39,7 +39,7 @@
             android:text="Change your color scheme"
             android:textSize="18sp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/ivColorRed"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -49,7 +49,7 @@
             android:layout_marginTop="15dp"
             android:src="@color/alphabet_g" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/ivColorGreen"
             android:layout_width="40dp"
             android:background="@drawable/roundcorner"
@@ -58,7 +58,7 @@
             android:layout_centerHorizontal="true"
             android:src="@color/alphabet_k" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/ivColorBlue"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -70,10 +70,12 @@
         <Button
             android:id="@+id/btSave"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_below="@+id/rvMembers"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_transparent_button"
             android:text="Save" />
 
 
@@ -81,7 +83,6 @@
             android:id="@+id/ivPreview"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:background="@drawable/roundcorner"
             android:layout_below="@+id/tvPictureCommand"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -152,16 +153,6 @@
             android:layout_marginTop="30dp">
 
         </android.support.v7.widget.RecyclerView>
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivColorGreen"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="Group Members" />
-
 
         <TextView
             android:id="@+id/tvNicknameCommand"

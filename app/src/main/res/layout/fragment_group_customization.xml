@@ -65,15 +65,14 @@
         android:src="@color/blue_5" />
 
     <Button
-        android:id="@+id/btCreateGroup"
+        android:id="@+id/btNext"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_blueteal_button"
-        android:textColor="@color/white"
+        android:layout_height="35dp"
         android:layout_below="@+id/ivColorGreen"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
-        android:text="Create" />
+        android:background="@drawable/rounded_transparent_button"
+        android:text="Next" />
 
 
     <ImageView
