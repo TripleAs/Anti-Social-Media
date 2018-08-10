@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
-import com.example.arafatm.anti_socialmedia.Fragments.GroupManagerFragment;
-import com.example.arafatm.anti_socialmedia.Fragments.GroupSettingsFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseException;
@@ -39,7 +37,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View groupView = inflater.inflate(R.layout.item_group_manager, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(groupView);
         return viewHolder;
@@ -48,8 +45,8 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Group group = groups.get(position);
-
         String groupName = group.getGroupName();
+
         if (groupName != null) {
             String initials = getInitials(groupName);
             viewHolder.tvGroupName.setText(initials);
@@ -74,7 +71,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         public TextView tvGroupName;
         public ImageView ivCoverPhoto;
 
@@ -82,7 +78,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
             super(view);
             tvGroupName = view.findViewById(R.id.tvGroupName);
             ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
-
             view.setOnClickListener(this);
         }
 

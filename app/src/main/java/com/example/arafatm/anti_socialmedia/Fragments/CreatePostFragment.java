@@ -37,7 +37,6 @@ import static android.app.Activity.RESULT_OK;
 // ...
 
 public class CreatePostFragment extends SupportBlurDialogFragment {
-
     @BindView(R.id.etNewPost)
     EditText etNewPost;
     @BindView(R.id.ivCamera)
@@ -50,23 +49,18 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
     ImageView ivCreatePost;
     @BindView(R.id.ivShareFrom)
     ImageButton ivShareFrom;
-
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private Fragment callback;
     private String imageURl;
-    private ParseFile image = null;
-
     private Group currentGroup;
-    private ParseACL acl;
+    private CreatePostFragment.OnFragmentInteractionListener mListener;
 
     public CreatePostFragment() {
         // Empty constructor is required for DialogFragment
     }
-
-    private CreatePostFragment.OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
         void onFinishCreatePost(Post post);
@@ -86,7 +80,6 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         imageURl = this.getArguments().getString("imageURL"); //get image url
 
         if (imageURl != null) {
-            //set hasMew to true
             hasNewPic = true;
         }
 
@@ -101,6 +94,9 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         return inflater.inflate(R.layout.fragment_create_post, container);
     }
 
@@ -214,7 +210,6 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
                 newPost.setImageURL(imageURl);
                 saveNewPost(newPost);
             }
-
         } else {
             saveNewPost(newPost);
         }

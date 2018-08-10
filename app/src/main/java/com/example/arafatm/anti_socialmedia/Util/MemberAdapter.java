@@ -3,7 +3,6 @@ package com.example.arafatm.anti_socialmedia.Util;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,7 +39,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View groupView = inflater.inflate(R.layout.item_member, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(groupView);
         return viewHolder;
@@ -76,7 +74,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         public TextView tvNickname;
         public TextView tvFullName;
         public ImageView ivPropic;
@@ -89,7 +86,6 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
             tvFullName = view.findViewById(R.id.tvFullName);
             ivPropic = view.findViewById(R.id.ivPropic);
             ibEdit = view.findViewById(R.id.ibEdit);
-
             view.setOnClickListener(this);
             ibEdit.setOnClickListener(this);
             tvFullName.setOnClickListener(this);

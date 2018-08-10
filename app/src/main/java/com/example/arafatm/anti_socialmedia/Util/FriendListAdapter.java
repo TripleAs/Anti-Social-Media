@@ -11,17 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.ProfileFragment;
 import com.example.arafatm.anti_socialmedia.R;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
+public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
     public List<ParseUser> allFriends;
     private Context context;
     private ArrayList<String> newGroupMembers;
@@ -36,10 +33,8 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
     public FriendListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         // Inflate the custom layout
         View friendListView = inflater.inflate(R.layout.item_friend, viewGroup, false);
-
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(friendListView);
         return viewHolder;
@@ -49,7 +44,6 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         // Get the data model based on position
         final ParseUser friend = allFriends.get(position);
-
         viewHolder.friendName.setText(friend.getString("fullName"));
         PhotoHelper.displayPropic(friend, viewHolder.friendPic, context);
     }
@@ -102,13 +96,13 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
                         //remove that user's ObjectId from the newGroupMembers list
                         newGroupMembers.remove(friend.getObjectId());
                         Added = false;
-                        Toast.makeText(context,friend.getUsername()+" removed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, friend.getUsername() + " removed", Toast.LENGTH_SHORT).show();
                     } else {
                         addButton.setImageResource(R.drawable.ic_check_mark);
                         //add that user's ObjectId to the newGroupMembers list to be accessed later
                         newGroupMembers.add(friend.getObjectId());
                         Added = true;
-                        Toast.makeText(context,friend.getUsername()+" added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, friend.getUsername() + " added", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -117,7 +111,7 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
 
     private void openProfile(ParseUser friend) {
         ProfileFragment profileFragment = ProfileFragment.newInstance(friend);
-        ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+        ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
                 .replace(R.id.layout_child_activity, profileFragment)
                 .commit();
     }

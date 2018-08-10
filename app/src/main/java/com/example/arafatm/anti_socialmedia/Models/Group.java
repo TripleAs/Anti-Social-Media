@@ -17,10 +17,9 @@ public class Group extends ParseObject {
     private static final String KEY_POSTS = "post"; //Name of post column in parse
     private static final String KEY_NAME = "groupName"; //Name of group name column in parse
     private static final String KEY_IMAGE = "groupImage"; //Name of group image column in parse
-    private static final String KEY_STORIES = "groupStory"; //Name of group story column in parse
-    private static final String KEY_PENDING = "pending";
-    private static final String KEY_THEME = "theme";
-    private static final String KEY_NICKNAMES = "nicknames";
+    private static final String KEY_PENDING = "pending"; //Name of request state column in parse
+    private static final String KEY_THEME = "theme"; //Name of theme column in parse
+    private static final String KEY_NICKNAMES = "nicknames"; //Name of nickname column in parse
 
     public String getGroupName() {
         return getString(KEY_NAME);
@@ -39,7 +38,9 @@ public class Group extends ParseObject {
     }
 
     //gets list all users
-    public List<String> getUsers() { return getList(KEY_USERS); }
+    public List<String> getUsers() {
+        return getList(KEY_USERS);
+    }
 
     /*Gets the Array of users from Parse, updates it, and save it back to parse*/
     public void setUsers(List<String> users) {
@@ -58,11 +59,17 @@ public class Group extends ParseObject {
         return getList(KEY_POSTS);
     }
 
-    public String getTheme() { return getString(KEY_THEME); }
+    public String getTheme() {
+        return getString(KEY_THEME);
+    }
 
-    public void setTheme(String theme) { put(KEY_THEME, theme); }
+    public void setTheme(String theme) {
+        put(KEY_THEME, theme);
+    }
 
-    public String getNicknames() { return getString(KEY_NICKNAMES); }
+    public String getNicknames() {
+        return getString(KEY_NICKNAMES);
+    }
 
     /*Gets the Array of posts from Parse, updates it, and save it back to parse*/
     public void addPost(Post post) {
@@ -108,12 +115,12 @@ public class Group extends ParseObject {
         }
     }
 
-    private HashMap<String,String> convertToStringToHashMap(String text){
-        HashMap<String,String> data = new HashMap<String,String>();
+    private HashMap<String, String> convertToStringToHashMap(String text) {
+        HashMap<String, String> data = new HashMap<String, String>();
         Pattern p = Pattern.compile("[\\{\\}\\=\\, ]++");
         String[] split = p.split(text);
-        for ( int i=1; i+2 <= split.length; i+=2 ){
-            data.put( split[i], split[i+1] );
+        for (int i = 1; i + 2 <= split.length; i += 2) {
+            data.put(split[i], split[i + 1]);
         }
         return data;
     }

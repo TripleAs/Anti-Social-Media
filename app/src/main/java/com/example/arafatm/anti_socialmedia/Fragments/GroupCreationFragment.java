@@ -34,11 +34,8 @@ public class GroupCreationFragment extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.btNext)
     Button nextButton;
-
     private FriendListAdapter friendListAdapter;
     private ArrayList<ParseUser> friendList;
-    private String mParam1;
-    private String mParam2;
     ParseUser currentUser;
 
     private OnFragmentInteractionListener mListener;
@@ -61,25 +58,23 @@ public class GroupCreationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group_creation, container, false);
         ButterKnife.bind(this, view);
-
         friendList = new ArrayList<>();
         fetchAllFriendList();
-
         friendListAdapter = new FriendListAdapter(friendList);
         recyclerView.setAdapter(friendListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
-
         return view;
     }
 
@@ -134,9 +129,7 @@ public class GroupCreationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         final SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
-
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +157,7 @@ public class GroupCreationFragment extends Fragment {
                 return false;
             }
         });
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

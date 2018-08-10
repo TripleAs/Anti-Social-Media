@@ -39,7 +39,6 @@ public class ParseApp extends Application {
                 .server("http://anti-social-media.herokuapp.com/parse") // takes in Parse URL
                 .enableLocalDataStore()
                 .build();
-
         Parse.initialize(configuration); //initializing parse
     }
 }

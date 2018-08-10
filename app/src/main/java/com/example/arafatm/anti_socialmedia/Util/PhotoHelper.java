@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.ImageView;
@@ -52,6 +53,7 @@ public class PhotoHelper {
         writeStreamToFile(bytes);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Intent takePhoto() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

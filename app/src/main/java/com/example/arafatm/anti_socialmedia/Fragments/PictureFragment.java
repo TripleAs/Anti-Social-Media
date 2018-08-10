@@ -10,13 +10,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.arafatm.anti_socialmedia.R;
 
 import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -27,16 +27,11 @@ public class PictureFragment extends Fragment {
     private static final String ARG_PARAM1 = "imagePath";
     private static final String ARG_PARAM2 = "caption";
     private static final String ARG_PARAM3 = "text";
-    private EditText status;
     private String imagePath;
-    private String imageStoryURL;
     private int currentAngle = 90;
-
     @BindView(R.id.imagePreview) ImageView displayImage;
     private String caption;
     private String text;
-    private String param1;
-    private String param2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -70,6 +65,7 @@ public class PictureFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_picture, container, false);
     }
 
+    //TODO NEED THIS??????????
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -142,5 +138,4 @@ public class PictureFragment extends Fragment {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
                 matrix, true);
     }
-
 }

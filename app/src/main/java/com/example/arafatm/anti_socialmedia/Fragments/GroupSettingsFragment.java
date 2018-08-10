@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Util.GroupManagerAdapter;
 import com.example.arafatm.anti_socialmedia.Util.MemberAdapter;
 import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.parse.FindCallback;
@@ -47,23 +46,33 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
 public class GroupSettingsFragment extends Fragment implements EditNicknameFragment.OnFragmentInteractionListener {
-    @BindView(R.id.etGroupName) EditText etGroupName;
-    @BindView(R.id.ivPreview) ImageView ivPreview;
-    @BindView(R.id.ivCamera) ImageView ivCamera;
-    @BindView(R.id.ivUpload) ImageView ivUpload;
-    @BindView(R.id.btSave) Button btSave;
-
-    @BindView(R.id.rvMembers) RecyclerView rvMembers;
+    @BindView(R.id.etGroupName)
+    EditText etGroupName;
+    @BindView(R.id.ivPreview)
+    ImageView ivPreview;
+    @BindView(R.id.ivCamera)
+    ImageView ivCamera;
+    @BindView(R.id.ivUpload)
+    ImageView ivUpload;
+    @BindView(R.id.btSave)
+    Button btSave;
+    @BindView(R.id.rvMembers)
+    RecyclerView rvMembers;
     MemberAdapter memberAdapter;
     ArrayList<ParseUser> members;
     HashMap<String, String> nicknamesDict;
-
-    @BindView(R.id.ivColorRed) ImageView ivColorRed;
-    @BindView(R.id.ivColorGreen)  ImageView ivColorGreen;
-    @BindView(R.id.ivColorBlue)  ImageView ivColorBlue;
-    @BindView(R.id.ivCheckmarkRed)  ImageView ivCheckmarkRed;
-    @BindView(R.id.ivCheckmarkGreen)  ImageView ivCheckmarkGreen;
-    @BindView(R.id.ivCheckmarkBlue)  ImageView ivCheckmarkBlue;
+    @BindView(R.id.ivColorRed)
+    ImageView ivColorRed;
+    @BindView(R.id.ivColorGreen)
+    ImageView ivColorGreen;
+    @BindView(R.id.ivColorBlue)
+    ImageView ivColorBlue;
+    @BindView(R.id.ivCheckmarkRed)
+    ImageView ivCheckmarkRed;
+    @BindView(R.id.ivCheckmarkGreen)
+    ImageView ivCheckmarkGreen;
+    @BindView(R.id.ivCheckmarkBlue)
+    ImageView ivCheckmarkBlue;
     ArrayList<ImageView> checkmarks = new ArrayList<>();
     String theme;
 
@@ -73,7 +82,6 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private GroupSettingsFragment.OnFragmentInteractionListener mListener;
-    private GroupSettingsFragment.OnSettingsUpdatedListener refreshListener;
 
     public GroupSettingsFragment() {
         // Required empty public constructor
@@ -101,7 +109,6 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         super.onAttach(context);
         if (context instanceof GroupSettingsFragment.OnFragmentInteractionListener) {
             mListener = (GroupSettingsFragment.OnFragmentInteractionListener) context;
-//            refreshListener = (GroupSettingsFragment.OnSettingsUpdatedListener) new GroupManagerFragment();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -122,6 +129,9 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_group_settings, container, false);
     }

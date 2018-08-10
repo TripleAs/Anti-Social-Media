@@ -2,10 +2,8 @@ package com.example.arafatm.anti_socialmedia.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +27,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,12 +37,16 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class GroupCustomizationFragment extends Fragment {
-    @BindView(R.id.etGroupName) EditText etGroupName;
-    @BindView(R.id.btCreateGroup) Button btCreateGroup;
-    @BindView(R.id.ivPreview) ImageView ivPreview;
-    @BindView(R.id.ivCamera) ImageView ivCamera;
-    @BindView(R.id.ivUpload) ImageView ivUpload;
-
+    @BindView(R.id.etGroupName)
+    EditText etGroupName;
+    @BindView(R.id.btCreateGroup)
+    Button btCreateGroup;
+    @BindView(R.id.ivPreview)
+    ImageView ivPreview;
+    @BindView(R.id.ivCamera)
+    ImageView ivCamera;
+    @BindView(R.id.ivUpload)
+    ImageView ivUpload;
     private ImageView ivColorRed;
     private ImageView ivColorGreen;
     private ImageView ivColorBlue;
@@ -53,18 +54,15 @@ public class GroupCustomizationFragment extends Fragment {
     private ImageView ivCheckmarkGreen;
     private ImageView ivCheckmarkBlue;
     private ArrayList<ImageView> checkmarks = new ArrayList<>();
-
     private List<String> newMembers;
     private PhotoHelper photoHelper;
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
     private Boolean hasNewPic = false;
-
     public final static String KEY_RED = "red";
     public final static String KEY_GREEN = "green";
     public final static String KEY_BLUE = "blue";
     private String theme = "green";
-
     private OnFragmentInteractionListener mListener;
 
     public GroupCustomizationFragment() {
@@ -113,11 +111,9 @@ public class GroupCustomizationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
         ivColorRed = view.findViewById(R.id.ivColorRed);
         ivColorGreen = view.findViewById(R.id.ivColorGreen);
         ivColorBlue = view.findViewById(R.id.ivColorBlue);
-
         ivCheckmarkRed = view.findViewById(R.id.ivCheckmarkRed);
         ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
         ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
@@ -213,7 +209,6 @@ public class GroupCustomizationFragment extends Fragment {
                 saveNewGroup(newGroup, newGroupPic);
             }
         });
-
         sendGroupRequests(newGroup);
     }
 
@@ -232,7 +227,6 @@ public class GroupCustomizationFragment extends Fragment {
 
     private void sendGroupRequests(final Group newGroup) {
         ParseUser loggedInUser = ParseUser.getCurrentUser();
-
         List<ParseObject> currentGroups = loggedInUser.getList("groups");
         if (currentGroups == null) {
             currentGroups = new ArrayList<>();

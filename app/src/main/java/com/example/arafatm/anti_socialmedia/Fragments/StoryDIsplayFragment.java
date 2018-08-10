@@ -19,17 +19,7 @@ import com.example.arafatm.anti_socialmedia.R;
 
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StoryDIsplayFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StoryDIsplayFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StoryDIsplayFragment extends SupportBlurDialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TEXT = "text";
@@ -37,10 +27,6 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     private static final String IMAGE_PATH = "imagePath";
     private static final String VIDEO_PATH = "videoPath";
     private static final String DATA_TYPE = "dataType";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private String text;
     private String caption;
     private String imageFilePath;
@@ -75,8 +61,6 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
             text = getArguments().getString(TEXT);
             caption = getArguments().getString(CAPTION);
             imageFilePath = getArguments().getString(IMAGE_PATH);
@@ -88,6 +72,9 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_story_display, container, false);
     }
@@ -139,7 +126,7 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
         } else {
             //pass all required info
             //navigate to right fragment
-            navigateToVideoFragment(videoFilePath,fragmentTransaction, R.id.fl_showStory);
+            navigateToVideoFragment(videoFilePath, fragmentTransaction, R.id.fl_showStory);
         }
     }
 
