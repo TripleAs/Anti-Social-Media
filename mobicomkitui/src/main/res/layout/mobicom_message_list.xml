@@ -7,34 +7,34 @@
     android:id="@+id/chatFragment"
     tools:context=".conversation.activity.ConversationActivity">
 
-<!--<android.support.v7.widget.Toolbar-->
-    <!--android:id="@+id/tb_toolbar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:clickable="true"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--app:titleTextColor="@android:color/white"-->
-    <!--android:background="@color/sent_message_bg_color"-->
-    <!--android:layout_alignParentLeft="true">-->
+<android.support.v7.widget.Toolbar
+    android:id="@+id/tb_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    app:titleTextColor="@android:color/white"
+    android:background="@color/colorPrimary"
+    android:layout_alignParentLeft="true">
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent">-->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-        <!--<TextView-->
-            <!--android:id="@+id/textView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_marginStart="12dp"-->
-            <!--android:text="Chat"-->
-            <!--android:textColor="@color/apploizc_white_color"-->
-            <!--android:textSize="18sp" />-->
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="12dp"
+            android:text="Chat"
+            android:textColor="@color/apploizc_white_color"
+            android:textSize="18sp" />
 
-    <!--</RelativeLayout>-->
-<!--</android.support.v7.widget.Toolbar>-->
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:applozic="http://schemas.android.com/apk/res-auto"

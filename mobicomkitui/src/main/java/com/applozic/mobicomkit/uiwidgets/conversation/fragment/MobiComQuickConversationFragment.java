@@ -157,6 +157,9 @@ public class MobiComQuickConversationFragment extends Fragment implements Search
 //        toolbar.setVisibility(View.GONE);
 //        toolbar.setClickable(false);
 
+        toolbar = list.findViewById(R.id.tb_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+
         fabButton = (ImageButton) list.findViewById(R.id.fab_start_new);
         loading = true;
         LinearLayout individualMessageSendLayout = (LinearLayout) list.findViewById(R.id.individual_message_send_layout);
