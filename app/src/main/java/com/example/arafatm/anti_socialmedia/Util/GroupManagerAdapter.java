@@ -14,14 +14,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
-import com.example.arafatm.anti_socialmedia.Fragments.GroupManagerFragment;
-import com.example.arafatm.anti_socialmedia.Fragments.GroupSettingsFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapter.ViewHolder> {
     private Context context;
@@ -51,10 +50,37 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
         String groupName = group.getGroupName();
         if (groupName != null) {
-            String initials = getInitials(groupName);
-            viewHolder.tvGroupName.setText(initials);
+            viewHolder.tvGroupName.setText(groupName);
         } else {
             viewHolder.tvGroupName.setText("");
+        }
+
+        List<String> groupMembers = group.getUsers();
+        if(groupMembers != null){
+            String listOfMembers = "";
+            String numberOfMembers = "";
+            int size = groupMembers.size();
+
+            /** for (int i = 0; i < size; i++){  //For whatever reason, I can't get fullname bc it's a string, not a parseUser
+                String something = groupMembers.get(i);
+                String memberName = something;              //.getString("fullName");
+                listOfMembers +=  memberName;
+                if (i != groupMembers.size()-1){
+                    listOfMembers += ", ";
+                }
+            } TODO: note- I tried to do fullnames of members, but it would only do objectid. We'd need to query if we'd want this function. Unnecessary?
+             viewHolder.tvGroupMembers.setText(listOfMembers); **/
+
+            if (size > 0){
+                numberOfMembers = size + " other member";
+                if (size > 1){
+                    numberOfMembers += ("s");
+                }
+            }
+            viewHolder.tvGroupMembers.setText(numberOfMembers);
+
+        } else {
+            viewHolder.tvGroupMembers.setText("");
         }
 
         ParseFile groupPic = group.getParseFile("groupImage");
@@ -76,11 +102,13 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView tvGroupName;
+        public TextView tvGroupMembers;
         public ImageView ivCoverPhoto;
 
         public ViewHolder(View view) {
             super(view);
             tvGroupName = view.findViewById(R.id.tvGroupName);
+            tvGroupMembers = view.findViewById(R.id.tvGroupMembers);
             ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
 
             view.setOnClickListener(this);

@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -34,7 +34,7 @@ public class GroupManagerFragment extends Fragment {
     public static ArrayList<Group> groupList;
     Context mContext;
 
-    @BindView(R.id.ic_add_icon)
+    @BindView(R.id.ic_add_white)
     ImageView add_group;
     RecyclerView rvGroups;
     Toolbar toolbar;
@@ -105,8 +105,8 @@ public class GroupManagerFragment extends Fragment {
         rvGroups = view.findViewById(R.id.rvGroups);
         rvGroups.addItemDecoration(new SpacesItemDecoration(20));
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        rvGroups.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        rvGroups.setLayoutManager(linearLayoutManager);
         rvGroups.setAdapter(groupAdapter);
         loadAllGroups();
 

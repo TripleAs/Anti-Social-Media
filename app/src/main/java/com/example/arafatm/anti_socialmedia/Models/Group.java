@@ -41,6 +41,8 @@ public class Group extends ParseObject {
     //gets list all users
     public List<String> getUsers() { return getList(KEY_USERS); }
 
+    public List<ParseUser> getParseUser() { return getList(KEY_USERS); }
+
     /*Gets the Array of users from Parse, updates it, and save it back to parse*/
     public void setUsers(List<String> users) {
         put(KEY_USERS, users);

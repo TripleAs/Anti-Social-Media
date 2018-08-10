@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:titleTextColor="@android:color/white"
-        android:background="@drawable/border_bottom_gray"
+        android:background="@color/blueteal_3"
         android:layout_alignParentLeft="true">
 
         <RelativeLayout
@@ -28,18 +27,19 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
                 android:text="My Groups"
                 android:textSize="25sp" />
 
             <ImageView
-                android:id="@+id/ic_add_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/ic_add_white"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
                 android:clickable="true"
-                app:srcCompat="@drawable/ic_add_icon" />
+                app:srcCompat="@drawable/ic_add_white" />
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
@@ -48,8 +48,7 @@
         android:id="@+id/rvGroups"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tb_toolbar"
-        android:background="@color/grey_1_30_transparent" />
+        android:layout_below="@id/tb_toolbar"/>
 
 
 </RelativeLayout>
