@@ -142,7 +142,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:layout_toRightOf="@+id/feedFrameLayout"
-                        android:text="antisocial media"
+                        android:text="Anti-Social Media"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 

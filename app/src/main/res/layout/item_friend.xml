@@ -28,6 +28,7 @@
 
     <ImageView
         android:id="@+id/ivAddButton"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

@@ -9,13 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.ProfileFragment;
 import com.example.arafatm.anti_socialmedia.R;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -102,13 +98,11 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
                         //remove that user's ObjectId from the newGroupMembers list
                         newGroupMembers.remove(friend.getObjectId());
                         Added = false;
-                        Toast.makeText(context,friend.getUsername()+" removed", Toast.LENGTH_SHORT).show();
                     } else {
                         addButton.setImageResource(R.drawable.ic_check_mark);
                         //add that user's ObjectId to the newGroupMembers list to be accessed later
                         newGroupMembers.add(friend.getObjectId());
                         Added = true;
-                        Toast.makeText(context,friend.getUsername()+" added", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
