@@ -71,7 +71,8 @@
         android:layout_below="@+id/ivColorGreen"
         android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/rounded_blueteal_button"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_colorprimary_button"
         android:text="Next" />
 
 
