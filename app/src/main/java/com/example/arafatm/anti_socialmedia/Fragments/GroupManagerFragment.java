@@ -104,7 +104,7 @@ public class GroupManagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         rvGroups = view.findViewById(R.id.rvGroups);
-        rvGroups.addItemDecoration(new SpacesItemDecoration(20));
+        rvGroups.addItemDecoration(new SpacesItemDecoration(30));
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager( 2, LinearLayoutManager.VERTICAL);
         rvGroups.setLayoutManager(gridLayoutManager);
