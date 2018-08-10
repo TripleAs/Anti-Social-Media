@@ -13,12 +13,21 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.arafatm.anti_socialmedia.Models.Group;
+import com.example.arafatm.anti_socialmedia.Models.GroupRequestNotif;
 import com.example.arafatm.anti_socialmedia.R;
 import com.example.arafatm.anti_socialmedia.Util.FriendListAdapter;
+import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +36,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GroupCreationFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.rvFriends) RecyclerView recyclerView;
+    @BindView(R.id.btNext) Button nextButton;
 
-    @BindView(R.id.rvFriends)
-    RecyclerView recyclerView;
-    @BindView(R.id.btNext)
-    Button nextButton;
+    private static final String ARGS_GROUP_NAME = "groupName";
+    private static final String ARGS_GROUP_THEME = "groupTheme";
+    private static final String ARGS_GROUP_IMAGEFILE = "groupImage";
+
+    private String groupName;
+    private String groupTheme;
+    private ParseFile groupImage;
+    private List<String> newMembers;
 
     private FriendListAdapter friendListAdapter;
     private ArrayList<ParseUser> friendList;
-    private String mParam1;
-    private String mParam2;
     ParseUser currentUser;
 
     private OnFragmentInteractionListener mListener;
@@ -47,11 +58,12 @@ public class GroupCreationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GroupCreationFragment newInstance(String param1, String param2) {
+    public static GroupCreationFragment newInstance(String name, String theme, ParseFile file) {
         GroupCreationFragment fragment = new GroupCreationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARGS_GROUP_NAME, name);
+        args.putString(ARGS_GROUP_THEME, theme);
+        args.putParcelable(ARGS_GROUP_IMAGEFILE, Parcels.wrap(file));
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,9 +72,12 @@ public class GroupCreationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            groupName = args.getString(ARGS_GROUP_NAME);
+            groupTheme = args.getString(ARGS_GROUP_THEME);
+            groupImage = Parcels.unwrap(args.getParcelable(ARGS_GROUP_IMAGEFILE));
         }
     }
 
@@ -87,8 +102,7 @@ public class GroupCreationFragment extends Fragment {
         //get current user
         currentUser = ParseUser.getCurrentUser();
         //get the list of friends(Ids)
-        List<String> friendListIds = new ArrayList<>();
-        friendListIds = currentUser.getList("friendList");
+        List<String> friendListIds = currentUser.getList("friendList");
         friendList.clear();
         // use usernames/FB Ids to find users
         ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
@@ -126,8 +140,6 @@ public class GroupCreationFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-
         void navigate_to_fragment(Fragment fragment);
     }
 
@@ -164,11 +176,13 @@ public class GroupCreationFragment extends Fragment {
                 return false;
             }
         });
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (friendList.size() != 0) {
-                    passToCustomization();
+                    newMembers = friendListAdapter.getNewGroupMembers();
+                    createNewGroup();
                 } else {
                     Toast.makeText(getContext(), "Cannot create a group with no members", Toast.LENGTH_SHORT).show();
                 }
@@ -200,10 +214,59 @@ public class GroupCreationFragment extends Fragment {
         });
     }
 
-    private void passToCustomization() {
-        ArrayList<String> newMembers = friendListAdapter.getNewGroupMembers();
-        GroupCustomizationFragment gcFragment = GroupCustomizationFragment.newInstance(newMembers);
-        mListener.navigate_to_fragment(gcFragment);
+    private void createNewGroup() {
+        //Create new group and initialize it
+        final Group newGroup = new Group();
+        newGroup.pinInBackground("groups");
+        newGroup.saveEventually();
+
+        groupImage.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                saveNewGroup(newGroup);
+            }
+        });
+
+        sendGroupRequests(newGroup);
+    }
+
+    private void saveNewGroup(final Group newGroup) {
+        newGroup.initGroup(groupName, newMembers, groupImage, groupTheme);
+        newGroup.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                String objectId = newGroup.getObjectId();
+                Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
+                mListener.navigate_to_fragment(fragment);
+            }
+        });
+    }
+
+    private void sendGroupRequests(final Group newGroup) {
+        ParseUser loggedInUser = ParseUser.getCurrentUser();
+
+        List<ParseObject> currentGroups = loggedInUser.getList("groups");
+        if (currentGroups == null) {
+            currentGroups = new ArrayList<>();
+        }
+        currentGroups.add(newGroup);
+        loggedInUser.put("groups", currentGroups);
+        loggedInUser.saveInBackground();
+
+        for (int i = 0; i < newMembers.size(); i++) {
+            final GroupRequestNotif newRequest = new GroupRequestNotif();
+            newRequest.pinInBackground();
+            newRequest.saveEventually();
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.fromLocalDatastore();
+            query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
+                @Override
+                public void done(ParseUser object, ParseException e) {
+                    newRequest.initRequest(object, newGroup);
+                    newRequest.saveInBackground();
+                }
+            });
+        }
     }
 }
 

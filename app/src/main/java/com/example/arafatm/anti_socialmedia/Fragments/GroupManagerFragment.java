@@ -114,7 +114,7 @@ public class GroupManagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 /*Navigates to the groupManagerFragment*/
-                Fragment fragment = new GroupCreationFragment();
+                Fragment fragment = new GroupCustomizationFragment();
                 mListener.navigate_to_fragment(fragment);
             }
         });
