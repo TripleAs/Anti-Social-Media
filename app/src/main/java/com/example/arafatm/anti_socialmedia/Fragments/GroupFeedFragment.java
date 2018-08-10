@@ -68,12 +68,12 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private FrameLayout frameLayout;
     private FrameLayout frameLayoutPreview;
     private int storyIndex = 0;
-    private ImageView next_story;
+//    private ImageView next_story;
     public static boolean goToShare = false;
     public static Uri VideouUri;
     public static boolean goToUpload = false;
     private ArrayList<Story> allStories;
-    private ImageView prev_story;
+//    private ImageView prev_story;
     public static boolean goToPost = false;
     private String selectedImageURL;
     private String dataType;
@@ -197,8 +197,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         ButterKnife.bind(this, view);
       
         allStories = new ArrayList<>();
-        next_story = view.findViewById(R.id.iv_next);
-        prev_story = view.findViewById(R.id.iv_prev);
+//        next_story = view.findViewById(R.id.iv_next);
+//        prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
 
@@ -246,16 +246,16 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-        next_story.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (storyIndex < allStories.size() - 1) {  //checks out of bounce exception
-                    storyIndex++;
-                    selected = false;
-                    displayStory(R.id.fragment_child);
-                }
-            }
-        });
+//        next_story.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (storyIndex < allStories.size() - 1) {  //checks out of bounce exception
+//                    storyIndex++;
+//                    selected = false;
+//                    displayStory(R.id.fragment_child);
+//                }
+//            }
+//        });
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,17 +280,17 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-        prev_story.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int jadal = storyIndex;
-                if (storyIndex >= 1) {  //checks out of bounce exception
-                    storyIndex--;
-                    selected = false;
-                    displayStory(R.id.fragment_child);
-                }
-            }
-        });
+//        prev_story.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int jadal = storyIndex;
+//                if (storyIndex >= 1) {  //checks out of bounce exception
+//                    storyIndex--;
+//                    selected = false;
+//                    displayStory(R.id.fragment_child);
+//                }
+//            }
+//        });
     }
 
     private void initiateGroup(ParseObject object) {
@@ -440,8 +440,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     private void refreshFeed() {
-        PostAdapter adapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
-        adapter.clear();
+        postAdapter.clear();
         loadTopPosts();
         rvPosts.scrollToPosition(0);
     }

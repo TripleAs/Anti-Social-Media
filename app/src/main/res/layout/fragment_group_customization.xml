@@ -99,9 +99,7 @@
         android:id="@+id/ivCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/transparentCenter"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_alignLeft="@+id/btNext"
         android:layout_below="@+id/ivPreview"
         android:src="@drawable/ic_camera_post" />
 
@@ -109,9 +107,7 @@
         android:id="@+id/ivUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/transparentCenter"
-        android:layout_alignTop="@+id/ivCamera"
-        android:layout_marginLeft="5dp"
+        android:layout_alignRight="@+id/btNext"
         android:layout_below="@+id/ivPreview"
         android:src="@drawable/ic_photo" />
 
