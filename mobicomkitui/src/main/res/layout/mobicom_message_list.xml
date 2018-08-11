@@ -15,7 +15,7 @@
     <!--android:layout_alignParentStart="true"-->
     <!--android:layout_alignParentTop="true"-->
     <!--app:titleTextColor="@android:color/white"-->
-    <!--android:background="@color/sent_message_bg_color"-->
+    <!--android:background="@color/colorPrimary"-->
     <!--android:layout_alignParentLeft="true">-->
 
     <!--<RelativeLayout-->

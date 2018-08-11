@@ -392,7 +392,7 @@ public class QuickConversationAdapter extends RecyclerView.Adapter implements Fi
                 }
                 Character colorKey = AlphaNumberColorUtil.alphabetBackgroundColorMap.containsKey(firstLetter) ? firstLetter : null;
                 GradientDrawable bgShape = (GradientDrawable) alphabeticTextView.getBackground();
-                bgShape.setColor(context.getResources().getColor(AlphaNumberColorUtil.alphabetBackgroundColorMap.get(colorKey)));
+//                bgShape.setColor(context.getResources().getColor(AlphaNumberColorUtil.alphabetBackgroundColorMap.get(colorKey)));
             }
 
             alphabeticTextView.setVisibility(View.GONE);

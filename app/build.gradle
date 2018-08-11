@@ -136,6 +136,7 @@ dependencies {
 
     //blur effect of fragment
     implementation 'fr.tvbarthel.blurdialogfragment:lib:2.2.0'
+
     //circular imageView
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 

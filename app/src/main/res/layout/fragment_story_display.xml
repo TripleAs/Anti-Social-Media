@@ -13,13 +13,13 @@
 
     <ImageView
         android:id="@+id/iv_prev"
-        android:layout_width="52dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:src="@android:color/transparent" />
 
     <ImageView
         android:id="@+id/iv_next"
-        android:layout_width="51dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"

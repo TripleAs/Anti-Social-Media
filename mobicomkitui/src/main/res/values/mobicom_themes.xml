@@ -6,9 +6,9 @@
         <item name="android:actionBarStyle">@style/ApplozicActionBar</item>
         <item name="actionBarStyle">@style/ApplozicActionBar</item>
         <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/mobitexter_main_color</item>
-        <item name="colorPrimaryDark">@color/primary_dark_color</item>
-        <item name="colorAccent">@color/holo_blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
         <!--
                 <item name="android:actionDropDownStyle">@style/actionDropDownStyle</item>
@@ -20,11 +20,11 @@
     use android:windowNoTitle as false-->
     <style name="ApplozicTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/applozic_theme_color_primary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <!-- colorPrimaryDark is used for the status bar -->
-        <item name="colorPrimaryDark">@color/applozic_theme_color_primary_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- colorAccent is used as the default value for colorControlActivated which is used to tint widgets -->
-        <item name="colorAccent">@color/applozic_theme_color_primary</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
 
         <!-- &lt;!&ndash; You can also set colorControlNormal, colorControlActivated
@@ -39,9 +39,9 @@
 
     <style name="Applozic.People.Theme" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/applozic_theme_color_primary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <!-- colorPrimaryDark is used for the status bar -->
-        <item name="colorPrimaryDark">@color/applozic_theme_color_primary_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 
         <!-- colorAccent is used as the default value for colorControlActivated
              which is used to tint widgets -->
@@ -50,8 +50,8 @@
         <!-- You can also set colorControlNormal, colorControlActivated
              colorControlHighlight & colorSwitchThumbNormal. -->
         <!-- <item name="colorControlNormal">#c5c5c5</item>-->
-        <item name="colorControlActivated">@color/applozic_theme_color_control_activated</item>
-        <item name="colorControlHighlight">@color/applozic_theme_color_control_highlight</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/white</item>
         <!--actionbar icon color-->
         <item name="android:textColorSecondary">@color/applozic_theme_secondary_text</item>

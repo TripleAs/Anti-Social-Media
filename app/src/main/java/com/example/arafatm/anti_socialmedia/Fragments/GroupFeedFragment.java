@@ -246,23 +246,25 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selected = true;
-                //create a bundle
-                Bundle bundle = new Bundle();
-                //save all necessary info for story display
-                bundle.putString("text", text);
-                bundle.putString("caption", caption);
-                bundle.putString("imagePath", imageFilePath);
-                bundle.putString("videoPath", VideouUri.toString());
-                bundle.putString("dataType", dataType);
+                if (allStories != null && allStories.size() != 0) {
+                    selected = true;
+                    //create a bundle
+                    Bundle bundle = new Bundle();
+                    //save all necessary info for story display
+                    bundle.putString("text", text);
+                    bundle.putString("caption", caption);
+                    bundle.putString("imagePath", imageFilePath);
+                    bundle.putString("videoPath", VideouUri.toString());
+                    bundle.putString("dataType", dataType);
 
-                //create StoryDisplayfragment
-                StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
-                //add bundle to it
-                sFragment.setArguments(bundle);
-                //navigate to StoryDisplayfragment
-                sFragment.setTargetFragment(GroupFeedFragment.this, 1);
-                mListener.navigateToDialog(sFragment);
+                    //create StoryDisplayfragment
+                    StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
+                    //add bundle to it
+                    sFragment.setArguments(bundle);
+                    //navigate to StoryDisplayfragment
+                    sFragment.setTargetFragment(GroupFeedFragment.this, 1);
+                    mListener.navigateToDialog(sFragment);
+                }
             }
         });
 

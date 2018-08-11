@@ -123,7 +123,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-        //TODO FIX THIS!!!!
         viewHolder.btCommentExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

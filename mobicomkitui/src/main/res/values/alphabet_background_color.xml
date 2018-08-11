@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">@color/orange_4</color>
+    <color name="orange_4">#ffffa863</color>
+    <color name="colorPrimaryDark">@color/orange_6</color>
+    <color name="orange_6">#ffd7670d</color>
+    <color name="colorAccent">@color/orange_6</color>
+    <color name="orange_5">#fffd8d32</color>
+
+
     <color name="mg_alphabet_first">#FF617D8A</color>
     <color name="mg_alphabet_second">#FF628B70</color>
     <color name="mg_alphabet_third">#FF6F628B</color>
@@ -10,7 +18,7 @@
 
 
     <color name="non_alpha">#FFDDA185</color>
-    <color name="alphabet_a">#FF4FC3F7</color>
+    <color name="alphabet_a">#ffffa863</color>
     <color name="alphabet_b">#FFF06292</color>
     <color name="alphabet_c">#FFBA68C8</color>
     <color name="alphabet_d">#FF9575CD</color>

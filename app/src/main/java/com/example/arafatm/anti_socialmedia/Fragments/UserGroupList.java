@@ -143,12 +143,15 @@ public class UserGroupList extends Fragment {
 
             @Override
             public void onClick(View view) {
-                ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
+                final ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
                 if (allGroupWithStories != null && allGroupWithStories.size() != 0) {
                     //Create a new story
-                    Story story = new Story();
-                    story.setSender(ParseUser.getCurrentUser());
-                    ParseFile parseFile = null;
+                    final Story story = new Story();
+
+                    story.pinInBackground("story");
+                    story.saveEventually();
+
+                    final ParseFile parseFile;
 
                     if (dataType.compareTo("video") == 0) {
                         byte[] videoBytes = getArguments().getByteArray("byteData");
@@ -158,28 +161,39 @@ public class UserGroupList extends Fragment {
                         parseFile = new ParseFile("mynewStory.png", imageBytes);
                     }
 
-                    story.setStoryType(dataType);
-                    story.setStory(parseFile);
-                    story.setStoryCaption(caption);
-                    story.setStoryText(text);
-
-                    //adds the group's id to the recipient list of story
-                    for (ParseObject group : allGroupWithStories) {
-                        story.addRecipient(group.getObjectId());
-                    }
-
-                    story.saveInBackground(new SaveCallback() {
+                    parseFile.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Toast.makeText(getContext(), "sharing!", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(getActivity(), StoryActivity.class);
-                                startActivity(i);
-                                ((Activity) getActivity()).overridePendingTransition(0, 0);
+                                story.setSender(ParseUser.getCurrentUser());
+                                story.setStoryType(dataType);
+                                story.setStory(parseFile);
+                                story.setStoryCaption(caption);
+                                story.setStoryText(text);
+
+                                //adds the group's id to the recipient list of story
+                                for (ParseObject group : allGroupWithStories) {
+                                    story.addRecipient(group.getObjectId());
+                                }
+
+                                story.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            Toast.makeText(getContext(), "sharing!", Toast.LENGTH_SHORT).show();
+                                            Intent i = new Intent(getActivity(), StoryActivity.class);
+                                            startActivity(i);
+                                            ((Activity) getActivity()).overridePendingTransition(0, 0);
+                                        } else {
+                                            Toast.makeText(getContext(), "something is wrong!", Toast.LENGTH_SHORT).show();
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
                             } else {
-                                Toast.makeText(getContext(), "something is wrong!", Toast.LENGTH_SHORT).show();
-                                e.printStackTrace();
+                              e.printStackTrace();
                             }
+
                         }
                     });
                 } else {
