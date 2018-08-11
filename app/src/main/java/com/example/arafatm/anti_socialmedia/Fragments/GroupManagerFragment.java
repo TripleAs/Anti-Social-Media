@@ -5,8 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class GroupManagerFragment extends Fragment {
     public static ArrayList<Group> groupList;
     Context mContext;
 
-    @BindView(R.id.ic_add_icon)
+    @BindView(R.id.ic_add_white)
     ImageView add_group;
     RecyclerView rvGroups;
     Toolbar toolbar;
@@ -106,9 +107,9 @@ public class GroupManagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         rvGroups = view.findViewById(R.id.rvGroups);
-        rvGroups.addItemDecoration(new SpacesItemDecoration(20));
+        rvGroups.addItemDecoration(new SpacesItemDecoration(30));
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager( 2, LinearLayoutManager.VERTICAL);
         rvGroups.setLayoutManager(gridLayoutManager);
         rvGroups.setAdapter(groupAdapter);
         loadAllGroups();
@@ -117,7 +118,7 @@ public class GroupManagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 /*Navigates to the groupManagerFragment*/
-                Fragment fragment = new GroupCreationFragment();
+                Fragment fragment = new GroupCustomizationFragment();
                 mListener.navigate_to_fragment(fragment);
             }
         });

@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.Toolbar"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFriends"
@@ -26,17 +28,19 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/btNext"
+        android:id="@+id/btCreateGroup"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_transparent_button"
-        android:text="Next" />
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_colorprimary_button"
+        android:text="Create" />
+  
 </RelativeLayout>

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         app:titleTextColor="@android:color/white"
-        android:background="@color/blueteal_1"
+        android:background="@color/colorPrimary"
         android:layout_alignParentLeft="true">
 
             <TextView

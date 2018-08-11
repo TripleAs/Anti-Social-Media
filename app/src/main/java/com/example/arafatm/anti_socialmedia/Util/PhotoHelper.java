@@ -105,7 +105,7 @@ public class PhotoHelper {
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d("GroupFeedFragment", "failed to create directory");
+            Log.d("PhotoHelper", "failed to create directory");
         }
 
         // Return the file target for the photo based on filename
@@ -161,7 +161,7 @@ public class PhotoHelper {
 
     public Bitmap handleTakenPhoto(Intent data) {
         // by this point we have the camera photo on disk
-        Bitmap takenImage = rotateBitmapOrientation(photoFile.getAbsolutePath());
+        Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
         if (takenImage == null) {
             if (data.getData() != null) {
                 try {
@@ -172,6 +172,8 @@ public class PhotoHelper {
             } else {
                 takenImage = (Bitmap) data.getExtras().get("data");
             }
+        } else {
+            takenImage = rotateBitmapOrientation(photoFile.getAbsolutePath());
         }
 
         // RESIZE BITMAP, see section below

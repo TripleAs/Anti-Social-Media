@@ -133,7 +133,7 @@
                 android:id="@+id/iv_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 app:srcCompat="@drawable/applozic_audio_delete" />
 

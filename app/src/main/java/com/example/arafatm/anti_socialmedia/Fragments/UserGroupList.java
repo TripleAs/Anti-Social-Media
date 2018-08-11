@@ -139,6 +139,7 @@ public class UserGroupList extends Fragment {
         shareButton = (Button) view.findViewById(R.id.bt_share);
 
         shareButton.setOnClickListener(new View.OnClickListener() {
+//TODO NOT SAVING :( FIX IT
 
             @Override
             public void onClick(View view) {
@@ -146,8 +147,6 @@ public class UserGroupList extends Fragment {
                 if (allGroupWithStories != null && allGroupWithStories.size() != 0) {
                     //Create a new story
                     Story story = new Story();
-                    story.pinInBackground();
-                    story.saveEventually();
                     story.setSender(ParseUser.getCurrentUser());
                     ParseFile parseFile = null;
 
@@ -157,7 +156,6 @@ public class UserGroupList extends Fragment {
                     } else {
                         final byte[] imageBytes = StoryActivity.compressedImageByte;
                         parseFile = new ParseFile("mynewStory.png", imageBytes);
-
                     }
 
                     story.setStoryType(dataType);
@@ -173,10 +171,15 @@ public class UserGroupList extends Fragment {
                     story.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            Toast.makeText(getContext(), "sharing!", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getActivity(), StoryActivity.class);
-                            startActivity(i);
-                            ((Activity) getActivity()).overridePendingTransition(0, 0);
+                            if (e == null) {
+                                Toast.makeText(getContext(), "sharing!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(getActivity(), StoryActivity.class);
+                                startActivity(i);
+                                ((Activity) getActivity()).overridePendingTransition(0, 0);
+                            } else {
+                                Toast.makeText(getContext(), "something is wrong!", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
                         }
                     });
                 } else {

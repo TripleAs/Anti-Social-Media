@@ -48,6 +48,7 @@ public class GroupCustomizationFragment extends Fragment {
     @BindView(R.id.ivUpload)
     ImageView ivUpload;
     private ImageView ivColorRed;
+    private Button btNext;
     private ImageView ivColorGreen;
     private ImageView ivColorBlue;
     private ImageView ivCheckmarkRed;
@@ -63,6 +64,10 @@ public class GroupCustomizationFragment extends Fragment {
     public final static String KEY_GREEN = "green";
     public final static String KEY_BLUE = "blue";
     private String theme = "green";
+
+    private String newName;
+    private ParseFile newGroupPic;
+
     private OnFragmentInteractionListener mListener;
 
     public GroupCustomizationFragment() {
@@ -71,14 +76,6 @@ public class GroupCustomizationFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void navigate_to_fragment(Fragment fragment);
-    }
-
-    public static GroupCustomizationFragment newInstance(ArrayList<String> friendsToAdd) {
-        GroupCustomizationFragment fragment = new GroupCustomizationFragment();
-        Bundle args = new Bundle();
-        args.putStringArrayList("newMembers", friendsToAdd);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -95,9 +92,6 @@ public class GroupCustomizationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            newMembers = getArguments().getStringArrayList("newMembers");
-        }
     }
 
     @Override
@@ -118,6 +112,7 @@ public class GroupCustomizationFragment extends Fragment {
         ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
         ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
         checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
+        btNext = view.findViewById(R.id.btNext);
 
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,10 +162,14 @@ public class GroupCustomizationFragment extends Fragment {
             }
         });
 
-        btCreateGroup.setOnClickListener(new View.OnClickListener() {
+        btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewGroup();
+                if (!hasNewPic) {
+                    Toast.makeText(getContext(), "Please choose a group picture", Toast.LENGTH_LONG).show();
+                } else {
+                    passToGroupCreation();
+                }
             }
         });
     }
@@ -253,6 +252,13 @@ public class GroupCustomizationFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void passToGroupCreation() {
+        newGroupPic = photoHelper.grabImage();
+        newName = etGroupName.getText().toString();
+        GroupCreationFragment groupCreationFragment = GroupCreationFragment.newInstance(newName, theme, newGroupPic);
+        mListener.navigate_to_fragment(groupCreationFragment);
     }
 
     private void handleColorSelection(String color, ImageView checkmark) {

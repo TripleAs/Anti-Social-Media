@@ -40,7 +40,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:inputType="textMultiLine"
-            android:textColor="@color/blue_5"
+            android:textColor="@color/colorPrimary"
             android:textSize="36sp"
             android:visibility="invisible"
             android:background="@color/transparent"

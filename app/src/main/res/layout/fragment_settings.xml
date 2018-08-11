@@ -54,13 +54,36 @@
     <Button
         android:id="@+id/log_out_button"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/rounded_transparent_button"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_colorprimary_button"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:text="Log out" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlNotifications"
+        android:layout_below="@+id/rlViewProfile"
+        android:background="@color/blueteal_2">
+
+        <TextView
+            android:id="@+id/tvNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="Notifications"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvNotifs"
@@ -68,6 +91,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/log_out_button"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/rlViewProfile" />
+        android:layout_below="@+id/rlNotifications" />
 
 </RelativeLayout>

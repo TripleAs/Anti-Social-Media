@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapter.ViewHolder> {
     private Context context;
     public ArrayList<Group> groups;
+    private ArrayList<ParseUser> memberList;
     private FragmentManager fragmentManager;
     public int currentGroupPosition;
 
@@ -48,10 +54,16 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
         String groupName = group.getGroupName();
 
         if (groupName != null) {
-            String initials = getInitials(groupName);
-            viewHolder.tvGroupName.setText(initials);
+            viewHolder.tvGroupName.setText(groupName);
         } else {
             viewHolder.tvGroupName.setText("");
+        }
+
+        List<String> groupMembers = group.getUsers();
+        if(groupMembers != null){
+           getMemberNames(groupMembers, viewHolder.tvGroupMembers);
+        } else {
+            viewHolder.tvGroupMembers.setText("");
         }
 
         ParseFile groupPic = group.getParseFile("groupImage");
@@ -72,11 +84,13 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvGroupName;
+        public TextView tvGroupMembers;
         public ImageView ivCoverPhoto;
 
         public ViewHolder(View view) {
             super(view);
             tvGroupName = view.findViewById(R.id.tvGroupName);
+            tvGroupMembers = view.findViewById(R.id.tvGroupMembers);
             ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
             view.setOnClickListener(this);
         }
@@ -95,6 +109,30 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
             }
         }
+    }
+
+    public void getMemberNames(final List<String> groupMembers, final TextView groupMemberNames){
+        final int size = groupMembers.size();
+        final List<String> names = new ArrayList<>();
+
+        ParseQuery<ParseUser> membersQuery = ParseUser.getQuery();
+        membersQuery.whereContainedIn("objectId", groupMembers);
+        membersQuery.fromLocalDatastore();
+
+        membersQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < size; i++){
+                        String index = objects.get(i).getString("fullName");
+                        names.add(i, index);
+                        groupMemberNames.setText(TextUtils.join(", ", names));
+                    }
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private String getInitials(String name) {

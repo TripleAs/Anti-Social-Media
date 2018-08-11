@@ -79,11 +79,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
         String message = post.getMessage();
-        String senderName = sender.getString("fullName");
+        final String senderName = sender.getString("fullName");
         String number = Integer.toString(post.getCommentsCount());
         String relativeTime = post.getTimestamp();
 
-        String objectId = sender.getObjectId();
+        final String objectId = sender.getObjectId();
         if (nicknames != null) {
             String nickname = nicknames.get(objectId);
             if (nickname != null) {
@@ -119,7 +119,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.ivDirectMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.startUserChat(sender.getObjectId(), sender.getString("fullName"));
+                mListener.startUserChat(objectId, senderName);
             }
         });
 
@@ -279,12 +279,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     // Clean all elements of the recycler
     public void clear() {
         mPosts.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<Post> list) {
-        mPosts.addAll(list);
         notifyDataSetChanged();
     }
 }

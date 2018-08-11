@@ -1,33 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivCoverPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="H,1:1"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_group_default" />
-
-    <TextView
-        android:id="@+id/tvGroupName"
+    <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RS"
-        android:textColor="@android:color/background_light"
-        android:textSize="48sp"
-        style="@style/TextWithShadow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_marginRight="1dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginBottom="2dp"
+        android:elevation="2dp"
+        app:cardCornerRadius="10dp"
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivCoverPhoto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="centerCrop"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/ic_group_default" />
+
+            <TextView
+                android:id="@+id/tvGroupName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/ivCoverPhoto"
+                android:gravity="center"
+                android:text="Group name"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/tvGroupMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvGroupName"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:text=""
+                android:textSize="15dp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

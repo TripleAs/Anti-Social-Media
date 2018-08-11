@@ -99,12 +99,6 @@ public class VideoFragment extends Fragment {
             displayVideo.start();
         }
 
-        displayVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayVideo.start();
-            }
-        });
 
         if (text != null)
             showText.setText(text);
