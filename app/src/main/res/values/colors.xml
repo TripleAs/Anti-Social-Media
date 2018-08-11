@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="red_gradient_1">#F2C8C8</color>
+    <color name="red_gradient_2">#E97861</color>
+    <color name="green_gradient_1">#C8D8C0</color>
+    <color name="green_gradient_2">#A4D48C</color>
+    <color name="blue_gradient_1">#D3E0E0</color>
+    <color name="blue_gradient_2">#8CD1D4</color>
+
+
     <color name="colorPrimary">@color/orange_4</color>
     <color name="customGradientStart">#e75b97</color>
     <color name="customGradientCenter">#38e7e6</color>
