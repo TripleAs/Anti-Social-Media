@@ -295,9 +295,6 @@
         </receiver>
 
         <!-- Applozic end -->
-        <activity
-            android:name=".Authentification.SignupActivity"
-            android:windowSoftInputMode="adjustPan" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

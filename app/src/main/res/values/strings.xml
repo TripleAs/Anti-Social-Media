@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Anti-Social Media</string>
+    <string name="app_name">anti-social media</string>
     <string name="facebook_app_id">787835504939356</string>
     <string name="fb_login_protocol_scheme">fb787835504939356</string>
 
