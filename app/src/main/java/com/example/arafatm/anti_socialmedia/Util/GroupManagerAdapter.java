@@ -120,7 +120,7 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
         ParseQuery<ParseUser> membersQuery = ParseUser.getQuery();
         membersQuery.whereContainedIn("objectId", groupMembers);
-        membersQuery.fromLocalDatastore();
+//        membersQuery.fromLocalDatastore();
 
         membersQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override

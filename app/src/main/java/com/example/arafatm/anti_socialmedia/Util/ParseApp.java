@@ -37,7 +37,6 @@ public class ParseApp extends Application {
                 .applicationId("triple_as_lovely_app") // takes in App ID
                 .clientKey("amy_alison_arafat_are_triple_as") //takes in App Master Key
                 .server("http://anti-social-media.herokuapp.com/parse") // takes in Parse URL
-                .enableLocalDataStore()
                 .build();
 
         Parse.initialize(configuration); //initializing parse

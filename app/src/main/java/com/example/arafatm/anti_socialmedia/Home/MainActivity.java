@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
         parseACL.setPublicReadAccess(true);
         parseACL.setPublicWriteAccess(true);
         ParseUser.getCurrentUser().setACL(parseACL);
-        ParseUser.getCurrentUser().pinInBackground();
+//        ParseUser.getCurrentUser().pinInBackground();
 
         BottomNavigationViewEx bottomNavigationView = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
         bottomNavigationView.enableAnimation(false);
@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements
         List<Group> groups = user.getList("groups");
         if (groups == null) {
             Group.Query groupQuery = new Group.Query();
-            groupQuery.fromLocalDatastore();
+//            groupQuery.fromLocalDatastore();
             groupQuery.findInBackground(new FindCallback<Group>() {
                 @Override
                 public void done(List<Group> objects, ParseException e) {
