@@ -37,18 +37,12 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class GroupCustomizationFragment extends Fragment {
-    @BindView(R.id.etGroupName)
-    EditText etGroupName;
-    @BindView(R.id.btCreateGroup)
-    Button btCreateGroup;
-    @BindView(R.id.ivPreview)
-    ImageView ivPreview;
-    @BindView(R.id.ivCamera)
-    ImageView ivCamera;
-    @BindView(R.id.ivUpload)
-    ImageView ivUpload;
+    @BindView(R.id.etGroupName) EditText etGroupName;
+    @BindView(R.id.btNext) Button btNext;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
     private ImageView ivColorRed;
-    private Button btNext;
     private ImageView ivColorGreen;
     private ImageView ivColorBlue;
     private ImageView ivCheckmarkRed;
@@ -112,7 +106,6 @@ public class GroupCustomizationFragment extends Fragment {
         ivCheckmarkGreen = view.findViewById(R.id.ivCheckmarkGreen);
         ivCheckmarkBlue = view.findViewById(R.id.ivCheckmarkBlue);
         checkmarks.addAll(Arrays.asList(ivCheckmarkRed, ivCheckmarkGreen, ivCheckmarkBlue));
-        btNext = view.findViewById(R.id.btNext);
 
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,74 +184,16 @@ public class GroupCustomizationFragment extends Fragment {
         }
     }
 
-    private void createNewGroup() {
-        //Create new group and initialize it
-        final Group newGroup = new Group();
-        newGroup.pinInBackground("groups");
-        newGroup.saveEventually();
-        if (!hasNewPic) {
-            // TODO - fix known issue with creating group without group picture
-            photoHelper = new PhotoHelper(getContext());
-            photoHelper.getDefaultPropic();
-        }
-        final ParseFile newGroupPic = photoHelper.grabImage();
+    private void passToGroupCreation() {
+        newGroupPic = photoHelper.grabImage();
         newGroupPic.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                saveNewGroup(newGroup, newGroupPic);
+                newName = etGroupName.getText().toString();
+                GroupCreationFragment groupCreationFragment = GroupCreationFragment.newInstance(newName, theme, newGroupPic);
+                mListener.navigate_to_fragment(groupCreationFragment);
             }
         });
-        sendGroupRequests(newGroup);
-    }
-
-    private void saveNewGroup(final Group newGroup, ParseFile newGroupPic) {
-        final String newName = etGroupName.getText().toString();
-        newGroup.initGroup(newName, newMembers, newGroupPic, theme);
-        newGroup.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                String objectId = newGroup.getObjectId();
-                Fragment fragment = GroupFeedFragment.newInstance(objectId, theme);
-                mListener.navigate_to_fragment(fragment);
-            }
-        });
-    }
-
-    private void sendGroupRequests(final Group newGroup) {
-        ParseUser loggedInUser = ParseUser.getCurrentUser();
-        List<ParseObject> currentGroups = loggedInUser.getList("groups");
-        if (currentGroups == null) {
-            currentGroups = new ArrayList<>();
-        }
-        currentGroups.add(newGroup);
-        loggedInUser.put("groups", currentGroups);
-        loggedInUser.saveInBackground();
-
-        for (int i = 0; i < newMembers.size(); i++) {
-            final GroupRequestNotif newRequest = new GroupRequestNotif();
-            newRequest.pinInBackground("notifs");
-            newRequest.saveEventually();
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.fromLocalDatastore();
-            query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
-                @Override
-                public void done(ParseUser object, ParseException e) {
-                    newRequest.initRequest(object, newGroup);
-                    try {
-                        newRequest.save();
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
-
-    private void passToGroupCreation() {
-        newGroupPic = photoHelper.grabImage();
-        newName = etGroupName.getText().toString();
-        GroupCreationFragment groupCreationFragment = GroupCreationFragment.newInstance(newName, theme, newGroupPic);
-        mListener.navigate_to_fragment(groupCreationFragment);
     }
 
     private void handleColorSelection(String color, ImageView checkmark) {

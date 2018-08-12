@@ -109,7 +109,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     private void openProfile(ParseUser friend) {
         ProfileFragment profileFragment = ProfileFragment.newInstance(friend);
         ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout_child_activity, profileFragment)
+                .replace(R.id.layout_child_activity, profileFragment).addToBackStack(null)
                 .commit();
     }
 }

@@ -288,7 +288,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         currentGroup = group;
         groupName = object.getString("groupName");
         tvGroupName.setText(groupName);
-        groupId = convert(object.getObjectId());
+        groupId = convert(group.getObjectId());
         ParseFile groupImage = object.getParseFile("groupImage");
 
         if (groupImage != null) {
