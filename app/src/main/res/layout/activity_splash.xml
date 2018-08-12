@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Anti-Social Media"
+        android:text="@string/app_name"
         android:gravity="center"
         android:textColor="@color/gray"
         android:textSize="30sp"
@@ -24,4 +24,15 @@
         android:layout_above="@+id/tvTitle"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/ic_world" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:theme="@style/ProgressBarStyle"
+        android:visibility="visible"
+        android:layout_below="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminateOnly="true"
+        android:layout_width="150dp"
+        android:layout_height="50dp" />
 </RelativeLayout>

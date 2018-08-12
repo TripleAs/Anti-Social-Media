@@ -9,7 +9,7 @@
     <color name="blue_gradient_2">#8CD1D4</color>
 
 
-    <color name="colorPrimary">@color/orange_4</color>
+    <color name="colorPrimary">@color/blue_gradient_2</color>
     <color name="customGradientStart">#e75b97</color>
     <color name="customGradientCenter">#38e7e6</color>
     <color name="customGradientEnd">#127eff</color>

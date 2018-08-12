@@ -6,8 +6,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/blueteal_3</item>
-        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorPrimary">@color/blue_gradient_2</item>
+        <item name="colorPrimaryDark">@color/blue_gradient_2</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowEnterTransition">@transition/change_image_transform</item>
         <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
@@ -52,6 +52,11 @@
         <item name="android:shadowDx">-5</item>
         <item name="android:shadowDy">5</item>
         <item name="android:shadowRadius">0.1</item>
+    </style>
+
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:minHeight">10dip</item>
     </style>
 
 </resources>
