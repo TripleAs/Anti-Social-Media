@@ -412,20 +412,13 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         return ret;
     }
 
-    @Override
-    public void onFinishCreatePost(Post post) {
-        posts.add(0, post);
-        postAdapter.notifyItemInserted(0);
-        rvPosts.scrollToPosition(0);
-        Toast.makeText(getContext(), "New post created", Toast.LENGTH_SHORT).show();
-    }
-
     public void passPostingToFeed(PhotoHelper photoHelper, String newMessage, Boolean hasNewPic, String imageUrl) {
         progressBar.setVisibility(View.VISIBLE);
+
         final Post newPost = new Post();
         newPost.pinInBackground("posts");
         newPost.saveEventually();
-        ParseFile image = null;
+        ParseFile image;
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseACL acl = new ParseACL(currentUser);
@@ -433,9 +426,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         acl.setPublicWriteAccess(true);
         newPost.setACL(acl);
 
-        if (currentGroup == null) {
-            currentGroup = GroupFeedFragment.publicCurrentGroup;
-        }
         newPost.initPost(newMessage, currentGroup);
 
         if (hasNewPic) {
@@ -472,7 +462,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                         public void done(ParseException e) {
                             if (e == null) {
                                 progressBar.setVisibility(View.GONE);
-                                onFinishCreatePost(newPost);
+                                posts.add(0, newPost);
+                                postAdapter.notifyItemInserted(0);
+                                rvPosts.scrollToPosition(0);
+                                Toast.makeText(getContext(), "New post created", Toast.LENGTH_SHORT).show();
                             } else {
                                 e.printStackTrace();
                             }
