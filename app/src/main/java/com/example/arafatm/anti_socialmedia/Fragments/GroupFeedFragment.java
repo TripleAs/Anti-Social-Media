@@ -364,8 +364,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-                    postAdapter.notifyDataSetChanged();
                     posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
                     swipeContainer.setRefreshing(false);
                 } else {
                     e.printStackTrace();
@@ -377,6 +377,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private void refreshFeed() {
         postAdapter.clear();
         displayStory(R.id.fragment_child);
+      
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
         postsQuery.fromNetwork();

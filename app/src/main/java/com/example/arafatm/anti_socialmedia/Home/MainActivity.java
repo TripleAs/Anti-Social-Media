@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.applozic.mobicomkit.ApplozicClient;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
         /*gets instance of all fragments here*/

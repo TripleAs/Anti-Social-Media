@@ -2,14 +2,10 @@ package com.example.arafatm.anti_socialmedia.Authentification;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.applozic.mobicomkit.contact.AppContactService;
@@ -21,16 +17,10 @@ import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -45,130 +35,31 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class LoginActivity extends AppCompatActivity {
-    private TextView title;
-    private EditText usernameInput;
-    private EditText passwordInput;
-    private Button parseLoginButton;
-    private LoginButton loginButton;
-    private Button signupButton;
-  
-    CallbackManager callbackManager;
-    static Context context;
+public class SplashActivity extends AppCompatActivity {
+
+    Boolean friendsDone = false;
+    Boolean groupsDone = false;
+    Boolean postsDone = false;
+    Boolean storiesDone = false;
+    Boolean notifsDone = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_splash);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      
-        title = findViewById(R.id.tvTitle);
-        usernameInput = findViewById(R.id.etUsername);
-        passwordInput = findViewById(R.id.etPassword);
-        parseLoginButton = findViewById(R.id.btLogin);
-        loginButton =  findViewById(R.id.login_button);
-        signupButton = findViewById(R.id.btSwitchToSignup);
-        callbackManager = CallbackManager.Factory.create();
-        context = getApplicationContext();
 
-        persistLogin();
-
-        //title
-        title.setText("anti-social media");
-
-        // Login via Parse
-        parseLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String username = usernameInput.getText().toString();
-                final String password = passwordInput.getText().toString();
-
-                loginParse(username, password);
-            }
-        });
-
-        loginButton.setReadPermissions(Arrays.asList(
-                "user_friends", "public_profile", "email"));
-        // If you are using in a fragment, call loginButton.setFragment(this);
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-                intent.putExtra("accessToken", Parcels.wrap(loginResult.getAccessToken()));
-                startActivity(intent);
-                finish();
-//                requestFBInfo(loginResult);
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("LoginActivity", "Login cancelled");
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                exception.printStackTrace();
-            }
-        });
-
-
-        signupButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
-        });
+        Intent intent = getIntent();
+        AccessToken accessToken = Parcels.unwrap(intent.getExtras().getParcelable("accessToken"));
+        requestFBInfo(accessToken);
     }
 
-    // Every activity/fragment with FacebookSDK Login should forward onActivityResult to the callbackManager.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void persistLogin() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-        if (isLoggedIn && ParseUser.getCurrentUser() != null) {
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_friends", "public_profile", "email"));
-            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
-        }
-    }
-
-    private void loginParse(String username, String password){
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if(e == null ){          //if there's no errors
-                    Log.d("LoginActivity", "Login successful!");
-
-                    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Unsuccessful", Toast.LENGTH_LONG).show();
-                    Log.e("LoginActivity", "Login failure.");
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void requestFBInfo(final LoginResult loginResult) {
+    private void requestFBInfo(final AccessToken accessToken) {
         // define request for Facebook user's information
         GraphRequest meRequest = GraphRequest.newMeRequest(
-                loginResult.getAccessToken(),
+                accessToken,
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
@@ -180,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                             final String fullname = object.getString("name");
                             final String propicUrl = object.getJSONObject("picture")
                                     .getJSONObject("data").getString("url");
-                            loginOrSignup(userId, fullname, email, propicUrl, loginResult);
+                            loginOrSignup(userId, fullname, email, propicUrl, accessToken);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -195,16 +86,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginOrSignup(final String userId, final String fullname, final String email,
-                               final String propicUrl, final LoginResult loginResult) {
+                               final String propicUrl, final AccessToken accessToken) {
         ParseUser.logInInBackground(userId, userId, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
                     Log.d("LoginActivity", "Login successful");
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
                     setUpLocalDatastore();
-                    finish();
                 } else {
                     ParseUser parseUser = new ParseUser();
                     // Set core properties
@@ -217,10 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                     parseUser.signUpInBackground(new SignUpCallback() {
                         public void done(ParseException e) {
                             if (e == null) {
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(i);
-                                getFriends(loginResult);
-                                finish();
+                                getFriends(accessToken);
                             } else {
                                 Log.e("LoginActivity","Login failure");
                                 e.printStackTrace();
@@ -232,9 +117,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void getFriends(LoginResult loginResult) {
+    private void getFriends(AccessToken accessToken) {
         GraphRequest friendsRequest = GraphRequest.newMyFriendsRequest(
-                loginResult.getAccessToken(),
+                accessToken,
                 new GraphRequest.GraphJSONArrayCallback() {
                     @Override
                     public void onCompleted(
@@ -260,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         user.put("friendList", friends);
         user.saveInBackground();
+        setUpLocalDatastore();
         addContacts(user, friends);
     }
 
@@ -289,7 +175,6 @@ public class LoginActivity extends AppCompatActivity {
                         Context context = getApplicationContext();
                         AppContactService appContactService = new AppContactService(context);
                         appContactService.add(contact);
-
                     }
                 } else {
                     Log.e("weird", "Query error");
@@ -307,6 +192,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseException e) {
                         Log.d("ParseLocalDataStore", "friends");
+                        trackingSetupProgress("friends");
                     }
                 });
             }
@@ -319,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                 ParseObject.pinAllInBackground("groups", objects, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        trackingSetupProgress("groups");
                         Log.d("ParseLocalDataStore", "groups");
                     }
                 });
@@ -332,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                 ParseObject.pinAllInBackground("notifs", objects, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        trackingSetupProgress("notifs");
                         Log.d("ParseLocalDataStore", "notifs");
                     }
                 });
@@ -345,6 +233,7 @@ public class LoginActivity extends AppCompatActivity {
                 ParseObject.pinAllInBackground("posts", objects, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        trackingSetupProgress("posts");
                         Log.d("ParseLocalDataStore", "posts");
                     }
                 });
@@ -358,6 +247,7 @@ public class LoginActivity extends AppCompatActivity {
                 ParseObject.pinAllInBackground("stories", objects, new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        trackingSetupProgress("stories");
                         Log.d("ParseLocalDataStore", "stories");
                     }
                 });
@@ -365,4 +255,29 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void trackingSetupProgress(String model) {
+        switch (model) {
+            case "friends":
+                friendsDone = true;
+                break;
+            case "groups":
+                groupsDone = true;
+                break;
+            case "notifs":
+                notifsDone = true;
+                break;
+            case "posts":
+                postsDone = true;
+                break;
+            case "stories":
+                storiesDone = true;
+                break;
+        }
+
+        if (friendsDone && groupsDone && notifsDone && postsDone && storiesDone) {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 }
