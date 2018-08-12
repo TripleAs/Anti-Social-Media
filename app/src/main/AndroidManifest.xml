@@ -36,7 +36,8 @@
         android:roundIcon="@mipmap/ic_home_antisocial_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Authentification.LoginActivity"
+        <activity
+            android:name=".Authentification.LoginActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,7 +54,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -66,8 +67,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Home.MainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".Home.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- for fcm push notifications - START -->
 
@@ -126,9 +128,9 @@
         <meta-data
             android:name="com.package.name"
             android:value="${applicationId}" />
-        <!--<meta-data-->
-            <!--android:name="preloaded_fonts"-->
-            <!--android:resource="@array/preloaded_fonts" /> &lt;!&ndash; NOTE: Do NOT change this, it should remain same i.e 'com.package.name' &ndash;&gt;-->
+        <!-- <meta-data -->
+        <!-- android:name="preloaded_fonts" -->
+        <!-- android:resource="@array/preloaded_fonts" /> &lt;!&ndash; NOTE: Do NOT change this, it should remain same i.e 'com.package.name' &ndash;&gt; -->
 
 
         <!-- <provider -->
@@ -293,8 +295,9 @@
         </receiver>
 
         <!-- Applozic end -->
-        <activity android:name=".Authentification.SignupActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".Authentification.SignupActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -317,7 +320,8 @@
         <!-- </provider> -->
 
         <activity android:name=".Story.StoryActivity" />
-        <activity android:name=".Story.PreviewStoryActivity"></activity>
+        <activity android:name=".Story.PreviewStoryActivity" />
+        <activity android:name=".Authentification.SplashActivity"></activity>
     </application>
 
 </manifest>
