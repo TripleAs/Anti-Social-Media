@@ -55,6 +55,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String caption;
     public static boolean selected = false;
     private int groupId;
+    private ImageView welcomeImage;
     public static Group publicCurrentGroup;
     private Group group;
     public static Group currentGroup;
@@ -182,6 +183,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         allStories = new ArrayList<>();
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
+        welcomeImage = (ImageView) view.findViewById(R.id.welcomeImage);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
         query.fromLocalDatastore();
@@ -291,7 +293,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                         }
                     }
                     Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
-                    displayStory(R.id.fragment_child);
+                    if (allStories.size() != 0) {
+                        displayStory(R.id.fragment_child);
+                    } else {
+                        welcomeImage.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     e.printStackTrace();
                 }
@@ -351,6 +357,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
+        args.putParcelableArrayList("allStories", allStories);
         args.putString("videoPath", videoFilePath.toString());
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
@@ -383,8 +390,23 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void refreshFeed() {
         postAdapter.clear();
-        loadTopPosts();
         displayStory(R.id.fragment_child);
+        final Post.Query postsQuery = new Post.Query();
+        postsQuery.getTop().withUser().forGroup(group);
+        postsQuery.fromNetwork();
+        postsQuery.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if (e == null) {
+                    posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
+                    swipeContainer.setRefreshing(false);
+                    ParseObject.pinAllInBackground(objects);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
         rvPosts.scrollToPosition(0);
     }
 

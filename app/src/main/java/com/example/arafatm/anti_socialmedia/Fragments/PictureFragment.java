@@ -126,7 +126,7 @@ public class PictureFragment extends Fragment {
     private Bitmap resizeImageToFitscreen(Bitmap rotated) {
         int currentBitmapWidth = rotated.getWidth();
         int currentBitmapHeight = rotated.getHeight();
-        int ivWidth = 3200;
+        int ivWidth = 3500;
         int ivHeight = 2300;
         int newWidth = ivWidth;
 

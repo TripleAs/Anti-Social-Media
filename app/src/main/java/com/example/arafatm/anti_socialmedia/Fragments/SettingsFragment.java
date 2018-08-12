@@ -177,7 +177,7 @@ public class SettingsFragment extends Fragment {
         GroupRequestNotif.Query query = new GroupRequestNotif.Query();
         ParseUser currentUser = ParseUser.getCurrentUser();
         query.getInvitesReceived(currentUser).withAll();
-        query.fromLocalDatastore();
+        query.fromNetwork();
 
         query.findInBackground(new FindCallback<GroupRequestNotif>() {
             @Override
