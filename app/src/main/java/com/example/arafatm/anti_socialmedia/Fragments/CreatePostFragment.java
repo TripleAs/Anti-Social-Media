@@ -176,8 +176,8 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
 
     private void sendPostToParse() throws IOException {
         final Post newPost = new Post();
-        newPost.pinInBackground("posts");
-        newPost.saveEventually();
+//        newPost.pinInBackground("posts");
+//        newPost.saveEventually();
         ParseFile image = null;
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseACL acl = new ParseACL(currentUser);

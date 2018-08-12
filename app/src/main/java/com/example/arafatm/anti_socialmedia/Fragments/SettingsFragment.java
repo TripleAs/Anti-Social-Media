@@ -177,7 +177,7 @@ public class SettingsFragment extends Fragment {
         GroupRequestNotif.Query query = new GroupRequestNotif.Query();
         ParseUser currentUser = ParseUser.getCurrentUser();
         query.getInvitesReceived(currentUser).withAll();
-        query.fromLocalDatastore();
+//        query.fromLocalDatastore();
 
         query.findInBackground(new FindCallback<GroupRequestNotif>() {
             @Override
@@ -203,13 +203,13 @@ public class SettingsFragment extends Fragment {
         }
 
         // unpin everything from local datastore
-        ParseObject.unpinAllInBackground("friends");
-        ParseObject.unpinAllInBackground("groups");
-        ParseObject.unpinAllInBackground("posts");
-        ParseObject.unpinAllInBackground("comments");
-        ParseObject.unpinAllInBackground("notifs");
-        ParseObject.unpinAllInBackground("stories");
-        ParseObject.unpinAllInBackground();
+//        ParseObject.unpinAllInBackground("friends");
+//        ParseObject.unpinAllInBackground("groups");
+//        ParseObject.unpinAllInBackground("posts");
+//        ParseObject.unpinAllInBackground("comments");
+//        ParseObject.unpinAllInBackground("notifs");
+//        ParseObject.unpinAllInBackground("stories");
+//        ParseObject.unpinAllInBackground();
 
         // This will log out for Parse
         ParseUser currentUser = ParseUser.getCurrentUser();

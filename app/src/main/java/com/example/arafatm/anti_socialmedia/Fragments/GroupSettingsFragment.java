@@ -285,7 +285,7 @@ public class GroupSettingsFragment extends Fragment implements EditNicknameFragm
         List<String> memberIds = currentGroup.getUsers();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereContainedIn("objectId", memberIds);
-        query.fromLocalDatastore();
+//        query.fromLocalDatastore();
 
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override

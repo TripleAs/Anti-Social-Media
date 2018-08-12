@@ -147,10 +147,9 @@ public class UserGroupList extends Fragment {
                 if (allGroupWithStories != null && allGroupWithStories.size() != 0) {
                     //Create a new story
                     final Story story = new Story();
-
-                    story.pinInBackground("story");
-                    story.saveEventually();
-
+//                    story.pinInBackground();
+//                    story.saveEventually();
+                    story.setSender(ParseUser.getCurrentUser());
                     final ParseFile parseFile;
 
                     if (dataType.compareTo("video") == 0) {

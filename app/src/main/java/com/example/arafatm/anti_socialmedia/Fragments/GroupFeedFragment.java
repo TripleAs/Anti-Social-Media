@@ -189,7 +189,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
-        query.fromLocalDatastore();
+//        query.fromLocalDatastore();
         query.getInBackground(groupObjectId, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -308,7 +308,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         loadTopPosts();
 
         final Story.Query storyQuery = new Story.Query();
-        storyQuery.fromLocalDatastore();
+//        storyQuery.fromLocalDatastore();
         storyQuery.findInBackground(new FindCallback<Story>() {
             @Override
             public void done(List<Story> objects, ParseException e) {
@@ -397,7 +397,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
-        postsQuery.fromLocalDatastore();
+//        postsQuery.fromLocalDatastore();
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
