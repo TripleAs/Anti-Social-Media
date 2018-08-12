@@ -64,9 +64,4 @@
         <item name="android:minHeight">10dip</item>
     </style>
 
-    <style name="FacebookLoginButton">
-        <item name="android:background">@drawable/com_facebook_button_icon_blue</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-    </style>
-
 </resources>

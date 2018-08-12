@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
 import com.example.arafatm.anti_socialmedia.R;
@@ -15,7 +17,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -23,7 +24,7 @@ import org.parceler.Parcels;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
-    private LoginButton loginButton;
+    private Button loginButton;
 
     CallbackManager callbackManager;
     static Context context;
@@ -40,18 +41,14 @@ public class LoginActivity extends AppCompatActivity {
 
         persistLogin();
 
-        loginButton.setReadPermissions(Arrays.asList(
-                "user_friends", "public_profile", "email"));
-
         // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
                 intent.putExtra("accessToken", Parcels.wrap(loginResult.getAccessToken()));
                 startActivity(intent);
                 finish();
-//                requestFBInfo(loginResult);
             }
 
             @Override
@@ -62,6 +59,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException exception) {
                 exception.printStackTrace();
+            }
+        });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                        Arrays.asList("user_friends", "public_profile", "email"));
             }
         });
     }
