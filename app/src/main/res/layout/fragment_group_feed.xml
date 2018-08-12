@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="20dp"
                         android:layout_toRightOf="@+id/feedFrameLayout"
                         android:text="Anti-Social Media"
                         android:textSize="18sp"
@@ -172,15 +172,6 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:text="Welcome to your new group!" />
-
-                    <TextView
-                        android:id="@+id/tvTimestamp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/tvFullNameFeed"
-                        android:layout_below="@+id/tvFullNameFeed"
-                        android:text="5 minutes ago"
-                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/ivImagePost"
