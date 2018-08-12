@@ -24,7 +24,7 @@
         android:layout_toEndOf="@+id/ivCoverPhoto"
         android:layout_toLeftOf="@id/btAccept"
         android:layout_toRightOf="@+id/btAccept"
-        android:text="A long request message so I can look at the layout" />
+        android:text="" />
 
     <Button
         android:id="@+id/btAccept"
@@ -36,6 +36,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/rounded_colorprimary_button"
+        android:textColor="@color/white"
         android:text="Accept" />
 
     <Button
@@ -48,5 +49,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_colorprimary_button"
+        android:textColor="@color/white"
         android:text="Reject" />
 </RelativeLayout>
