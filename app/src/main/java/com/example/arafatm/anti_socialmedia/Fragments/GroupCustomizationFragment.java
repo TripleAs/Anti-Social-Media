@@ -236,7 +236,7 @@ public class GroupCustomizationFragment extends Fragment {
 
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
-            newRequest.pinInBackground();
+            newRequest.pinInBackground("notifs");
             newRequest.saveEventually();
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.fromLocalDatastore();

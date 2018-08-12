@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     Log.d("LoginActivity", "Login successful");
                     final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    setUpLocalDatastore();
+                    setUpLocalDatastore();
                     startActivity(intent);
                     finish();
                 } else {
@@ -215,7 +215,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(i);
                                 getFriends(loginResult);
-//                                setUpLocalDatastore();
                                 finish();
                             } else {
                                 Log.e("LoginActivity","Login failure");
@@ -294,156 +293,156 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    private void setUpLocalDatastore() {
-//        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
-//        userQuery.findInBackground(new FindCallback<ParseUser>() {
-//            @Override
-//            public void done(List<ParseUser> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("friends", objects, new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        Log.d("ParseLocalDataStore", "friends");
-//                    }
-//                });
-//            }
-//        });
-//
-//        Group.Query groupQuery = new Group.Query();
-//        groupQuery.findInBackground(new FindCallback<Group>() {
-//            @Override
-//            public void done(List<Group> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("groups", objects, new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        Log.d("ParseLocalDataStore", "groups");
-//                    }
-//                });
-//            }
-//        });
-//
-//        GroupRequestNotif.Query notifQuery = new GroupRequestNotif.Query();
-//        notifQuery.findInBackground(new FindCallback<GroupRequestNotif>() {
-//            @Override
-//            public void done(List<GroupRequestNotif> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("notifs", objects, new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        Log.d("ParseLocalDataStore", "notifs");
-//                    }
-//                });
-//            }
-//        });
-//
-//        Post.Query postQuery = new Post.Query();
-//        postQuery.findInBackground(new FindCallback<Post>() {
-//            @Override
-//            public void done(List<Post> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("posts", objects, new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        Log.d("ParseLocalDataStore", "posts");
-//                    }
-//                });
-//            }
-//        });
-//
-//        Story.Query storyQuery = new Story.Query();
-//        storyQuery.findInBackground(new FindCallback<Story>() {
-//            @Override
-//            public void done(List<Story> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("stories", objects, new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        Log.d("ParseLocalDataStore", "stories");
-//                    }
-//                });
-//            }
-//        });
-//    }
-//
-//    private void setUpLocalDatastore1() {
-//        ParseUser user = ParseUser.getCurrentUser();
-//        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
-//        friendsQuery.whereContainedIn("username", user.getList("friendsList"));
-//        friendsQuery.findInBackground(new FindCallback<ParseUser>() {
-//            @Override
-//            public void done(List<ParseUser> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("friends", objects);
-//                Log.d("ParseLocalDataStore", "friends");
-//            }
-//        });
-//
-//        saveGroupsToDatastore(user);
-//
-//        GroupRequestNotif.Query notifQuery = new GroupRequestNotif.Query();
-//        notifQuery.whereEqualTo("receiver", user);
-//        notifQuery.findInBackground(new FindCallback<GroupRequestNotif>() {
-//            @Override
-//            public void done(List<GroupRequestNotif> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("notifs", objects);
-//                Log.d("ParseLocalDataStore", "notifs");
-//            }
-//        });
-//
-//        Story.Query storyQuery = new Story.Query();
-//        storyQuery.findInBackground(new FindCallback<Story>() {
-//            @Override
-//            public void done(List<Story> objects, ParseException e) {
-//                ParseObject.pinAllInBackground("stories", objects);
-//                Log.d("ParseLocalDataStore", "stories");
-//            }
-//        });
-//    }
-//
-//    private void saveGroupsToDatastore(ParseUser user) {
-//        final List<Group> groups = user.getList("groups");
-//        if (groups != null) {
-//            ParseObject.pinAllInBackground("groups", groups, new SaveCallback() {
-//                @Override
-//                public void done(ParseException e) {
-//                    Log.d("ParseLocalDataStore", "groups");
-//                    savePostsToDatastore(groups);
-//                }
-//            });
-//        }
-//    }
-//
-//    private void savePostsToDatastore(List<Group> groups) {
-//        for (int i = 0; i < groups.size(); i++) {
-//            Group group = groups.get(i);
-//            group.fetchFromLocalDatastoreInBackground(new GetCallback<Group>() {
-//                @Override
-//                public void done(Group object, ParseException e) {
-//                    final List<Post> posts = object.getPosts();
-//                    if (posts != null) {
-//                        ParseObject.pinAllInBackground("posts", posts, new SaveCallback() {
-//                            @Override
-//                            public void done(ParseException e) {
-//                                Log.d("ParseLocalDataStore", "posts");
-//                                saveCommentsToDatastore(posts);
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-//        }
-//    }
-//
-//    private void saveCommentsToDatastore(List<Post> posts) {
-//        for (int j = 0; j < posts.size(); j++) {
-//            Post post = posts.get(j);
-//            post.fetchFromLocalDatastoreInBackground(new GetCallback<Post>() {
-//                @Override
-//                public void done(Post object, ParseException e) {
-//                    if (object != null) {
-//                        List<Post> comments = object.getComments();
-//                        if (comments != null) {
-//                            ParseObject.pinAllInBackground("comments", comments);
-//                            Log.d("ParseLocalDataStore", "comments");
-//                        }
-//                    }
-//                }
-//            });
-//        }
-//    }
+    private void setUpLocalDatastore() {
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+        userQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                ParseObject.pinAllInBackground("friends", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "friends");
+                    }
+                });
+            }
+        });
+
+        Group.Query groupQuery = new Group.Query();
+        groupQuery.findInBackground(new FindCallback<Group>() {
+            @Override
+            public void done(List<Group> objects, ParseException e) {
+                ParseObject.pinAllInBackground("groups", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "groups");
+                    }
+                });
+            }
+        });
+
+        GroupRequestNotif.Query notifQuery = new GroupRequestNotif.Query();
+        notifQuery.findInBackground(new FindCallback<GroupRequestNotif>() {
+            @Override
+            public void done(List<GroupRequestNotif> objects, ParseException e) {
+                ParseObject.pinAllInBackground("notifs", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "notifs");
+                    }
+                });
+            }
+        });
+
+        Post.Query postQuery = new Post.Query();
+        postQuery.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                ParseObject.pinAllInBackground("posts", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "posts");
+                    }
+                });
+            }
+        });
+
+        Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                ParseObject.pinAllInBackground("stories", objects, new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Log.d("ParseLocalDataStore", "stories");
+                    }
+                });
+            }
+        });
+    }
+
+    private void setUpLocalDatastore1() {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
+        friendsQuery.whereContainedIn("username", user.getList("friendsList"));
+        friendsQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                ParseObject.pinAllInBackground("friends", objects);
+                Log.d("ParseLocalDataStore", "friends");
+            }
+        });
+
+        saveGroupsToDatastore(user);
+
+        GroupRequestNotif.Query notifQuery = new GroupRequestNotif.Query();
+        notifQuery.whereEqualTo("receiver", user);
+        notifQuery.findInBackground(new FindCallback<GroupRequestNotif>() {
+            @Override
+            public void done(List<GroupRequestNotif> objects, ParseException e) {
+                ParseObject.pinAllInBackground("notifs", objects);
+                Log.d("ParseLocalDataStore", "notifs");
+            }
+        });
+
+        Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                ParseObject.pinAllInBackground("stories", objects);
+                Log.d("ParseLocalDataStore", "stories");
+            }
+        });
+    }
+
+    private void saveGroupsToDatastore(ParseUser user) {
+        final List<Group> groups = user.getList("groups");
+        if (groups != null) {
+            ParseObject.pinAllInBackground("groups", groups, new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    Log.d("ParseLocalDataStore", "groups");
+                    savePostsToDatastore(groups);
+                }
+            });
+        }
+    }
+
+    private void savePostsToDatastore(List<Group> groups) {
+        for (int i = 0; i < groups.size(); i++) {
+            Group group = groups.get(i);
+            group.fetchFromLocalDatastoreInBackground(new GetCallback<Group>() {
+                @Override
+                public void done(Group object, ParseException e) {
+                    final List<Post> posts = object.getPosts();
+                    if (posts != null) {
+                        ParseObject.pinAllInBackground("posts", posts, new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                Log.d("ParseLocalDataStore", "posts");
+                                saveCommentsToDatastore(posts);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    private void saveCommentsToDatastore(List<Post> posts) {
+        for (int j = 0; j < posts.size(); j++) {
+            Post post = posts.get(j);
+            post.fetchFromLocalDatastoreInBackground(new GetCallback<Post>() {
+                @Override
+                public void done(Post object, ParseException e) {
+                    if (object != null) {
+                        List<Post> comments = object.getComments();
+                        if (comments != null) {
+                            ParseObject.pinAllInBackground("comments", comments);
+                            Log.d("ParseLocalDataStore", "comments");
+                        }
+                    }
+                }
+            });
+        }
+    }
 }

@@ -108,7 +108,7 @@ public class GroupCreationFragment extends Fragment {
         // use usernames/FB Ids to find users
         ParseQuery<ParseUser> friendsQuery = ParseUser.getQuery();
         friendsQuery.whereContainedIn("username", friendListIds);
-//        friendsQuery.fromLocalDatastore();
+        friendsQuery.fromLocalDatastore();
 
         friendsQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
@@ -216,8 +216,8 @@ public class GroupCreationFragment extends Fragment {
     private void createNewGroup() {
         //Create new group and initialize it
         final Group newGroup = new Group();
-//        newGroup.pinInBackground("groups");
-//        newGroup.saveEventually();
+        newGroup.pinInBackground("groups");
+        newGroup.saveEventually();
 
         groupImage.saveInBackground(new SaveCallback() {
             @Override
@@ -254,10 +254,10 @@ public class GroupCreationFragment extends Fragment {
 
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
-//            newRequest.pinInBackground();
-//            newRequest.saveEventually();
+            newRequest.pinInBackground("notifs");
+            newRequest.saveEventually();
             ParseQuery<ParseUser> query = ParseUser.getQuery();
-//            query.fromLocalDatastore();
+            query.fromLocalDatastore();
             query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser object, ParseException e) {
