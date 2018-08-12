@@ -5,97 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/EditTextColorCustom"
-    >
+    android:background="@color/colorPrimary" >
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/etUsername"
+        android:layout_below="@id/ivWorld"
         android:layout_marginBottom="40dp"
         android:gravity="center"
-        android:text="Anti-Social Media"
-        android:textColor="@color/gray"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
         android:textSize="30sp"
         app:fontFamily="monospace" />
 
 
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/etPassword"
-        android:textColorHint="@color/grey_2"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/grey_2"
-        android:textCursorDrawable="@color/black"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:ems="10"
-        android:hint="Password"
-        android:textColorHint="@color/grey_2"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/grey_2"
-        android:textCursorDrawable="@color/black"
-        android:inputType="textPassword"/>
-
-
-    <Button
-        android:id="@+id/btLogin"
-        android:layout_width="66dp"
-        android:layout_height="34dp"
-        android:layout_below="@+id/etPassword"
-        android:layout_centerHorizontal="true"
-        android:background="@color/transparent"
-        android:text="Log in"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp" />
-
-    <Button
-        android:id="@+id/btSwitchToSignup"
-        android:layout_width="76dp"
-        android:layout_height="31dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:background="@color/transparent"
-        android:text="Sign Up"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
     <TextView
-        android:id="@+id/tvNoAccount"
+        android:id="@+id/tvFbCommand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btSwitchToSignup"
+        android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true"
-        android:text="Don't have an account yet?"
-        android:textColor="@color/black"
-        />
+        android:text="Continue with Facebook"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/ic_facebook_white" />
 
     <ImageView
         android:id="@+id/ivWorld"
-        android:layout_width="131dp"
-        android:layout_height="76dp"
-        android:layout_above="@+id/tvTitle"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp"
         android:layout_centerHorizontal="true"
+        android:tint="@color/white"
         app:srcCompat="@drawable/ic_world" />
 
 
