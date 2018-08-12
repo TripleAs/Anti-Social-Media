@@ -38,8 +38,8 @@
                         android:id="@+id/welcomeImage"
                         android:layout_width="match_parent"
                         android:layout_height="289dp"
-                        android:visibility="invisible"
-                        android:src="@drawable/welcome" />
+                        android:src="@drawable/welcome"
+                        android:visibility="invisible" />
                 </FrameLayout>
 
                 <TextView

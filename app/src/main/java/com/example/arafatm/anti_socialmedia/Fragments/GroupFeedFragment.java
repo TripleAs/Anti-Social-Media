@@ -35,7 +35,6 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -312,20 +311,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
         Story currentStory = ((allStories.size() == 0) ? null : allStories.get(0)); //selects a story
         if (currentStory != null) {
-            text = currentStory.getStoryCaption();
-            caption = currentStory.getStoryText();
-            dataType = currentStory.getStoryType();
-
-            try {
-                File file = currentStory.getStory().getFile();
-                if (file == null) return;
-                VideouUri = Uri.fromFile(file);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            if (dataType.compareTo("video") == 0) {
-                navigateToVideoFragment(VideouUri, fragmentTransaction, view_id);
+            if (currentStory.getStoryType().compareTo("video") == 0) {
+                navigateToVideoFragment(fragmentTransaction, view_id);
             } else {
                 try {
                     imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
@@ -351,14 +338,13 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     /*navigates to the Video fragment and display the story*/
-    private void navigateToVideoFragment(Uri videoFilePath,
-                                         FragmentTransaction fragmentTransaction, int view_id) {
+    private void navigateToVideoFragment(
+            FragmentTransaction fragmentTransaction, int view_id) {
         final Fragment videoFragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
         args.putParcelableArrayList("allStories", allStories);
-        args.putString("videoPath", videoFilePath.toString());
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
                 .commit();
