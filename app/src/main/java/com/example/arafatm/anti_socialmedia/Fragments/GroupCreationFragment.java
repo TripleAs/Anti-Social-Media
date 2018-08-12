@@ -212,11 +212,20 @@ public class GroupCreationFragment extends Fragment {
     private void createNewGroup() {
         //Create new group and initialize it
         final Group newGroup = new Group();
-        newGroup.pinInBackground("groups");
-        newGroup.saveEventually();
-
-        saveNewGroup(newGroup);
-        sendGroupRequests(newGroup);
+       newGroup.pinInBackground("groups");
+       newGroup.saveEventually();
+      
+        groupImage.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    saveNewGroup(newGroup);
+                    sendGroupRequests(newGroup);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void saveNewGroup(final Group newGroup) {
@@ -224,9 +233,14 @@ public class GroupCreationFragment extends Fragment {
         newGroup.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                String objectId = newGroup.getObjectId();
-                Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
-                mListener.navigate_to_fragment(fragment);
+                if (e == null) {
+                    String objectId = newGroup.getObjectId();
+                    Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
+                    mListener.navigate_to_fragment(fragment);
+                } else {
+                    Toast.makeText(getContext(), "there was a problem saving group", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         });
     }

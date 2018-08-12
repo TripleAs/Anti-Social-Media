@@ -32,8 +32,15 @@
                     android:layout_height="240dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:background="@color/black" />
+                    android:background="@color/black" >
 
+                    <ImageView
+                        android:id="@+id/welcomeImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="289dp"
+                        android:src="@drawable/welcome"
+                        android:visibility="invisible" />
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/tvGroupName"
@@ -41,10 +48,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/fragment_child"
-                    android:layout_toRightOf="@+id/ivCoverPhoto"
-                    android:layout_marginLeft="20dp"
+                    android:layout_alignStart="@+id/rlIcons"
                     android:text="Group Name"
-                    android:textColor="@color/white"
+                    android:textColor="@color/blue_5"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 

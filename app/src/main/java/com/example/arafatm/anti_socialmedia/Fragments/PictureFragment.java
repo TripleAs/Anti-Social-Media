@@ -105,16 +105,8 @@ public class PictureFragment extends Fragment {
         Bitmap rotated = rotateImage(currentAngle, bitmap);
 
         if (!selected) { // resize this to fit the cover framelayout on the feed
-            int currentBitmapWidth = rotated.getWidth();
-            int currentBitmapHeight = rotated.getHeight();
-            int ivWidth = 3200;
-            int ivHeight = 2300;
-            int newWidth = ivWidth;
-
-            int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
-            Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
-            //displays the image
-            displayImage.setImageBitmap(newbitMap);
+            Bitmap resized = resizeImageToFitscreen(rotated);
+            displayImage.setImageBitmap(resized);
         } else {
             //displays the image
             displayImage.setImageBitmap(rotated);
@@ -129,6 +121,18 @@ public class PictureFragment extends Fragment {
 
         if (caption != null)
             showCaption.setText(caption);
+    }
+
+    private Bitmap resizeImageToFitscreen(Bitmap rotated) {
+        int currentBitmapWidth = rotated.getWidth();
+        int currentBitmapHeight = rotated.getHeight();
+        int ivWidth = 3500;
+        int ivHeight = 2300;
+        int newWidth = ivWidth;
+
+        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+        Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
+        return newbitMap;
     }
 
     private Bitmap rotateImage(int degree, Bitmap bitmap) {
