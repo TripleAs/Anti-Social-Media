@@ -64,6 +64,7 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
 
     public interface OnFragmentInteractionListener {
         void onFinishCreatePost(Post post);
+        void passPostingToFeed(PhotoHelper photoHelper, String message, Boolean hasNewPic, String imageURL);
     }
 
     public static CreatePostFragment newInstance(String imageURL) {
@@ -148,11 +149,10 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         ivCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    sendPostToParse();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                sendPostToParse();
+                String newMessage = etNewPost.getText().toString();
+                mListener.passPostingToFeed(photoHelper, newMessage, hasNewPic, imageURl);
+                dismiss();
             }
         });
     }
@@ -174,21 +174,22 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         }
     }
 
-    private void sendPostToParse() throws IOException {
+    private void sendPostToParse() {
         final Post newPost = new Post();
         newPost.pinInBackground("posts");
         newPost.saveEventually();
         ParseFile image = null;
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseACL acl = new ParseACL(currentUser);
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(true);
         newPost.setACL(acl);
-        String newMessage = etNewPost.getText().toString();
 
         if (currentGroup == null) {
             currentGroup = GroupFeedFragment.publicCurrentGroup;
         }
+        String newMessage = etNewPost.getText().toString();
         newPost.initPost(newMessage, currentGroup);
 
         if (hasNewPic) {

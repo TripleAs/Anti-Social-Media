@@ -99,6 +99,17 @@
                     android:layout_marginStart="20dp"
                     android:src="@drawable/com_facebook_profile_picture_blank_square" />
 
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:theme="@style/ProgressBarStyle"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="-7dp"
+                    android:visibility="invisible"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:indeterminateOnly="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
             </RelativeLayout>
 
         </com.example.arafatm.anti_socialmedia.Util.CollapsingImageLayout>

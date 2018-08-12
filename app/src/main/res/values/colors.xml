@@ -7,7 +7,7 @@
     <color name="green_gradient_2">#A4D48C</color>
     <color name="blue_gradient_1">#D3E0E0</color>
     <color name="blue_gradient_2">#8CD1D4</color>
-    <color name="blue_gradient_3">#3d9da1</color>
+    <color name="blue_gradient_3">#55b2b6</color>
 
 
     <color name="colorPrimary">@color/blue_gradient_2</color>

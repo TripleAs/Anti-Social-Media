@@ -49,7 +49,7 @@
     </style>
 
     <style name="ProgressBarStyle">
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/blue_gradient_3</item>
         <item name="android:minHeight">10dip</item>
     </style>
 
