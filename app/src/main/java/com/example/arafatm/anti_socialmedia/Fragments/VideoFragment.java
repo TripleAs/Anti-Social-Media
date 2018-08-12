@@ -103,6 +103,7 @@ public class VideoFragment extends Fragment {
         displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
         if (videoPath != null) {
             playVideo(Uri.parse(videoPath));
+            videoPath = null;
         } else {
             final String firstStoryType = allStories.get(storyIndex).getStoryType();
             if (firstStoryType.compareTo("video") == 0) {
@@ -118,20 +119,18 @@ public class VideoFragment extends Fragment {
                 displayVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        if (storyIndex < allStories.size() - 1) storyIndex++;
-                        if (storyIndex == allStories.size() - 1) storyIndex = 0;
-
-                        String subseStoryType = allStories.get(storyIndex).getStoryType();
-                        if (subseStoryType.compareTo("video") == 0) {
-                            Story subseStory = allStories.get(storyIndex);
-                            try {
-                                videoUri = Uri.fromFile(subseStory.getStory().getFile());
-                                playVideo(videoUri);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
+                        if (storyIndex < allStories.size() - 1) {
                             storyIndex++;
+                            String subseStoryType = allStories.get(storyIndex).getStoryType();
+                            if (subseStoryType.compareTo("video") == 0) {
+                                Story subseStory = allStories.get(storyIndex);
+                                try {
+                                    videoUri = Uri.fromFile(subseStory.getStory().getFile());
+                                    playVideo(videoUri);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
                 });
