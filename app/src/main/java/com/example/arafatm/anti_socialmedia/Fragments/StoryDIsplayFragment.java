@@ -145,12 +145,7 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
         } else {
             //pass all required info
             //navigate to right fragment
-            try {
-                String videoUri = Uri.fromFile(allStories.get(index).getStory().getFile()).toString();
-                navigateToVideoFragment(videoUri, fragmentTransaction, R.id.fl_showStory);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                navigateToVideoFragment(fragmentTransaction, R.id.fl_showStory);
         }
     }
 
@@ -168,13 +163,13 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     }
 
     /*navigates to the Video fragment and display the story*/
-    private void navigateToVideoFragment(String videoFilePath,
-                                         FragmentTransaction fragmentTransaction, int view_id) {
+    private void navigateToVideoFragment(
+            FragmentTransaction fragmentTransaction, int view_id) {
         final Fragment videoFragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        args.putString("videoPath", videoFilePath);
+        args.putParcelableArrayList("allStories", allStories);
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment)
                 .commit();

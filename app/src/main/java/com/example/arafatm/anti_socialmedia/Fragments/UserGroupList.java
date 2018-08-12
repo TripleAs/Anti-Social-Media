@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
@@ -36,6 +37,7 @@ public class UserGroupList extends Fragment {
     private RecyclerView recyclerView;
     private GroupListAdapter groupListAdapter;
     private Button shareButton;
+    private ProgressBar progressBar;
     private String dataType;
     private String text;
     private String caption;
@@ -72,6 +74,8 @@ public class UserGroupList extends Fragment {
 
         // Lookup the recyclerview in activity layout
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_groupList);
+        // set the drawable as progress drawable
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
         groupList = new ArrayList<>();
         List<Group> groups = ParseUser.getCurrentUser().getList("groups");
         groupList.clear();
@@ -140,12 +144,13 @@ public class UserGroupList extends Fragment {
         shareButton = (Button) view.findViewById(R.id.bt_share);
 
         shareButton.setOnClickListener(new View.OnClickListener() {
-//TODO NOT SAVING :( FIX IT
-
             @Override
             public void onClick(View view) {
                 final ArrayList<ParseObject> allGroupWithStories = groupListAdapter.getAllGroupWithStories();
                 if (allGroupWithStories != null && allGroupWithStories.size() != 0) {
+                    // Toggles progress bar
+                    progressBar.setVisibility(View.VISIBLE);
+
                     //Create a new story
                     final Story story = new Story();
                     story.pinInBackground("stories");
@@ -160,6 +165,7 @@ public class UserGroupList extends Fragment {
                         final byte[] imageBytes = StoryActivity.compressedImageByte;
                         parseFile = new ParseFile("mynewStory.png", imageBytes);
                     }
+
 
                     parseFile.saveInBackground(new SaveCallback() {
                         @Override
@@ -180,7 +186,6 @@ public class UserGroupList extends Fragment {
                                     @Override
                                     public void done(ParseException e) {
                                         if (e == null) {
-                                            Toast.makeText(getContext(), "sharing!", Toast.LENGTH_SHORT).show();
                                             Intent i = new Intent(getActivity(), StoryActivity.class);
                                             startActivity(i);
                                             ((Activity) getActivity()).overridePendingTransition(0, 0);
