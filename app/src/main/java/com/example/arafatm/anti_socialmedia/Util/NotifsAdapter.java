@@ -40,7 +40,6 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View requestView = inflater.inflate(R.layout.item_group_notif, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(requestView);
         return viewHolder;
@@ -52,10 +51,10 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.ViewHolder
 
         ParseObject group = request.getRequestedGroup();
         String groupName = group.getString("groupName");
-        String senderName = (request.getSender()== null) ? null: request.getSender().getString("fullName");
+        String senderName = (request.getSender() == null) ? null : request.getSender().getString("fullName");
         String requestMessage = String.format("%s invites you to join the group %s.", senderName, groupName);
 
-        String[] stringsToBold = new String[]{ senderName, groupName};
+        String[] stringsToBold = new String[]{senderName, groupName};
         SpannableStringBuilder builder = makeSectionOfTextBold(requestMessage, stringsToBold);
         viewHolder.tvRequest.setText(builder);
 

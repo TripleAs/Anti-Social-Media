@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
@@ -40,39 +39,19 @@ import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
  * create an instance of this fragment.
  */
 public class UploadedImages extends SupportBlurDialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<String> pictureList;
     private PictureAdapter pictureAdapter;
-    private GridView gridview;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public UploadedImages() {
         // Required empty public constructor
     }
 
-    //
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment UploadedImages.
-//     */
-    // TODO: Rename and change types and number of parameters
     public static UploadedImages newInstance(Group group) {
         UploadedImages fragment = new UploadedImages();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         args.putParcelable(Group.class.getSimpleName(), Parcels.wrap(group));
         fragment.setArguments(args);
         return fragment;
@@ -82,12 +61,9 @@ public class UploadedImages extends SupportBlurDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
         Group currentGroup = Parcels.unwrap(getArguments().getParcelable(Group.class.getSimpleName()));
-
         pictureList = new ArrayList<>();
         pictureAdapter = new PictureAdapter(getContext(), pictureList, currentGroup, getActivity().getSupportFragmentManager(), UploadedImages.this);
     }
@@ -95,6 +71,9 @@ public class UploadedImages extends SupportBlurDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_uploaded_images, container, false);
     }
@@ -140,7 +119,7 @@ public class UploadedImages extends SupportBlurDialogFragment {
 
     /*loads all groups from parse and display it*/
     private void loadAllPIctureURL() {
-        String token = "8379540590.7601641.40a698a312bd4027b4d9548b746a8f0e";
+        String token = "8379540590.7601641.40a698a312bd4027b4d9548b746a8f0e"; //access token to the right account
         String url = "https://api.instagram.com/v1/users/self/media/recent?access_token="
                 + token;
 
@@ -148,7 +127,6 @@ public class UploadedImages extends SupportBlurDialogFragment {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         client.get(url, params, new JsonHttpResponseHandler() {
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -179,21 +157,15 @@ public class UploadedImages extends SupportBlurDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         GridView gridview = (GridView) view.findViewById(R.id.gv_gridview);
         gridview.setAdapter(pictureAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getContext(), "" + position,
-                        Toast.LENGTH_SHORT).show();
-
                 Bundle bundle = new Bundle();
                 bundle.putString("imageURL", pictureList.get(position));
-
                 GroupFeedFragment.goToPost = true;
-                // come back after lunch!
                 Fragment groupFeedFragment = new GroupFeedFragment();
                 groupFeedFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.preview_frame, groupFeedFragment).addToBackStack(null).commit();

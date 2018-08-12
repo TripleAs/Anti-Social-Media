@@ -33,7 +33,7 @@ import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationF
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> mPosts;
     Context context;
     FragmentManager manager;
@@ -42,7 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     ParseUser sender = null;
     String theme;
 
-    public PostAdapter(FragmentManager m, Context c, List<Post> posts, HashMap<String, String> hashMap, String color){
+    public PostAdapter(FragmentManager m, Context c, List<Post> posts, HashMap<String, String> hashMap, String color) {
         manager = m;
         context = c;
         mPosts = posts;
@@ -101,14 +101,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         displayLikeImage(viewHolder.ivLike, post);
         displayLikesCount(viewHolder.tvNumLikes, post);
 
-        if (post.getImage() != null || post.getImageURL() != null ) {
-        String imageURL = null;
-        if (post.getImageURL() != null) {
-            imageURL = post.getImageURL();
-        } else {
-             imageURL = post.getImage().getUrl();
-        }
-        //picture with post
+        if (post.getImage() != null || post.getImageURL() != null) {
+            String imageURL = null;
+            if (post.getImageURL() != null) {
+                imageURL = post.getImageURL();
+            } else {
+                imageURL = post.getImage().getUrl();
+            }
+            //picture with post
             Glide.with(context)
                     .load(imageURL)
                     .into(viewHolder.imagePost);
@@ -181,17 +181,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     //create ViewHolder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tvFullNameFeed) TextView tvFullName;
-        @BindView(R.id.tvPostBody) TextView tvPostText;
-        @BindView(R.id.ivProPicPost) ImageView ivPropic;
-        @BindView(R.id.tvNumberOfComments) TextView tvNumberComments;           //comment
-        @BindView(R.id.btCommentIcon) ImageButton btCommentExpand;              //comment
-        @BindView(R.id.ivImagePost) ImageView imagePost;
-        @BindView(R.id.ivDirectMessage) ImageView ivDirectMessage;
-        @BindView(R.id.ivLike) ImageView ivLike;
-        @BindView(R.id.tvNumLikes) TextView tvNumLikes;
-        @BindView(R.id.tvTimestamp) TextView tvTimestamp;
-        @BindView(R.id.iv_delete) ImageView ivDeletePost;
+        @BindView(R.id.tvFullNameFeed)
+        TextView tvFullName;
+        @BindView(R.id.tvPostBody)
+        TextView tvPostText;
+        @BindView(R.id.ivProPicPost)
+        ImageView ivPropic;
+        @BindView(R.id.tvNumberOfComments)
+        TextView tvNumberComments;           //comment
+        @BindView(R.id.btCommentIcon)
+        ImageButton btCommentExpand;              //comment
+        @BindView(R.id.ivImagePost)
+        ImageView imagePost;
+        @BindView(R.id.ivDirectMessage)
+        ImageView ivDirectMessage;
+        @BindView(R.id.ivLike)
+        ImageView ivLike;
+        @BindView(R.id.tvNumLikes)
+        TextView tvNumLikes;
+        @BindView(R.id.tvTimestamp)
+        TextView tvTimestamp;
+        @BindView(R.id.iv_delete)
+        ImageView ivDeletePost;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -230,7 +241,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     private void displayLikeImage(ImageView imageView, Post post) {
         int emptyLikeResId;
         int filledLikeResId;
-        switch(theme) {
+        switch (theme) {
             case KEY_RED:
                 emptyLikeResId = R.drawable.ic_fire_empty;
                 filledLikeResId = R.drawable.ic_fire_color;

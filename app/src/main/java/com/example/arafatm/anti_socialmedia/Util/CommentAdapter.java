@@ -16,11 +16,11 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder>{
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private List<Post> mComments;
     Context context;
 
-    public CommentAdapter(List<Post> comments){
+    public CommentAdapter(List<Post> comments) {
         mComments = comments;
     }
 
@@ -31,7 +31,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             //perform findViewBtId lookups
             tvUserComment = itemView.findViewById(R.id.tvCommentUser);
             tvBodyComment = itemView.findViewById(R.id.tvCommentBody);
@@ -44,7 +43,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View commentView = inflater.inflate(R.layout.item_comment, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(commentView);
         return viewHolder;
@@ -64,8 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         try {
             parseUser = comment_Post.getSender().fetchIfNeeded();
 
-        }
-        catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -73,7 +70,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String body = comment_Post.getComment();
 
         // need to add "message" instead of "comment" for first post
-        if (i==0){
+        if (i == 0) {
             body = comment_Post.getString("message");
 
             Typeface tf = Typeface.defaultFromStyle(Typeface.BOLD);

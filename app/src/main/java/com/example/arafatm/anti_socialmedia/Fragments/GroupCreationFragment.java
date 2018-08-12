@@ -34,13 +34,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GroupCreationFragment extends Fragment {
-    @BindView(R.id.rvFriends) RecyclerView recyclerView;
-    @BindView(R.id.btCreateGroup) Button btCreateGroup;
+    @BindView(R.id.rvFriends)
+    RecyclerView recyclerView;
+    @BindView(R.id.btCreateGroup)
+    Button btCreateGroup;
 
     private static final String ARGS_GROUP_NAME = "groupName";
     private static final String ARGS_GROUP_THEME = "groupTheme";
     private static final String ARGS_GROUP_IMAGEFILE = "groupImage";
 
+    @BindView(R.id.btNext)
+    Button nextButton;
     private String groupName;
     private String groupTheme;
     private ParseFile groupImage;
@@ -70,7 +74,6 @@ public class GroupCreationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         Bundle args = getArguments();
         if (args != null) {
             groupName = args.getString(ARGS_GROUP_NAME);
@@ -82,17 +85,17 @@ public class GroupCreationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group_creation, container, false);
         ButterKnife.bind(this, view);
-
         friendList = new ArrayList<>();
         fetchAllFriendList();
-
         friendListAdapter = new FriendListAdapter(friendList);
         recyclerView.setAdapter(friendListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
-
         return view;
     }
 
@@ -144,9 +147,7 @@ public class GroupCreationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         final SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
-
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

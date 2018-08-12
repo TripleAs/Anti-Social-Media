@@ -30,10 +30,8 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
     @Override
     public GroupListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-
         // Inflate the custom layout
         View friendListView = inflater.inflate(R.layout.grouplist_item, viewGroup, false);
-
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(friendListView);
         return viewHolder;
@@ -87,23 +85,23 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
             groupPic = (ImageView) itemView.findViewById(R.id.ivGroupPic);
             allGroupsWithStories = new ArrayList<>();
 
-            addButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (addButton.isChecked()) {
-                        addButton.setChecked(false);
-                        //remove from list
-                        allGroupsWithStories.remove(groupList.get(getLayoutPosition()));
-                        int size = allGroupsWithStories.size();
-
-                    } else {
-                        addButton.setChecked(true);
-                        //add to list
-                        allGroupsWithStories.add(groupList.get(getLayoutPosition()));
-                        int size = allGroupsWithStories.size();
-                    }
-                }
-            });
+//            addButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (addButton.isChecked()) {
+//                        addButton.setChecked(false);
+//                        //remove from list
+//                        allGroupsWithStories.remove(groupList.get(getLayoutPosition()));
+//                        int size = allGroupsWithStories.size();
+//
+//                    } else {
+//                        addButton.setChecked(true);
+//                        //add to list
+//                        allGroupsWithStories.add(groupList.get(getLayoutPosition()));
+//                        int size = allGroupsWithStories.size();
+//                    }
+//                }
+//            });
         }
 
         @Override
@@ -112,14 +110,10 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.View
                 addButton.setChecked(false);
                 //remove from list
                 allGroupsWithStories.remove(groupList.get(getLayoutPosition()));
-                int size = allGroupsWithStories.size();
-
             } else {
-
                 addButton.setChecked(true);
                 //add to list
                 allGroupsWithStories.add(groupList.get(getLayoutPosition()));
-                int size = allGroupsWithStories.size();
             }
         }
     }

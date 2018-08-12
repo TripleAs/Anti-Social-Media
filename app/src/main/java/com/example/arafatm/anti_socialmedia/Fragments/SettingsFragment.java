@@ -209,6 +209,7 @@ public class SettingsFragment extends Fragment {
         ParseObject.unpinAllInBackground("comments");
         ParseObject.unpinAllInBackground("notifs");
         ParseObject.unpinAllInBackground("stories");
+        ParseObject.unpinAllInBackground();
 
         // This will log out for Parse
         ParseUser currentUser = ParseUser.getCurrentUser();
