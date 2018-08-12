@@ -38,7 +38,6 @@ public class ParseApp extends Application {
                 .clientKey("amy_alison_arafat_are_triple_as") //takes in App Master Key
                 .server("http://anti-social-media.herokuapp.com/parse") // takes in Parse URL
                 .build();
-
         Parse.initialize(configuration); //initializing parse
     }
 }

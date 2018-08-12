@@ -18,7 +18,6 @@ public class Story extends ParseObject {
     private static final String KEY_STORYCAPTION = "caption";
     private static final String KEY_STORYTEXT = "text";
 
-
     public ParseUser getSender() {
         return getParseUser(KEY_SENDER);
     }
@@ -68,7 +67,7 @@ public class Story extends ParseObject {
     }
 
     public String getStoryCaption() {
-       return getString(KEY_STORYCAPTION);
+        return getString(KEY_STORYCAPTION);
     }
 
     public void setStoryText(String storyCaption) {
@@ -76,7 +75,7 @@ public class Story extends ParseObject {
     }
 
     public String getStoryText() {
-        return  getString(KEY_STORYTEXT);
+        return getString(KEY_STORYTEXT);
     }
 
     public static class Query extends ParseQuery<Story> {
@@ -89,5 +88,4 @@ public class Story extends ParseObject {
             return this;
         }
     }
-
 }

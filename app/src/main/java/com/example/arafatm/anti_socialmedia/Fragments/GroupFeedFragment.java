@@ -36,8 +36,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,13 +46,9 @@ import butterknife.ButterKnife;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
-import static com.facebook.FacebookSdk.getCacheDir;
 
 public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "text";
-    private static final String ARG_PARAM3 = "caption";
-
     private String groupObjectId;
     private String groupName;
     private String text;
@@ -66,7 +60,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static Group currentGroup;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
-    private FrameLayout frameLayoutPreview;
     private int storyIndex = 0;
 //    private ImageView next_story;
     public static boolean goToShare = false;
@@ -78,7 +71,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private String selectedImageURL;
     private String dataType;
     private String imageFilePath = null;
-
     @BindView(R.id.tvGroupName)
     TextView tvGroupName;
     @BindView(R.id.ivCoverPhoto)
@@ -89,9 +81,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost)
     ImageView ivLaunchNewPost;
-    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-
-    //for posting
     public static PostAdapter postAdapter;
     public static ArrayList<Post> posts;
     public static
@@ -100,7 +89,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     SwipeRefreshLayout swipeContainer;
     String themeName;
 
-
     private OnFragmentInteractionListener mListener;
 
     public GroupFeedFragment() {
@@ -108,7 +96,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void navigate_to_fragment(Fragment fragment);
 
         void startGroupChat(int groupId, String groupName);
@@ -195,7 +182,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-      
         allStories = new ArrayList<>();
 //        next_story = view.findViewById(R.id.iv_next);
 //        prev_story = view.findViewById(R.id.iv_prev);
@@ -260,31 +246,34 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selected = true;
-                //create a bundle
-                Bundle bundle = new Bundle();
-                //save all necessary info for story display
-                bundle.putString("text", text);
-                bundle.putString("caption", caption);
-                bundle.putString("imagePath", imageFilePath);
-                bundle.putString("videoPath", VideouUri.toString());
-                bundle.putString("dataType", dataType);
+                if (allStories != null && allStories.size() != 0) {
+                    selected = true;
+                    //create a bundle
+                    Bundle bundle = new Bundle();
+                    //save all necessary info for story display
+                    bundle.putString("text", text);
+                    bundle.putString("caption", caption);
+                    bundle.putString("imagePath", imageFilePath);
+                    bundle.putString("videoPath", VideouUri.toString());
+                    bundle.putString("dataType", dataType);
 
-                //create StoryDisplayfragment
-                StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
-                //add bundle to it
-                sFragment.setArguments(bundle);
-                //navigate to StoryDisplayfragment
-                sFragment.setTargetFragment(GroupFeedFragment.this, 1);
-                mListener.navigateToDialog(sFragment);
+                    //create StoryDisplayfragment
+                    StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
+                    //add bundle to it
+                    sFragment.setArguments(bundle);
+                    //navigate to StoryDisplayfragment
+                    sFragment.setTargetFragment(GroupFeedFragment.this, 1);
+                    mListener.navigateToDialog(sFragment);
+                }
             }
         });
+
 
 //        prev_story.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                int jadal = storyIndex;
-//                if (storyIndex >= 1) {  //checks out of bounce exception
+//                if (storyIndex >= 1) {  //checks out of bound exception
 //                    storyIndex--;
 //                    selected = false;
 //                    displayStory(R.id.fragment_child);
@@ -295,12 +284,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void initiateGroup(ParseObject object) {
         group = (Group) object;
-        publicCurrentGroup = group;
+        publicCurrentGroup = group; //set this static for easy access in other classes
         currentGroup = group;
         groupName = object.getString("groupName");
         tvGroupName.setText(groupName);
         groupId = convert(object.getObjectId());
-
         ParseFile groupImage = object.getParseFile("groupImage");
 
         if (groupImage != null) {
@@ -314,7 +302,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         //displaying the posts
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
-
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
@@ -354,7 +341,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             dataType = currentStory.getStoryType();
 
             try {
-                VideouUri = Uri.fromFile(currentStory.getStory().getFile());
+                File file = currentStory.getStory().getFile();
+                if (file == null) return;
+                VideouUri = Uri.fromFile(file);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -370,22 +359,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 navigateToPictureFragment(imageFilePath, fragmentTransaction, view_id);
             }
         }
-    }
-
-    /*gets the video path from video byte*/
-    private String getVideoPath(Story currentStory) throws ParseException {
-        File outputFile = null;
-        try {
-            byte[] videoByte = currentStory.getStory().getData();
-            outputFile = File.createTempFile("file", ".mp4", getCacheDir());
-            outputFile.deleteOnExit();
-            FileOutputStream fileoutputstream = new FileOutputStream("myVideo.mp4");
-            fileoutputstream.write(videoByte);
-            fileoutputstream.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return outputFile.getAbsolutePath();
     }
 
     /*navigates to the Picture fragment and display the story*/

@@ -1,6 +1,7 @@
 package com.example.arafatm.anti_socialmedia.Story;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -64,7 +65,6 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Text", Toast.LENGTH_SHORT).show();
                 if (enabled) {
                     enabled = false;
                     addText.setCursorVisible(false);
@@ -93,9 +93,39 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
+
+//        captionShow.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                android.support.constraint.ConstraintLayout.LayoutParams layoutParams1;
+//               layoutParams1 = (ConstraintLayout.LayoutParams) captionShow.getLayoutParams();
+//
+//
+//                switch(event.getActionMasked())
+//                {
+//                    case MotionEvent.ACTION_DOWN:
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        int x_cord = (int) event.getRawX();
+//                        int y_cord = (int) event.getRawY();
+//                        if (x_cord > getScreenWidth()) {
+//                            x_cord = getScreenWidth();
+//                        }
+//                        if (y_cord > getScreenHeight()) {
+//                            y_cord = getScreenHeight();
+//                        }
+//                        layoutParams1.leftMargin = x_cord - 25;
+//                        layoutParams1.topMargin = y_cord - 7;
+//                        captionShow.setLayoutParams(layoutParams1);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         emoji.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +146,6 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         Fragment pictureFragment = new PictureFragment();
         Fragment videoFragment = new VideoFragment();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         final String intentResult = getIntent().getStringExtra("dataType");
         final String imageFilePath = getIntent().getStringExtra("imagePath");
         String videoFIlePath = getIntent().getStringExtra("videoPath");
@@ -166,7 +195,15 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
 }
 

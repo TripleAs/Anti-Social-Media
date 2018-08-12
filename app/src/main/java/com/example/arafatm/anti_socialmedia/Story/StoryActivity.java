@@ -18,7 +18,6 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.CamcorderProfile;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.MediaRecorder;
@@ -248,7 +247,7 @@ public class StoryActivity extends AppCompatActivity {
         }
     }
 
-    private byte[] convertImageToBytes( Bitmap bitmap){
+    private byte[] convertImageToBytes(Bitmap bitmap) {
         byte[] data = null;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -287,7 +286,6 @@ public class StoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
-
         createVideoFolder();
         createImageFolder();
         mMediaRecorder = new MediaRecorder();
@@ -380,7 +378,6 @@ public class StoryActivity extends AppCompatActivity {
 
     public byte[] convertToByte() throws IOException {
         byte[] bytesArray = new byte[(int) videoFile.length()];
-
         FileInputStream fis = new FileInputStream(videoFile);
         fis.read(bytesArray); //read file into bytes[]
         fis.close();
@@ -566,7 +563,6 @@ public class StoryActivity extends AppCompatActivity {
     private void startRecord() {
         try {
             setupMeidaRecorder();
-
             SurfaceTexture surfaceTexture = mTextureView.getSurfaceTexture();
             surfaceTexture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             Surface previewSurface = new Surface(surfaceTexture);
@@ -792,19 +788,8 @@ public class StoryActivity extends AppCompatActivity {
         mMediaRecorder.setOutputFile(mVideoFileName);
         mMediaRecorder.setVideoEncodingBitRate(1000000);
         mMediaRecorder.setVideoFrameRate(30);
-        //  mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        mMediaRecorder.setOrientationHint(mTotalRotation);
-        mMediaRecorder.prepare();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void setupTimeElapse() throws IOException {
-        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_TIME_LAPSE_HIGH));
-        mMediaRecorder.setOutputFile(mVideoFileName);
-        mMediaRecorder.setCaptureRate(2);
         mMediaRecorder.setOrientationHint(mTotalRotation);
         mMediaRecorder.prepare();
     }
@@ -863,11 +848,5 @@ public class StoryActivity extends AppCompatActivity {
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private byte[] compressImageToRightSize(Bitmap selectedImage) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        selectedImage.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        return stream.toByteArray();
     }
 }

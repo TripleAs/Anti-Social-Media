@@ -73,9 +73,6 @@ import butterknife.ButterKnife;
 
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.currentGroup;
 
-//import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
-
-
 public class MainActivity extends AppCompatActivity implements
         GroupManagerFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
         ShareFromFragment.OnFragmentInteractionListener, UploadedImages.OnFragmentInteractionListener,
@@ -92,18 +89,18 @@ public class MainActivity extends AppCompatActivity implements
     MobiComQuickConversationFragment mobiComQuickConversationFragment;
     MobiComKitBroadcastReceiver mobiComKitBroadcastReceiver;
     ParseUser parseUser;
-    private static final String ARG_PARAM1 = "param1";
-    private static final long MOVE_DEFAULT_TIME = 1000;
-    private static final long FADE_DEFAULT_TIME = 300;
-
-//    private Handler mDelayedTransactionHandler = new Handler();
-//    private Runnable mRunnable = this::performTransition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setContentView(R.layout.activity_main);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
+        /*gets instance of all fragments here*/
+        final Fragment groupFragment = new GroupManagerFragment();
+        // final Fragment userGroupList = new UserGroupList();
+        final Fragment settingsFragment = new SettingsFragment();
 
         ParseACL parseACL = new ParseACL(ParseUser.getCurrentUser());
         parseACL.setPublicReadAccess(true);
@@ -121,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
         bottomNavigationView.getMenu().findItem(R.id.ic_group_empty).setChecked(true);
-        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
 
         String name = getIntent().getStringExtra("key");
 
@@ -137,21 +133,17 @@ public class MainActivity extends AppCompatActivity implements
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
         } else {
-            //sets default fragment
+            //sets most recent group fragment
             if (currentGroup != null) {
                 Fragment fragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
                 fragmentManager.beginTransaction().replace(R.id.layout_child_activity, fragment).addToBackStack(null).commit();
             } else {
+                //sets default fragment
                 FragmentTransaction tx = fragmentManager.beginTransaction();
                 tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
                 tx.commit();
             }
         }
-
-        /*gets instance of all fragments here*/
-        final Fragment groupFragment = new GroupManagerFragment();
-        // final Fragment userGroupList = new UserGroupList();
-        final Fragment settingsFragment = new SettingsFragment();
 
         // handle navigation selection to various fragments
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -181,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements
                         }
                     }
                 });
-
         chatLogin();
     }
 
@@ -197,14 +188,14 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     /*Navigates to the groupManagerFragment*/
     public void navigate_to_fragment(Fragment fragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.layout_child_activity, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layout_child_activity, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
-    public void managerToFeedTransition(Fragment managerFragment, Fragment feedFragment){
+    public void managerToFeedTransition(Fragment managerFragment, Fragment feedFragment) {
         // Check that the device is running lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Inflate transitions to apply
@@ -231,8 +222,7 @@ public class MainActivity extends AppCompatActivity implements
                     .addSharedElement(ivCoverPhoto, "groupExpand");
             // Apply the transaction
             ft.commit();
-        }
-        else {
+        } else {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.layout_child_activity, feedFragment);
@@ -268,12 +258,10 @@ public class MainActivity extends AppCompatActivity implements
     /* From Chat Fragment tutorial */
     public static void addFragment(FragmentActivity fragmentActivity, Fragment fragmentToAdd, String fragmentTag) {
         FragmentManager supportFragmentManager = fragmentActivity.getSupportFragmentManager();
-
         FragmentTransaction fragmentTransaction = supportFragmentManager
                 .beginTransaction();
         fragmentTransaction.replace(R.id.layout_child_activity, fragmentToAdd,
                 fragmentTag);
-
         fragmentTransaction.addToBackStack(fragmentTag);
         fragmentTransaction.commitAllowingStateLoss();
         supportFragmentManager.executePendingTransactions();
@@ -399,7 +387,6 @@ public class MainActivity extends AppCompatActivity implements
         user.setPassword(""); //optional, leave it blank for testing purpose,
         new UserLoginTask(user, listener, this).execute((Void) null);
 
-
         // chat fragment setup
         mobiComQuickConversationFragment = new MobiComQuickConversationFragment();
         conversationUIService = new ConversationUIService(this, mobiComQuickConversationFragment);
@@ -408,7 +395,6 @@ public class MainActivity extends AppCompatActivity implements
         Intent lastSeenStatusIntent = new Intent(this, UserIntentService.class);
         lastSeenStatusIntent.putExtra(UserIntentService.USER_LAST_SEEN_AT_STATUS, true);
         startService(lastSeenStatusIntent);
-
         addGroupChats(parseUser);
     }
 
@@ -450,27 +436,22 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onSuccess(Channel channel, Context context) {
                 Log.i("Group", "Group response :" + channel);
-
             }
 
             @Override
             public void onFailure(ChannelFeedApiResponse channelFeedApiResponse, Context context) {
-
             }
         };
-
 
         List<String> groupMembersUserIdList = group.getUsers();
         if (groupMembersUserIdList != null) {
             groupMembersUserIdList.remove(ParseUser.getCurrentUser().getObjectId());
-            ChannelInfo channelInfo = new ChannelInfo(group.getGroupName(),groupMembersUserIdList);
+            ChannelInfo channelInfo = new ChannelInfo(group.getGroupName(), groupMembersUserIdList);
             channelInfo.setType(Channel.GroupType.PUBLIC.getValue().intValue()); //group type
-//        channelInfo.setImageUrl(group.getGroupImage().getUrl()); //pass group image link URL
             channelInfo.setClientGroupId(Integer.toString(GroupFeedFragment.convert(group.getObjectId())));
             channelInfo.setParentKey(GroupFeedFragment.convert(group.getObjectId()));
-
             AlChannelCreateAsyncTask channelCreateAsyncTask = new AlChannelCreateAsyncTask(
-                    this,channelInfo,channelCreateTaskListener);
+                    this, channelInfo, channelCreateTaskListener);
             channelCreateAsyncTask.execute();
         }
     }

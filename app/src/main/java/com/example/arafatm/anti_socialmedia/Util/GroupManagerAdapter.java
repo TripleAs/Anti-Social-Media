@@ -43,7 +43,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View groupView = inflater.inflate(R.layout.item_group_manager, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(groupView);
         return viewHolder;
@@ -52,8 +51,8 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Group group = groups.get(position);
-
         String groupName = group.getGroupName();
+
         if (groupName != null) {
             viewHolder.tvGroupName.setText(groupName);
         } else {
@@ -84,7 +83,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         public TextView tvGroupName;
         public TextView tvGroupMembers;
         public ImageView ivCoverPhoto;
@@ -94,7 +92,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
             tvGroupName = view.findViewById(R.id.tvGroupName);
             tvGroupMembers = view.findViewById(R.id.tvGroupMembers);
             ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
-
             view.setOnClickListener(this);
         }
 
