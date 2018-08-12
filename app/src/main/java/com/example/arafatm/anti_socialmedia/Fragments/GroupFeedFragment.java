@@ -402,8 +402,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-                    postAdapter.notifyDataSetChanged();
                     posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
                     swipeContainer.setRefreshing(false);
                 } else {
                     e.printStackTrace();
@@ -414,8 +414,44 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void refreshFeed() {
         postAdapter.clear();
-        loadTopPosts();
+        final Post.Query postsQuery = new Post.Query();
+        postsQuery.getTop().withUser().forGroup(group);
+        postsQuery.fromNetwork();
+        postsQuery.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> objects, ParseException e) {
+                if (e == null) {
+                    posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
+                    swipeContainer.setRefreshing(false);
+                    ParseObject.pinAllInBackground(objects);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
         rvPosts.scrollToPosition(0);
+
+        final Story.Query storyQuery = new Story.Query();
+        storyQuery.findInBackground(new FindCallback<Story>() {
+            @Override
+            public void done(List<Story> objects, ParseException e) {
+                if (e == null) {
+                    //fetches all stories for current group
+                    ParseObject.pinAllInBackground(objects);
+                    for (int i = 0; i < objects.size(); i++) {
+                        List<String> recIDs = objects.get(i).getAllRecipient();
+                        if (recIDs != null && recIDs.contains(publicCurrentGroup.getObjectId())) {
+                            allStories.add(objects.get(i));
+                        }
+                    }
+                    Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
+                    displayStory(R.id.fragment_child);
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     // for converting group objectId to integer (used for chat channel ID)

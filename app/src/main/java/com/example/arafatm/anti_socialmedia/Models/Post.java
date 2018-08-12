@@ -96,7 +96,7 @@ public class Post extends ParseObject {
         }
 
         public Query withUser() {
-            include("User");
+            include("user");
             return this;
         }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import com.parse.SignUpCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
       
         title = findViewById(R.id.tvTitle);
         usernameInput = findViewById(R.id.etUsername);
@@ -95,7 +98,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                requestFBInfo(loginResult);
+                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
+                intent.putExtra("accessToken", Parcels.wrap(loginResult.getAccessToken()));
+                startActivity(intent);
+                finish();
+//                requestFBInfo(loginResult);
             }
 
             @Override
@@ -185,8 +192,6 @@ public class LoginActivity extends AppCompatActivity {
         parameters.putString("fields", "id,name,email,picture.type(large)");
         meRequest.setParameters(parameters);
         meRequest.executeAsync();
-
-        Toast.makeText(LoginActivity.this, "Logging you in...", Toast.LENGTH_LONG).show();
     }
 
     private void loginOrSignup(final String userId, final String fullname, final String email,
@@ -196,9 +201,9 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
                     Log.d("LoginActivity", "Login successful");
-                    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    setUpLocalDatastore();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    setUpLocalDatastore();
                     finish();
                 } else {
                     ParseUser parseUser = new ParseUser();
@@ -359,4 +364,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }
