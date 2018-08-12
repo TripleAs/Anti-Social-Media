@@ -34,17 +34,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GroupCreationFragment extends Fragment {
-    @BindView(R.id.rvFriends)
-    RecyclerView recyclerView;
-    @BindView(R.id.btCreateGroup)
-    Button btCreateGroup;
+    @BindView(R.id.rvFriends) RecyclerView recyclerView;
+    @BindView(R.id.btCreateGroup) Button btCreateGroup;
 
     private static final String ARGS_GROUP_NAME = "groupName";
     private static final String ARGS_GROUP_THEME = "groupTheme";
     private static final String ARGS_GROUP_IMAGEFILE = "groupImage";
 
-    @BindView(R.id.btNext)
-    Button nextButton;
     private String groupName;
     private String groupTheme;
     private ParseFile groupImage;
