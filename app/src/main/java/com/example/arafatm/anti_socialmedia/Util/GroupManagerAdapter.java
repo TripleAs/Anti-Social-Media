@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,10 +27,13 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
+
 public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapter.ViewHolder> {
     private Context context;
     public ArrayList<Group> groups;
-    private ArrayList<ParseUser> memberList;
     private FragmentManager fragmentManager;
     public int currentGroupPosition;
 
@@ -59,13 +63,6 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
             viewHolder.tvGroupName.setText("");
         }
 
-        List<String> groupMembers = group.getUsers();
-        if(groupMembers != null){
-           getMemberNames(groupMembers, viewHolder.tvGroupMembers);
-        } else {
-            viewHolder.tvGroupMembers.setText("");
-        }
-
         ParseFile groupPic = group.getParseFile("groupImage");
         if (groupPic != null) {
             Glide.with(context)
@@ -74,6 +71,22 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
                     .into(viewHolder.ivCoverPhoto);
         } else {
             viewHolder.ivCoverPhoto.setImageResource(R.drawable.ic_group_default);
+        }
+
+        String theme = group.getTheme();
+        switch (theme) {
+            case KEY_RED:
+                viewHolder.ivBorder.setColorFilter(ContextCompat.getColor(context,
+                        R.color.red_gradient_1));
+                break;
+            case KEY_GREEN:
+                viewHolder.ivBorder.setColorFilter(ContextCompat.getColor(context,
+                        R.color.green_gradient_2));
+                break;
+            case KEY_BLUE:
+                viewHolder.ivBorder.setColorFilter(ContextCompat.getColor(context,
+                        R.color.blue_gradient_2));
+                break;
         }
     }
 
@@ -84,14 +97,14 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView tvGroupName;
-        public TextView tvGroupMembers;
         public ImageView ivCoverPhoto;
+        public ImageView ivBorder;
 
         public ViewHolder(View view) {
             super(view);
             tvGroupName = view.findViewById(R.id.tvGroupName);
-            tvGroupMembers = view.findViewById(R.id.tvGroupMembers);
             ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
+            ivBorder = view.findViewById(R.id.borderDrawable);
             view.setOnClickListener(this);
         }
 
@@ -109,37 +122,5 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
 
             }
         }
-    }
-
-    public void getMemberNames(final List<String> groupMembers, final TextView groupMemberNames){
-        final int size = groupMembers.size();
-        final List<String> names = new ArrayList<>();
-
-        ParseQuery<ParseUser> membersQuery = ParseUser.getQuery();
-        membersQuery.whereContainedIn("objectId", groupMembers);
-        membersQuery.fromLocalDatastore();
-
-        membersQuery.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> objects, ParseException e) {
-                if (e == null) {
-                    for (int i = 0; i < size; i++){
-                        String index = objects.get(i).getString("fullName");
-                        names.add(i, index);
-                        groupMemberNames.setText(TextUtils.join(", ", names));
-                    }
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private String getInitials(String name) {
-        String initials = "";
-        for (String s : name.split(" ")) {
-            initials += Character.toUpperCase(s.charAt(0));
-        }
-        return initials;
     }
 }
