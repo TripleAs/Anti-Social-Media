@@ -186,9 +186,14 @@ public class GroupCustomizationFragment extends Fragment {
 
     private void passToGroupCreation() {
         newGroupPic = photoHelper.grabImage();
-        newName = etGroupName.getText().toString();
-        GroupCreationFragment groupCreationFragment = GroupCreationFragment.newInstance(newName, theme, newGroupPic);
-        mListener.navigate_to_fragment(groupCreationFragment);
+        newGroupPic.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                newName = etGroupName.getText().toString();
+                GroupCreationFragment groupCreationFragment = GroupCreationFragment.newInstance(newName, theme, newGroupPic);
+                mListener.navigate_to_fragment(groupCreationFragment);
+            }
+        });
     }
 
     private void handleColorSelection(String color, ImageView checkmark) {

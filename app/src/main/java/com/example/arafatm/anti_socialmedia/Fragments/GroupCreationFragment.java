@@ -215,13 +215,7 @@ public class GroupCreationFragment extends Fragment {
         newGroup.pinInBackground("groups");
         newGroup.saveEventually();
 
-        groupImage.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                saveNewGroup(newGroup);
-            }
-        });
-
+        saveNewGroup(newGroup);
         sendGroupRequests(newGroup);
     }
 
