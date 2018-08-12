@@ -105,8 +105,8 @@ public class CommentFragment extends Fragment {
 
     private void createComment(String commentString, final ArrayList<Post> pointToComment) {
         final Post comment = new Post();
-//        comment.pinInBackground("comments");
-//        comment.saveEventually();
+        comment.pinInBackground("comments");
+        comment.saveEventually();
 
         // save comment to Parse
         comment.setUser(ParseUser.getCurrentUser());
@@ -135,7 +135,7 @@ public class CommentFragment extends Fragment {
     private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop();
-//        postsQuery.fromLocalDatastore();
+        postsQuery.fromLocalDatastore();
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
