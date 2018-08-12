@@ -37,11 +37,13 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 
 public class GroupCustomizationFragment extends Fragment {
+
     @BindView(R.id.etGroupName) EditText etGroupName;
     @BindView(R.id.btNext) Button btNext;
     @BindView(R.id.ivPreview) ImageView ivPreview;
     @BindView(R.id.ivCamera) ImageView ivCamera;
     @BindView(R.id.ivUpload) ImageView ivUpload;
+
     private ImageView ivColorRed;
     private ImageView ivColorGreen;
     private ImageView ivColorBlue;
@@ -91,6 +93,9 @@ public class GroupCustomizationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_group_customization, container, false);
     }

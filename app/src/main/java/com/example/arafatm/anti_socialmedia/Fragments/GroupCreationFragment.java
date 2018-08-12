@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -212,11 +213,21 @@ public class GroupCreationFragment extends Fragment {
     private void createNewGroup() {
         //Create new group and initialize it
         final Group newGroup = new Group();
-        newGroup.pinInBackground("groups");
-        newGroup.saveEventually();
-
-        saveNewGroup(newGroup);
-        sendGroupRequests(newGroup);
+       newGroup.pinInBackground("groups");
+       newGroup.saveEventually();
+      
+        groupImage.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    saveNewGroup(newGroup);
+                    sendGroupRequests(newGroup);
+                } else {
+                    Log.i("err4", e.toString());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void saveNewGroup(final Group newGroup) {
@@ -224,9 +235,14 @@ public class GroupCreationFragment extends Fragment {
         newGroup.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                String objectId = newGroup.getObjectId();
-                Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
-                mListener.navigate_to_fragment(fragment);
+                if (e == null) {
+                    String objectId = newGroup.getObjectId();
+                    Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
+                    mListener.navigate_to_fragment(fragment);
+                } else {
+                    Toast.makeText(getContext(), "there was a problem saving group", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         });
     }
