@@ -60,13 +60,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public static Group currentGroup;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
-    private int storyIndex = 0;
-//    private ImageView next_story;
     public static boolean goToShare = false;
     public static Uri VideouUri;
     public static boolean goToUpload = false;
     private ArrayList<Story> allStories;
-//    private ImageView prev_story;
     public static boolean goToPost = false;
     private String selectedImageURL;
     private String dataType;
@@ -183,8 +180,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         allStories = new ArrayList<>();
-//        next_story = view.findViewById(R.id.iv_next);
-//        prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
 
@@ -232,17 +227,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-//        next_story.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (storyIndex < allStories.size() - 1) {  //checks out of bounce exception
-//                    storyIndex++;
-//                    selected = false;
-//                    displayStory(R.id.fragment_child);
-//                }
-//            }
-//        });
-
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,8 +237,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                     //save all necessary info for story display
                     bundle.putString("text", text);
                     bundle.putString("caption", caption);
-                    bundle.putString("imagePath", imageFilePath);
-                    bundle.putString("videoPath", VideouUri.toString());
+                    bundle.putParcelableArrayList("arraylist", allStories);
                     bundle.putString("dataType", dataType);
 
                     //create StoryDisplayfragment
@@ -267,22 +250,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                 }
             }
         });
-
-
-//        prev_story.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int jadal = storyIndex;
-//                if (storyIndex >= 1) {  //checks out of bound exception
-//                    storyIndex--;
-//                    selected = false;
-//                    displayStory(R.id.fragment_child);
-//                }
-//            }
-//        });
     }
 
-    private void initiateGroup(ParseObject object) {
+    private void initiateGroup(final ParseObject object) {
         group = (Group) object;
         publicCurrentGroup = group; //set this static for easy access in other classes
         currentGroup = group;
@@ -334,7 +304,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        Story currentStory = ((allStories.size() == 0) ? null : allStories.get(storyIndex)); //selects a story
+        Story currentStory = ((allStories.size() == 0) ? null : allStories.get(0)); //selects a story
         if (currentStory != null) {
             text = currentStory.getStoryCaption();
             caption = currentStory.getStoryText();
@@ -369,7 +339,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         args.putString("imagePath", imageFilePath);
         args.putString("text", text);
         args.putString("caption", caption);
-
         pictureFragment.setArguments(args);
         fragmentTransaction.replace(view_id, pictureFragment, PREVIEW_TAG)
                 .commit();
@@ -415,6 +384,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private void refreshFeed() {
         postAdapter.clear();
         loadTopPosts();
+        displayStory(R.id.fragment_child);
         rvPosts.scrollToPosition(0);
     }
 

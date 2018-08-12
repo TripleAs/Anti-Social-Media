@@ -39,8 +39,6 @@ import static android.app.Activity.RESULT_OK;
 public class GroupCustomizationFragment extends Fragment {
     @BindView(R.id.etGroupName)
     EditText etGroupName;
-    @BindView(R.id.btCreateGroup)
-    Button btCreateGroup;
     @BindView(R.id.ivPreview)
     ImageView ivPreview;
     @BindView(R.id.ivCamera)
@@ -97,6 +95,9 @@ public class GroupCustomizationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_group_customization, container, false);
     }
@@ -191,68 +192,68 @@ public class GroupCustomizationFragment extends Fragment {
         }
     }
 
-    private void createNewGroup() {
-        //Create new group and initialize it
-        final Group newGroup = new Group();
-        newGroup.pinInBackground("groups");
-        newGroup.saveEventually();
-        if (!hasNewPic) {
-            // TODO - fix known issue with creating group without group picture
-            photoHelper = new PhotoHelper(getContext());
-            photoHelper.getDefaultPropic();
-        }
-        final ParseFile newGroupPic = photoHelper.grabImage();
-        newGroupPic.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                saveNewGroup(newGroup, newGroupPic);
-            }
-        });
-        sendGroupRequests(newGroup);
-    }
-
-    private void saveNewGroup(final Group newGroup, ParseFile newGroupPic) {
-        final String newName = etGroupName.getText().toString();
-        newGroup.initGroup(newName, newMembers, newGroupPic, theme);
-        newGroup.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                String objectId = newGroup.getObjectId();
-                Fragment fragment = GroupFeedFragment.newInstance(objectId, theme);
-                mListener.navigate_to_fragment(fragment);
-            }
-        });
-    }
-
-    private void sendGroupRequests(final Group newGroup) {
-        ParseUser loggedInUser = ParseUser.getCurrentUser();
-        List<ParseObject> currentGroups = loggedInUser.getList("groups");
-        if (currentGroups == null) {
-            currentGroups = new ArrayList<>();
-        }
-        currentGroups.add(newGroup);
-        loggedInUser.put("groups", currentGroups);
-        loggedInUser.saveInBackground();
-
-        for (int i = 0; i < newMembers.size(); i++) {
-            final GroupRequestNotif newRequest = new GroupRequestNotif();
-            newRequest.pinInBackground();
-            newRequest.saveEventually();
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.fromLocalDatastore();
-            query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
-                @Override
-                public void done(ParseUser object, ParseException e) {
-                    newRequest.initRequest(object, newGroup);
-                    try {
-                        newRequest.save();
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-        }
-    }
+//    private void createNewGroup() {
+//        //Create new group and initialize it
+//        final Group newGroup = new Group();
+//        newGroup.pinInBackground("groups");
+//        newGroup.saveEventually();
+//        if (!hasNewPic) {
+//            // TODO - fix known issue with creating group without group picture
+//            photoHelper = new PhotoHelper(getContext());
+//            photoHelper.getDefaultPropic();
+//        }
+//        final ParseFile newGroupPic = photoHelper.grabImage();
+//        newGroupPic.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                saveNewGroup(newGroup, newGroupPic);
+//            }
+//        });
+//        sendGroupRequests(newGroup);
+//    }
+//
+//    private void saveNewGroup(final Group newGroup, ParseFile newGroupPic) {
+//        final String newName = etGroupName.getText().toString();
+//        newGroup.initGroup(newName, newMembers, newGroupPic, theme);
+//        newGroup.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                String objectId = newGroup.getObjectId();
+//                Fragment fragment = GroupFeedFragment.newInstance(objectId, theme);
+//                mListener.navigate_to_fragment(fragment);
+//            }
+//        });
+//    }
+//
+//    private void sendGroupRequests(final Group newGroup) {
+//        ParseUser loggedInUser = ParseUser.getCurrentUser();
+//        List<ParseObject> currentGroups = loggedInUser.getList("groups");
+//        if (currentGroups == null) {
+//            currentGroups = new ArrayList<>();
+//        }
+//        currentGroups.add(newGroup);
+//        loggedInUser.put("groups", currentGroups);
+//        loggedInUser.saveInBackground();
+//
+//        for (int i = 0; i < newMembers.size(); i++) {
+//            final GroupRequestNotif newRequest = new GroupRequestNotif();
+//            newRequest.pinInBackground();
+//            newRequest.saveEventually();
+//            ParseQuery<ParseUser> query = ParseUser.getQuery();
+//            query.fromLocalDatastore();
+//            query.getInBackground(newMembers.get(i), new GetCallback<ParseUser>() {
+//                @Override
+//                public void done(ParseUser object, ParseException e) {
+//                    newRequest.initRequest(object, newGroup);
+//                    try {
+//                        newRequest.save();
+//                    } catch (ParseException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     private void passToGroupCreation() {
         newGroupPic = photoHelper.grabImage();

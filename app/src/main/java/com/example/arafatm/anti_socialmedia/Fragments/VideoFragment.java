@@ -40,7 +40,7 @@ public class VideoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            videoUri = Uri.parse(getArguments().getString(ARG_PARAM1));
+            videoUri = Uri.parse(getArguments().getString("videoPath"));
             caption = getArguments().getString(ARG_PARAM2);
             text = getArguments().getString(ARG_PARAM3);
         }
@@ -92,13 +92,11 @@ public class VideoFragment extends Fragment {
         TextView showText = (TextView) view.findViewById(R.id.tv_showText);
 
         displayVideo = (VideoView) view.findViewById(R.id.videoPreview);
-        if (videoUri != null) {
-            displayVideo.setVideoURI(videoUri);
-            displayVideo.setMediaController(null);
-            displayVideo.requestFocus();
-            displayVideo.start();
-        }
 
+                displayVideo.setVideoURI(videoUri);
+                displayVideo.setMediaController(null);
+                displayVideo.requestFocus();
+                displayVideo.start();
 
         if (text != null)
             showText.setText(text);

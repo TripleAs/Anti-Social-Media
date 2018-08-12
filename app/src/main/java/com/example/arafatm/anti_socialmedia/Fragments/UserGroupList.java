@@ -130,6 +130,7 @@ public class UserGroupList extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+
         void navigate_to_fragment(Fragment fragment);
     }
 
@@ -190,7 +191,7 @@ public class UserGroupList extends Fragment {
                                     }
                                 });
                             } else {
-                              e.printStackTrace();
+                                e.printStackTrace();
                             }
 
                         }
