@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
     ImageButton rotate;
     @BindView(R.id.tv_caption)
     EditText nontouchStatus;
+    private ProgressBar progressBar;
     private boolean enabled = false;
 
     @Override
@@ -51,7 +53,8 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
 
         final TextView nontouchStatusDisplay = (TextView) findViewById(R.id.tv_captionShow);
         final TextView touchStatusDisplay = (TextView) findViewById(R.id.tv_addText);
-
+        // set the drawable as progress drawable
+        progressBar = (ProgressBar) findViewById(R.id.pb_progress);
         ButterKnife.bind(this);
         final String dataType = getIntent().getStringExtra("dataType");
         final String imageFilePath = getIntent().getStringExtra("imagePath");
@@ -99,37 +102,6 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             }
         });
 
-//        captionShow.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                android.support.constraint.ConstraintLayout.LayoutParams layoutParams1;
-//               layoutParams1 = (ConstraintLayout.LayoutParams) captionShow.getLayoutParams();
-//
-//
-//                switch(event.getActionMasked())
-//                {
-//                    case MotionEvent.ACTION_DOWN:
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        int x_cord = (int) event.getRawX();
-//                        int y_cord = (int) event.getRawY();
-//                        if (x_cord > getScreenWidth()) {
-//                            x_cord = getScreenWidth();
-//                        }
-//                        if (y_cord > getScreenHeight()) {
-//                            y_cord = getScreenHeight();
-//                        }
-//                        layoutParams1.leftMargin = x_cord - 25;
-//                        layoutParams1.topMargin = y_cord - 7;
-//                        captionShow.setLayoutParams(layoutParams1);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-
         emoji.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,6 +112,7 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         closeToCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(PreviewStoryActivity.this, StoryActivity.class);
                 startActivity(intent);
             }
@@ -168,7 +141,8 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             @Override
             public void onClick(View view) {
                 //get status from preview fragment
-               navigateToMainActivity(dataType, touchStatusDisplay, storyInBytes, nontouchStatusDisplay);
+                progressBar.setVisibility(View.VISIBLE);
+                navigateToMainActivity(dataType, touchStatusDisplay, storyInBytes, nontouchStatusDisplay);
             }
         });
     }
@@ -196,6 +170,7 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
     }
 
     private void navigateToMainActivity(String dataType, TextView addText, byte[] storyInBytes, TextView caption) {
+        // Toggles progress bar
         Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
         intent.putExtra("key", dataType);
         intent.putExtra("dataType", dataType);

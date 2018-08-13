@@ -43,6 +43,7 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.arafatm.anti_socialmedia.Home.MainActivity;
@@ -76,6 +77,7 @@ public class StoryActivity extends AppCompatActivity {
     private Handler mBackgroundHandler;
     private String mCameraId;
     private Size mPreviewSize;
+    private Size mVideoSize;
     private CaptureRequest.Builder mCaptureRequestBuilder;
     private ImageButton upload;
     private ImageButton switchCamera;
@@ -89,7 +91,7 @@ public class StoryActivity extends AppCompatActivity {
     private String mImageFileName;
     private boolean frontCameraEnabled = false;
     private int mTotalRotation;
-    private Size mVideoSize;
+   private ProgressBar progressBar;
     private MediaRecorder mMediaRecorder;
     private Chronometer mChronometer;
     private CameraCaptureSession mPreviewCaptureSession;
@@ -295,11 +297,13 @@ public class StoryActivity extends AppCompatActivity {
         captureButton = (ImageView) findViewById(R.id.iv_take);
         switchCamera = (ImageButton) findViewById(R.id.ib_switch_cam);
         closeTView = (ImageButton) findViewById(R.id.iv_close);
+        progressBar = (ProgressBar) findViewById(R.id.pb_progress);
 
         closeTView.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 closeCamera();
                 stopBackgroundThread();
                 Intent intent = new Intent(StoryActivity.this, MainActivity.class);

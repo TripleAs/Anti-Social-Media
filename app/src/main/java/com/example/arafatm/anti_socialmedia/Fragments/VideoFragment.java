@@ -17,6 +17,8 @@ import com.parse.ParseException;
 
 import java.util.ArrayList;
 
+import static com.example.arafatm.anti_socialmedia.Fragments.StoryDIsplayFragment.storyIndex;
+
 public class VideoFragment extends Fragment {
     private static final String ARG_PARAM1 = "videoPath";
     private static final String ARG_PARAM2 = "caption";
@@ -27,8 +29,6 @@ public class VideoFragment extends Fragment {
     private Uri videoUri;
     private String text;
     private ArrayList<Story> allStories;
-    private int storyIndex = 0;
-
     private OnFragmentInteractionListener mListener;
 
     public VideoFragment() {
@@ -105,43 +105,55 @@ public class VideoFragment extends Fragment {
             playVideo(Uri.parse(videoPath));
             videoPath = null;
         } else {
-            final String firstStoryType = allStories.get(storyIndex).getStoryType();
-            if (firstStoryType.compareTo("video") == 0) {
-                Story firstStory = allStories.get(storyIndex);
-                try { //plays the first instance
-                    videoUri = Uri.fromFile(firstStory.getStory().getFile());
-                    playVideo(videoUri);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            if (storyIndex >= 0 && storyIndex < allStories.size()) {
+                final String firstStoryType = allStories.get(storyIndex).getStoryType();
+                if (firstStoryType.compareTo("video") == 0) {
+                    Story firstStory = allStories.get(storyIndex);
+                    try { //plays the first instance
+                        videoUri = Uri.fromFile(firstStory.getStory().getFile());
+                        text = firstStory.getStoryText();
+                        caption = firstStory.getStoryCaption();
+                        playVideo(videoUri);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-                //This takes care of the subsequent stories
-                displayVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        if (storyIndex < allStories.size() - 1) {
-                            storyIndex++;
-                            String subseStoryType = allStories.get(storyIndex).getStoryType();
-                            if (subseStoryType.compareTo("video") == 0) {
-                                Story subseStory = allStories.get(storyIndex);
-                                try {
-                                    videoUri = Uri.fromFile(subseStory.getStory().getFile());
-                                    playVideo(videoUri);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
+                    //This takes care of the subsequent stories
+                    displayVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            if (storyIndex < allStories.size() - 1) {
+                                storyIndex++;
+                                String subseStoryType = allStories.get(storyIndex).getStoryType();
+                                if (subseStoryType.compareTo("video") == 0) {
+                                    Story subseStory = allStories.get(storyIndex);
+                                    try {
+                                        videoUri = Uri.fromFile(subseStory.getStory().getFile());
+                                        text = subseStory.getStoryText();
+                                        caption = subseStory.getStoryCaption();
+                                        playVideo(videoUri);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
 
-        if (text != null)
+        if (text != null) {
             showText.setText(text);
+            text = null;
+        }
 
-        if (caption != null)
+
+        if (caption != null) {
             showCaption.setText(caption);
+            caption = null;
+        }
+
     }
 
     private void playVideo(Uri videoUri) {
