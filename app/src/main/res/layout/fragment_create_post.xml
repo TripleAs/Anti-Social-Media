@@ -22,7 +22,6 @@
             android:textCursorDrawable="@color/colorPrimary"
             android:ems="10"
             android:hint="What's been happening?"
-            android:layout_margin="10dp"
             android:inputType="textMultiLine" />
 
         <ImageView
@@ -32,7 +31,6 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/etNewPost"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
             android:src="@drawable/ic_camera_post" />
 
         <ImageView
@@ -52,7 +50,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/ivUpload"
             android:background="@color/transparent"
-            android:src="@drawable/ic_share_from"
+            android:src="@drawable/mobicom_social_share"
             android:tint="@color/ads_manager_subtitle_color" />
 
         <ImageView
@@ -70,8 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:src="@color/transparent" />
+            android:layout_marginTop="20dp"
+            android:src="@android:color/background_dark" />
 
     </RelativeLayout>
 </FrameLayout>
