@@ -64,7 +64,7 @@ public class GroupManagerFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         groupList = new ArrayList<>();
-        groupAdapter = new GroupManagerAdapter(groupList, getActivity().getSupportFragmentManager());
+        groupAdapter = new GroupManagerAdapter(groupList, getActivity().getSupportFragmentManager(), GroupManagerFragment.this);
     }
 
     @Override

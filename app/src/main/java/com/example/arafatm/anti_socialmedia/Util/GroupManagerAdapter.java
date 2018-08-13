@@ -1,10 +1,19 @@
 package com.example.arafatm.anti_socialmedia.Util;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.transition.AutoTransition;
+import android.support.transition.Explode;
+import android.support.transition.Fade;
+import android.support.transition.Slide;
+import android.support.transition.Transition;
+import android.support.transition.TransitionInflater;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,11 +25,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment;
+import com.example.arafatm.anti_socialmedia.Fragments.GroupManagerFragment;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -36,10 +48,12 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     public ArrayList<Group> groups;
     private FragmentManager fragmentManager;
     public int currentGroupPosition;
+    private GroupManagerFragment managerFragment;
 
-    public GroupManagerAdapter(ArrayList<Group> List, FragmentManager fm) {
+    public GroupManagerAdapter(ArrayList<Group> List, FragmentManager fm, GroupManagerFragment fragment) {
         groups = List;
         fragmentManager = fm;
+        managerFragment = fragment;
     }
 
     @NonNull
@@ -53,9 +67,15 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Group group = groups.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
+        final Group group = groups.get(position);
         String groupName = group.getGroupName();
+
+        final String picTransitionName = "coverPhoto" + group.getObjectId();
+        ViewCompat.setTransitionName(viewHolder.ivCoverPhoto, picTransitionName);
+        final String textTransitionName = "groupName" + group.getObjectId();
+        ViewCompat.setTransitionName(viewHolder.tvGroupName, textTransitionName);
+
 
         if (groupName != null) {
             viewHolder.tvGroupName.setText(groupName);
@@ -88,6 +108,26 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
                         R.color.blue_gradient_2));
                 break;
         }
+
+        viewHolder.tvGroupName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentGroupPosition = viewHolder.getAdapterPosition();
+                Fragment feedFragment = GroupFeedFragment.newInstance(group.getObjectId(), group.getTheme());
+                managerToFeedTransition(managerFragment, feedFragment, viewHolder.ivCoverPhoto,
+                        picTransitionName, viewHolder.tvGroupName, textTransitionName);
+            }
+        });
+
+        viewHolder.ivCoverPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentGroupPosition = viewHolder.getAdapterPosition();
+                Fragment feedFragment = GroupFeedFragment.newInstance(group.getObjectId(), group.getTheme());
+                managerToFeedTransition(managerFragment, feedFragment, viewHolder.ivCoverPhoto,
+                        picTransitionName, viewHolder.tvGroupName, textTransitionName);
+            }
+        });
     }
 
     @Override
@@ -95,32 +135,46 @@ public class GroupManagerAdapter extends RecyclerView.Adapter<GroupManagerAdapte
         return groups.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvGroupName;
         public ImageView ivCoverPhoto;
         public ImageView ivBorder;
+        public int position;
 
         public ViewHolder(View view) {
             super(view);
             tvGroupName = view.findViewById(R.id.tvGroupName);
             ivCoverPhoto = view.findViewById(R.id.ivCoverPhoto);
             ivBorder = view.findViewById(R.id.borderDrawable);
-            view.setOnClickListener(this);
         }
+    }
 
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                currentGroupPosition = position;
-                try {
-                    Group currentGroup = groups.get(position).fetchIfNeeded();
-                    Fragment fragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
-                    fragmentManager.beginTransaction().replace(R.id.layout_child_activity, fragment).addToBackStack(null).commit();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+    private void managerToFeedTransition(Fragment managerFragment, Fragment feedFragment,
+                                         ImageView ivCoverPhoto, String picTransitionName,
+                                         TextView tvGroupName, String textTransitionName) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Setup exit transition on first fragment
+            managerFragment.setSharedElementReturnTransition(new AutoTransition());
+            managerFragment.setExitTransition(new Fade());
 
-            }
+            // Setup enter transition on second fragment
+            feedFragment.setSharedElementEnterTransition(new AutoTransition());
+            feedFragment.setEnterTransition(new Fade());
+
+            // Find the shared element (in Fragment A)
+
+            // Add second fragment by replacing first
+            FragmentTransaction ft = fragmentManager.beginTransaction()
+                    .replace(R.id.layout_child_activity, feedFragment)
+                    .addToBackStack("transaction")
+                    .addSharedElement(tvGroupName, textTransitionName)
+                    .addSharedElement(ivCoverPhoto, picTransitionName);
+            // Apply the transaction
+            ft.commit();
+        } else {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.layout_child_activity, feedFragment)
+                    .addToBackStack(null).commit();
         }
     }
 }

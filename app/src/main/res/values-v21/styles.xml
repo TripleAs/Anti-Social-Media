@@ -9,8 +9,6 @@
         <item name="colorPrimary">@color/blue_gradient_2</item>
         <item name="colorPrimaryDark">@color/blue_gradient_2</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowEnterTransition">@transition/change_image_transform</item>
-        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
         <item name="colorAccent">@color/alphabet_b</item>
         <item name="gradientBackground">@drawable/title_gradient</item>
         <!--<item name="android:windowBackground">@drawable/title_gradient</item>-->

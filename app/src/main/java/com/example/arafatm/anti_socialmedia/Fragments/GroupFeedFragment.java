@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
@@ -189,6 +190,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
         welcomeImage = (ImageView) view.findViewById(R.id.welcomeImage);
+        String picTransitionName = "coverPhoto" + groupObjectId;
+        ViewCompat.setTransitionName(ivGroupPic, picTransitionName);
+        String textTransitionName = "groupName" + groupObjectId;
+        ViewCompat.setTransitionName(tvGroupName, textTransitionName);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
         query.fromLocalDatastore();

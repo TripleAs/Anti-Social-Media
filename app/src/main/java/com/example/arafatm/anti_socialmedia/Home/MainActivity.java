@@ -197,42 +197,6 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransaction.commit();
     }
 
-    public void managerToFeedTransition(Fragment managerFragment, Fragment feedFragment) {
-        // Check that the device is running lollipop
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Inflate transitions to apply
-            Transition changeTransform = TransitionInflater.from(this).
-                    inflateTransition(R.transition.change_image_transform);
-            Transition explodeTransform = TransitionInflater.from(this).
-                    inflateTransition(android.R.transition.explode);
-
-            // Setup exit transition on first fragment
-            managerFragment.setSharedElementReturnTransition(changeTransform);
-            managerFragment.setExitTransition(explodeTransform);
-
-            // Setup enter transition on second fragment
-            feedFragment.setSharedElementEnterTransition(changeTransform);
-            feedFragment.setEnterTransition(explodeTransform);
-
-            // Find the shared element (in Fragment A)
-            ImageView ivCoverPhoto = (ImageView) findViewById(R.id.ivPropic);
-
-            // Add second fragment by replacing first
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, feedFragment)
-                    .addToBackStack("transaction")
-                    .addSharedElement(ivCoverPhoto, "groupExpand");
-            // Apply the transaction
-            ft.commit();
-        } else {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.layout_child_activity, feedFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-    }
-
     @Override
     public void navigateToDialog(DialogFragment dialogFragment) {
         FragmentManager fm = getSupportFragmentManager();
