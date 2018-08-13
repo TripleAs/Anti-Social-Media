@@ -42,10 +42,10 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@+id/tvColorCommand"
-        android:layout_toLeftOf="@id/ivColorGreen"
-        android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
-        android:src="@color/red_5" />
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@id/ivColorGreen"
+        android:src="@color/red_gradient_2" />
 
     <ImageView
         android:id="@+id/ivColorGreen"
@@ -53,7 +53,7 @@
         android:layout_height="40dp"
         android:layout_alignTop="@+id/ivColorRed"
         android:layout_centerHorizontal="true"
-        android:src="@color/green_5" />
+        android:src="@color/green_gradient_2" />
 
     <ImageView
         android:id="@+id/ivColorBlue"
@@ -62,7 +62,7 @@
         android:layout_alignTop="@+id/ivColorRed"
         android:layout_toRightOf="@id/ivColorGreen"
         android:layout_marginLeft="15dp"
-        android:src="@color/blue_5" />
+        android:src="@color/blue_gradient_2" />
 
     <Button
         android:id="@+id/btNext"

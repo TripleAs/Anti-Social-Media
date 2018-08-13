@@ -64,7 +64,7 @@ public class GroupManagerFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         groupList = new ArrayList<>();
-        groupAdapter = new GroupManagerAdapter(groupList, getActivity().getSupportFragmentManager());
+        groupAdapter = new GroupManagerAdapter(groupList, getActivity().getSupportFragmentManager(), GroupManagerFragment.this);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class GroupManagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         rvGroups = view.findViewById(R.id.rvGroups);
-        rvGroups.addItemDecoration(new SpacesItemDecoration(30));
+        rvGroups.addItemDecoration(new SpacesItemDecoration(20));
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager( 2, LinearLayoutManager.VERTICAL);
         rvGroups.setLayoutManager(gridLayoutManager);

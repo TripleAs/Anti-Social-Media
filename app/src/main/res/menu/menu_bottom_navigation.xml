@@ -26,7 +26,7 @@
     <item
         android:id="@+id/ic_menu_thin"
         android:enabled="true"
-        android:icon="@drawable/ic_menu_thin"
+        android:icon="@drawable/ic_menu_thick"
         android:title=""
         app:showAsAction="ifRoom" />
 </menu>

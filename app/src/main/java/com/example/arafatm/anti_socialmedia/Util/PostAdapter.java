@@ -125,7 +125,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.btCommentExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommentFragment commentFragment = CommentFragment.newInstance(post);
+                CommentFragment commentFragment = CommentFragment.newInstance(post, theme);
                 manager.beginTransaction()
                         .replace(R.id.layout_child_activity, commentFragment)
                         .commit();

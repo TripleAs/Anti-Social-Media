@@ -122,16 +122,6 @@ public class UserGroupList extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
 
@@ -202,7 +192,7 @@ public class UserGroupList extends Fragment {
                         }
                     });
                 } else {
-                    Toast.makeText(getContext(), "Select atleast a grooup to share", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Select at least one group to share with", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -22,5 +22,5 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:indeterminateOnly="true"
         android:layout_width="150dp"
-        android:layout_height="50dp" />
+        android:layout_height="wrap_content" />
 </RelativeLayout>
