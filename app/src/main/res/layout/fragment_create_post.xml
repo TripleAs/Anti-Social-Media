@@ -61,7 +61,7 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/etNewPost"
-            android:layout_marginRight="10dp"
+            android:layout_margin="10dp"
             android:src="@drawable/mobicom_ic_action_send_now" />
 
         <ImageView
