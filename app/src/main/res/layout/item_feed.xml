@@ -30,8 +30,8 @@
 
                 <ImageView
                     android:id="@+id/ivProPicPost"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     app:srcCompat="@drawable/ic_prof_default" />
 
             </FrameLayout>
@@ -41,11 +41,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/feedFrameLayout"
                 android:text="Firstname Lastname"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPostBody"
@@ -53,18 +54,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivImagePost"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="This is the body of a post" />
 
             <ImageButton
                 android:id="@+id/btCommentIcon"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_below="@id/tvPostBody"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="5dp"
+                android:layout_below="@id/tvPostBody"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@color/transparent"
                 app:srcCompat="@drawable/ic_comment" />
 
@@ -98,24 +99,24 @@
 
             <ImageView
                 android:id="@+id/ivDirectMessage"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/tvPostBody"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 app:srcCompat="@drawable/ic_direct_message" />
 
             <ImageView
                 android:id="@+id/ivLike"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@id/tvPostBody"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
                 app:srcCompat="@drawable/ic_heart_empty" />
 
             <TextView
@@ -130,13 +131,11 @@
 
             <ImageView
                 android:id="@+id/iv_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                app:srcCompat="@drawable/ic_delete" />
+                app:srcCompat="@drawable/applozic_audio_delete" />
 
         </RelativeLayout>
 
