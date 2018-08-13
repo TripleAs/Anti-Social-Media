@@ -27,6 +27,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:textCursorDrawable="@color/colorPrimary"
             android:layout_below="@id/tvNameCommand"
+            android:gravity="center"
             android:layout_centerHorizontal="true"
             android:hint="e.g. peas in a pod"
             android:inputType="textPersonName" />
@@ -49,7 +50,7 @@
             android:layout_below="@+id/tvColorCommand"
             android:background="@drawable/roundcorner"
             android:layout_marginTop="15dp"
-            android:src="@color/red_5" />
+            android:src="@color/red_gradient_2" />
 
         <ImageView
             android:id="@+id/ivColorGreen"
@@ -58,7 +59,7 @@
             android:layout_height="40dp"
             android:layout_alignTop="@+id/ivColorRed"
             android:layout_centerHorizontal="true"
-            android:src="@color/green_5" />
+            android:src="@color/green_gradient_2" />
 
         <ImageView
             android:id="@+id/ivColorBlue"
@@ -67,7 +68,7 @@
             android:layout_alignEnd="@+id/etGroupName"
             android:layout_alignTop="@+id/ivColorRed"
             android:background="@drawable/roundcorner"
-            android:src="@color/blue_5" />
+            android:src="@color/blue_gradient_2" />
 
         <Button
             android:id="@+id/btSave"

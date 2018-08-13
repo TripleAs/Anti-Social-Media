@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +32,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
+
 public class CommentFragment extends Fragment {
     @BindView(R.id.btCommentPost)
     Button btCommentSubmit;
@@ -43,6 +48,7 @@ public class CommentFragment extends Fragment {
     CommentAdapter commentAdapter;
     ArrayList<Post> comments;
     Post originalPost;
+    String theme;
 
     @Override
     public void onAttach(Context context) {
@@ -53,6 +59,7 @@ public class CommentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         originalPost = Parcels.unwrap(getArguments().getParcelable(Post.class.getSimpleName()));
+        theme = getArguments().getString("theme");
     }
 
     @Override
@@ -60,7 +67,23 @@ public class CommentFragment extends Fragment {
         if (container != null) {
             container.removeAllViews();
         }
-        return inflater.inflate(R.layout.fragment_comments, container, false);
+        Context contextThemeWrapper = null;
+        if (theme != null)
+            switch (theme) {
+                case KEY_RED:
+                    contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
+                    break;
+                case KEY_GREEN:
+                    contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupGreenTheme);
+                    break;
+                case KEY_BLUE:
+                    contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+                    break;
+            }
+        // clone the inflater using the ContextThemeWrapper
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        // inflate the layout using the cloned inflater, not default inflater
+        return localInflater.inflate(R.layout.fragment_comments, container, false);
     }
 
     @Override
@@ -95,10 +118,11 @@ public class CommentFragment extends Fragment {
         });
     }
 
-    public static CommentFragment newInstance(Post post) {
+    public static CommentFragment newInstance(Post post, String color) {
         CommentFragment commentFragment = new CommentFragment();
         Bundle args = new Bundle();
         args.putParcelable(Post.class.getSimpleName(), Parcels.wrap(post));
+        args.putString("theme", color);
         commentFragment.setArguments(args);
         return commentFragment;
     }

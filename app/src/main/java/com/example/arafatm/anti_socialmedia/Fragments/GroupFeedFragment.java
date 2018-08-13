@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +29,17 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +90,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     RecyclerView rvPosts;
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.pbLoading) ProgressBar progressBar;
     String themeName;
 
     private OnFragmentInteractionListener mListener;
@@ -183,6 +190,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
         welcomeImage = (ImageView) view.findViewById(R.id.welcomeImage);
+        String picTransitionName = "coverPhoto" + groupObjectId;
+        ViewCompat.setTransitionName(ivGroupPic, picTransitionName);
+        String textTransitionName = "groupName" + groupObjectId;
+        ViewCompat.setTransitionName(tvGroupName, textTransitionName);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
         query.fromLocalDatastore();
@@ -257,13 +268,13 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         group = (Group) object;
         publicCurrentGroup = group; //set this static for easy access in other classes
         currentGroup = group;
+
         groupName = object.getString("groupName");
         tvGroupName.setText(groupName);
         groupId = convert(group.getObjectId());
         ParseFile groupImage = object.getParseFile("groupImage");
 
         if (groupImage != null) {
-            /*shows group image on gridView*/
             Glide.with(getContext())
                     .load(groupImage.getUrl())
                     .apply(RequestOptions.circleCropTransform())
@@ -276,7 +287,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
-        loadTopPosts();
+        loadTopPosts(true);
 
         final Story.Query storyQuery = new Story.Query();
         storyQuery.fromLocalDatastore();
@@ -356,10 +367,14 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         mListener = null;
     }
 
-    private void loadTopPosts() {
+    private void loadTopPosts(Boolean fromLocal) {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
-        postsQuery.fromLocalDatastore();
+        if (fromLocal) {
+            postsQuery.fromLocalDatastore();
+        } else {
+            postsQuery.fromNetwork();
+        }
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
@@ -377,23 +392,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     private void refreshFeed() {
         postAdapter.clear();
         displayStory(R.id.fragment_child);
-      
-        final Post.Query postsQuery = new Post.Query();
-        postsQuery.getTop().withUser().forGroup(group);
-        postsQuery.fromNetwork();
-        postsQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (e == null) {
-                    posts.addAll(objects);
-                    postAdapter.notifyDataSetChanged();
-                    swipeContainer.setRefreshing(false);
-                    ParseObject.pinAllInBackground(objects);
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
+        loadTopPosts(false);
         rvPosts.scrollToPosition(0);
     }
 
@@ -418,11 +417,69 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         return ret;
     }
 
-    @Override
-    public void onFinishCreatePost(Post post) {
-        posts.add(0, post);
-        postAdapter.notifyItemInserted(0);
-        rvPosts.scrollToPosition(0);
-        Toast.makeText(getContext(), "New post created", Toast.LENGTH_SHORT).show();
+    public void passPostingToFeed(PhotoHelper photoHelper, String newMessage, Boolean hasNewPic, String imageUrl) {
+        progressBar.setVisibility(View.VISIBLE);
+
+        final Post newPost = new Post();
+        newPost.pinInBackground("posts");
+        newPost.saveEventually();
+        ParseFile image;
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseACL acl = new ParseACL(currentUser);
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        newPost.setACL(acl);
+
+        newPost.initPost(newMessage, currentGroup);
+
+        if (hasNewPic) {
+            if (imageUrl == null) {
+                image = photoHelper.grabImage();
+                final ParseFile finalImage = image;
+                finalImage.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            newPost.setImage(finalImage);
+                            saveNewPost(newPost);
+                        } else {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } else {
+                newPost.setImageURL(imageUrl);
+                saveNewPost(newPost);
+            }
+        } else {
+            saveNewPost(newPost);
+        }
+    }
+
+    private void saveNewPost(final Post newPost) {
+        newPost.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    currentGroup.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                progressBar.setVisibility(View.GONE);
+                                posts.add(0, newPost);
+                                postAdapter.notifyItemInserted(0);
+                                rvPosts.scrollToPosition(0);
+                                Toast.makeText(getContext(), "New post created", Toast.LENGTH_SHORT).show();
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

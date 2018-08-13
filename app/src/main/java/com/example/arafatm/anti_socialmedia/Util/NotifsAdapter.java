@@ -143,4 +143,10 @@ public class NotifsAdapter extends RecyclerView.Adapter<NotifsAdapter.ViewHolder
 
         return builder;
     }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        requests.clear();
+        notifyDataSetChanged();
+    }
 }
