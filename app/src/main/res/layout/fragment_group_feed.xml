@@ -142,7 +142,6 @@
 
                 <RelativeLayout
                     android:id="@+id/my_id"
-                    android:visibility="invisible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -171,8 +170,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_toRightOf="@+id/feedFrameLayout"
                         android:text="Anti-Social Media"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tvPostBody"

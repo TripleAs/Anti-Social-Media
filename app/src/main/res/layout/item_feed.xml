@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/feedFrameLayout"
                 android:text="Firstname Lastname"
                 android:textSize="18sp"
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                app:srcCompat="@drawable/applozic_audio_delete" />
+                app:srcCompat="@drawable/ic_delete" />
 
         </RelativeLayout>
 
