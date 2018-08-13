@@ -368,7 +368,7 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         mListener = null;
     }
 
-    private void (Boolean fromLocal) {
+    private void loadTopPosts (Boolean fromLocal) {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
         if (fromLocal) {
