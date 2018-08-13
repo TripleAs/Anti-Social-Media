@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,38 +14,25 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
+import com.parse.ParseException;
+
+import java.util.ArrayList;
 
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StoryDIsplayFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StoryDIsplayFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StoryDIsplayFragment extends SupportBlurDialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TEXT = "text";
     private static final String CAPTION = "caption";
-    private static final String IMAGE_PATH = "imagePath";
-    private static final String VIDEO_PATH = "videoPath";
     private static final String DATA_TYPE = "dataType";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private String text;
+    public int storyIndex = 0;
     private String caption;
-    private String imageFilePath;
-    private String videoFilePath;
+    private ArrayList<Story> allStories;
     private String getDataType;
-
     private OnFragmentInteractionListener mListener;
 
     public StoryDIsplayFragment() {
@@ -75,19 +61,18 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
             text = getArguments().getString(TEXT);
             caption = getArguments().getString(CAPTION);
-            imageFilePath = getArguments().getString(IMAGE_PATH);
-            videoFilePath = getArguments().getString(VIDEO_PATH);
-            getDataType = getArguments().getString(DATA_TYPE);
+            allStories = getArguments().getParcelableArrayList("arraylist");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_story_display, container, false);
     }
@@ -105,17 +90,33 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
         ImageView next_story = (ImageView) view.findViewById(R.id.iv_next);
         ImageView prev_story = (ImageView) view.findViewById(R.id.iv_prev);
 
+        //initialize fragment manager
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        showStory(fragmentTransaction, storyIndex);
+
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+                if (storyIndex < allStories.size() - 1) {
+                    storyIndex++;
+                    FragmentTransaction fragmentTransactionNew = getChildFragmentManager().beginTransaction();
+                    showStory(fragmentTransactionNew, storyIndex);
+                } else {
+                    Toast.makeText(getContext(), "end of story", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         prev_story.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "next story", Toast.LENGTH_SHORT).show();
+                if (storyIndex > 0) {
+                    storyIndex--;
+                    FragmentTransaction fragmentTransactionNew = getChildFragmentManager().beginTransaction();
+                    showStory(fragmentTransactionNew, storyIndex);
+                } else {
+                    Toast.makeText(getContext(), "beginning of story", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -127,19 +128,24 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
             }
         });
 
-        //initialize fragment manager
-        final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
-        final FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
 
+    }
+
+    private void showStory(FragmentTransaction fragmentTransaction, int index) {
         //check if video or picture
-        if (getDataType.compareTo("picture") == 0) {
+        if (allStories.get(index).getStoryType().compareTo("picture") == 0) {
             //pass all required info
             //navigate to right fragment
-            navigateToPictureFragment(imageFilePath, fragmentTransaction, R.id.fl_showStory);
+            try {
+                String imagePath = allStories.get(index).getStory().getFile().getAbsolutePath();
+                navigateToPictureFragment(imagePath, fragmentTransaction, R.id.fl_showStory);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else {
             //pass all required info
             //navigate to right fragment
-            navigateToVideoFragment(videoFilePath,fragmentTransaction, R.id.fl_showStory);
+                navigateToVideoFragment(fragmentTransaction, R.id.fl_showStory);
         }
     }
 
@@ -157,13 +163,13 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     }
 
     /*navigates to the Video fragment and display the story*/
-    private void navigateToVideoFragment(String videoFilePath,
-                                         FragmentTransaction fragmentTransaction, int view_id) {
+    private void navigateToVideoFragment(
+            FragmentTransaction fragmentTransaction, int view_id) {
         final Fragment videoFragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        args.putString("videoPath", videoFilePath);
+        args.putParcelableArrayList("allStories", allStories);
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment)
                 .commit();

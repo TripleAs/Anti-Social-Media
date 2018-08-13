@@ -50,11 +50,23 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_groupList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="471dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tb_toolbar">
 
     </android.support.v7.widget.RecyclerView>
 
+    <ProgressBar
+        android:id="@+id/pb_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="126dp"
+        android:layout_height="113dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:indeterminateDrawable="@drawable/circular"
+        android:max="100"
+        android:progress="20"
+        android:progressDrawable="@drawable/circular"
+        android:visibility="invisible" />
 
 </RelativeLayout>

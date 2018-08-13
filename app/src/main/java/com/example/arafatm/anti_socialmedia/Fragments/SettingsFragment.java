@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,33 +37,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SettingsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SettingsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private Context mContext;
-    private String mParam1;
-    private String mParam2;
+
     @BindView(R.id.log_out_button) Button logOutBtn;
     @BindView(R.id.ivPropic) ImageView ivPropic;
     @BindView(R.id.tvFullName) TextView tvFullName;
     @BindView(R.id.tvViewProfile) TextView tvViewProfile;
     @BindView(R.id.rlViewProfile) RelativeLayout rlViewProfile;
     @BindView(R.id.rvNotifs) RecyclerView rvNotifs;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.tvNoNotifs) TextView tvNoNotifs;
+
     private ArrayList<GroupRequestNotif> requestList;
     private NotifsAdapter requestAdapter;
-
     private OnFragmentInteractionListener mListener;
 
     public SettingsFragment() {
@@ -71,15 +59,6 @@ public class SettingsFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onViewProfileSelected();
-    }
-
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -97,13 +76,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-
-        }
     }
 
     @Override
@@ -171,27 +143,46 @@ public class SettingsFragment extends Fragment {
                 mListener.onViewProfileSelected();
             }
         });
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshNotifs();
+            }
+        });
     }
 
     public void getGroupRequests() {
         GroupRequestNotif.Query query = new GroupRequestNotif.Query();
         ParseUser currentUser = ParseUser.getCurrentUser();
         query.getInvitesReceived(currentUser).withAll();
-        query.fromLocalDatastore();
+        query.fromNetwork();
 
         query.findInBackground(new FindCallback<GroupRequestNotif>() {
             @Override
             public void done(List<GroupRequestNotif> objects, ParseException e) {
                 if (e == null) {
-                    for (int i = 0; i < objects.size(); i++) {
-                        requestList.add(objects.get(i));
-                        requestAdapter.notifyDataSetChanged();
+                    if (objects == null || objects.size() == 0) {
+                        tvNoNotifs.setVisibility(View.VISIBLE);
+                    } else {
+                        tvNoNotifs.setVisibility(View.GONE);
+                        for (int i = 0; i < objects.size(); i++) {
+                            requestList.add(objects.get(i));
+                            requestAdapter.notifyDataSetChanged();
+                            swipeContainer.setRefreshing(false);
+                        }
                     }
                 } else {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void refreshNotifs() {
+        requestAdapter.clear();
+        getGroupRequests();
+        requestAdapter.notifyDataSetChanged();
     }
 
     private void logout() {
@@ -209,6 +200,7 @@ public class SettingsFragment extends Fragment {
         ParseObject.unpinAllInBackground("comments");
         ParseObject.unpinAllInBackground("notifs");
         ParseObject.unpinAllInBackground("stories");
+        ParseObject.unpinAllInBackground();
 
         // This will log out for Parse
         ParseUser currentUser = ParseUser.getCurrentUser();

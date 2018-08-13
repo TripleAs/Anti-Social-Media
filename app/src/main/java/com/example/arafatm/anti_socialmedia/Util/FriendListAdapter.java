@@ -17,7 +17,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
+public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
     public List<ParseUser> allFriends;
     private Context context;
     private ArrayList<String> newGroupMembers;
@@ -32,10 +32,8 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
     public FriendListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         // Inflate the custom layout
         View friendListView = inflater.inflate(R.layout.item_friend, viewGroup, false);
-
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(friendListView);
         return viewHolder;
@@ -45,7 +43,6 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         // Get the data model based on position
         final ParseUser friend = allFriends.get(position);
-
         viewHolder.friendName.setText(friend.getString("fullName"));
         PhotoHelper.displayPropic(friend, viewHolder.friendPic, context);
     }
@@ -111,8 +108,8 @@ public class  FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.V
 
     private void openProfile(ParseUser friend) {
         ProfileFragment profileFragment = ProfileFragment.newInstance(friend);
-        ((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout_child_activity, profileFragment)
+        ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                .replace(R.id.layout_child_activity, profileFragment).addToBackStack(null)
                 .commit();
     }
 }

@@ -18,8 +18,8 @@ public class PictureAdapter extends BaseAdapter {
     private ArrayList<String> pictureLIst;
     private FragmentManager fragmentManager;
     private Group currentGroup;
-    UploadedImages uploadedImages;
-    private  int position;
+    private UploadedImages uploadedImages;
+    private int position;
 
 
     public PictureAdapter(Context context, ArrayList<String> List, Group currentGroup, FragmentManager fm, UploadedImages uploadedImages) {

@@ -1,12 +1,12 @@
 package com.example.arafatm.anti_socialmedia.Story;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -35,13 +35,13 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
     @BindView(R.id.iv_close)
     ImageButton closeToCamera;
     @BindView(R.id.iv_text)
-    ImageButton text;
+    ImageButton touchStatus;
     @BindView(R.id.iv_emoji)
     ImageButton emoji;
     @BindView(R.id.iv_rotate)
     ImageButton rotate;
     @BindView(R.id.tv_caption)
-    EditText caption;
+    EditText nontouchStatus;
     private boolean enabled = false;
 
     @Override
@@ -49,9 +49,14 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_story);
 
-        final TextView captionShow = (TextView) findViewById(R.id.tv_captionShow);
-        final TextView addText = (TextView) findViewById(R.id.tv_addText);
+        final TextView nontouchStatusDisplay = (TextView) findViewById(R.id.tv_captionShow);
+        final TextView touchStatusDisplay = (TextView) findViewById(R.id.tv_addText);
+
         ButterKnife.bind(this);
+        final String dataType = getIntent().getStringExtra("dataType");
+        final String imageFilePath = getIntent().getStringExtra("imagePath");
+        String videoFIlePath = getIntent().getStringExtra("videoPath");
+        final byte[] storyInBytes = getIntent().getByteArrayExtra("byteData");
 
         rotate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,42 +65,70 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             }
         });
 
-        text.setOnClickListener(new View.OnClickListener() {
+        touchStatus.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Text", Toast.LENGTH_SHORT).show();
                 if (enabled) {
                     enabled = false;
-                    addText.setCursorVisible(false);
-                    text.setBackgroundColor(getColor(R.color.transparent));
+                    touchStatusDisplay.setCursorVisible(false);
+                    touchStatus.setBackgroundColor(getColor(R.color.transparent));
                 } else {
                     enabled = true;
-                    addText.setVisibility(View.VISIBLE);
-                    addText.setCursorVisible(true);
-                    text.setBackgroundResource(R.drawable.roundcorner);
-                    text.setBackgroundColor(getColor(R.color.green_4));
+                    touchStatusDisplay.setVisibility(View.VISIBLE);
+                    touchStatusDisplay.setCursorVisible(true);
+                    touchStatus.setBackgroundResource(R.drawable.roundcorner);
+                    touchStatus.setBackgroundColor(getColor(R.color.green_4));
                 }
             }
         });
 
-        caption.addTextChangedListener(new TextWatcher() {
+        nontouchStatus.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                captionShow.setText(charSequence);
-                captionShow.setText(caption.getText());
+                nontouchStatusDisplay.setText(charSequence);
+                nontouchStatusDisplay.setText(nontouchStatus.getText());
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
+
+//        captionShow.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                android.support.constraint.ConstraintLayout.LayoutParams layoutParams1;
+//               layoutParams1 = (ConstraintLayout.LayoutParams) captionShow.getLayoutParams();
+//
+//
+//                switch(event.getActionMasked())
+//                {
+//                    case MotionEvent.ACTION_DOWN:
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        int x_cord = (int) event.getRawX();
+//                        int y_cord = (int) event.getRawY();
+//                        if (x_cord > getScreenWidth()) {
+//                            x_cord = getScreenWidth();
+//                        }
+//                        if (y_cord > getScreenHeight()) {
+//                            y_cord = getScreenHeight();
+//                        }
+//                        layoutParams1.leftMargin = x_cord - 25;
+//                        layoutParams1.topMargin = y_cord - 7;
+//                        captionShow.setLayoutParams(layoutParams1);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         emoji.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,33 +145,15 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             }
         });
 
-        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
-        Fragment pictureFragment = new PictureFragment();
-        Fragment videoFragment = new VideoFragment();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        final String intentResult = getIntent().getStringExtra("dataType");
-        final String imageFilePath = getIntent().getStringExtra("imagePath");
-        String videoFIlePath = getIntent().getStringExtra("videoPath");
-        final byte[] StoryBytes = getIntent().getByteArrayExtra("byteData");
-
-        Bundle args = new Bundle();
         //if it is a picture
-        if (intentResult.compareTo("picture") == 0) {
+        if (dataType.compareTo("picture") == 0) {
             selected = true;
-            args.putString("imagePath", imageFilePath);
-            args.putString("text", addText.getText().toString());
-            args.putString("caption", caption.getText().toString());
-            pictureFragment.setArguments(args);
-            fragmentTransaction.replace(R.id.fragment_container, pictureFragment).commit();
+            navigateToPictureFragment(imageFilePath, touchStatusDisplay.getText().toString(), nontouchStatusDisplay.getText().toString());
+
             //if it is a video
-        } else if (intentResult.compareTo("video") == 0) {
+        } else if (dataType.compareTo("video") == 0) {
             selected = true;
-            args.putString("videoPath", videoFIlePath);
-            args.putString("text", addText.getText().toString());
-            args.putString("caption", caption.getText().toString());
-            videoFragment.setArguments(args);
-            fragmentTransaction.replace(R.id.fragment_container, videoFragment).commit();
+            navigateToVideoFragment(videoFIlePath, touchStatusDisplay.getText().toString(), nontouchStatusDisplay.getText().toString());
         }
 
         backToCamera.setOnClickListener(new View.OnClickListener() {
@@ -153,20 +168,54 @@ public class PreviewStoryActivity extends AppCompatActivity implements PictureFr
             @Override
             public void onClick(View view) {
                 //get status from preview fragment
-                Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
-                intent.putExtra("key", intentResult);
-                intent.putExtra("dataType", intentResult);
-                intent.putExtra("text", addText.getText().toString());
-                intent.putExtra("caption", caption.getText().toString());
-                intent.putExtra("byteData", StoryBytes);
-                startActivity(intent);
+               navigateToMainActivity(dataType, touchStatusDisplay, storyInBytes, nontouchStatusDisplay);
             }
         });
     }
 
+    private void navigateToPictureFragment(String imageFilePath, String text, String caption) {
+        Fragment pictureFragment = new PictureFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Bundle args = new Bundle();
+        args.putString("imagePath", imageFilePath);
+        args.putString("text", text);
+        args.putString("caption", caption);
+        pictureFragment.setArguments(args);
+        fragmentTransaction.replace(R.id.fragment_container, pictureFragment).commit();
+    }
+
+    private void navigateToVideoFragment(String videoFIlePath, String text, String caption) {
+        Fragment videoFragment = new VideoFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Bundle args = new Bundle();
+        args.putString("videoPath", videoFIlePath);
+        args.putString("text", text);
+        args.putString("caption", caption);
+        videoFragment.setArguments(args);
+        fragmentTransaction.replace(R.id.fragment_container, videoFragment).commit();
+    }
+
+    private void navigateToMainActivity(String dataType, TextView addText, byte[] storyInBytes, TextView caption) {
+        Intent intent = new Intent(PreviewStoryActivity.this, MainActivity.class);
+        intent.putExtra("key", dataType);
+        intent.putExtra("dataType", dataType);
+        intent.putExtra("text", addText.getText().toString());
+        intent.putExtra("caption", caption.getText().toString());
+        intent.putExtra("byteData", storyInBytes);
+        startActivity(intent);
+    }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
+
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
 }
 

@@ -26,14 +26,9 @@ import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
  * create an instance of this fragment.
  */
 public class ShareFromFragment extends SupportBlurDialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -41,20 +36,9 @@ public class ShareFromFragment extends SupportBlurDialogFragment {
         // Required empty public constructor
     }
 
-    //    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment ShareFromFragment.
-//     */
-    // TODO: Rename and change types and number of parameters
     public static ShareFromFragment newInstance() {
         ShareFromFragment fragment = new ShareFromFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,14 +47,15 @@ public class ShareFromFragment extends SupportBlurDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_share_from, container, false);
     }
@@ -117,15 +102,12 @@ public class ShareFromFragment extends SupportBlurDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ImageView instaGram = (ImageView) view.findViewById(R.id.ivInstagram);
-
 
         instaGram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GroupFeedFragment.goToUpload = true;
-                // come back after lunch!
                 Fragment groupFeedFragment = new GroupFeedFragment();
                 FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.applozic.mobicomkit.ApplozicClient;
@@ -73,9 +74,6 @@ import butterknife.ButterKnife;
 
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupFeedFragment.currentGroup;
 
-//import com.example.arafatm.anti_socialmedia.Fragments.StoryFragment;
-
-
 public class MainActivity extends AppCompatActivity implements
         GroupManagerFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener,
         ShareFromFragment.OnFragmentInteractionListener, UploadedImages.OnFragmentInteractionListener,
@@ -92,24 +90,25 @@ public class MainActivity extends AppCompatActivity implements
     MobiComQuickConversationFragment mobiComQuickConversationFragment;
     MobiComKitBroadcastReceiver mobiComKitBroadcastReceiver;
     ParseUser parseUser;
-    private static final String ARG_PARAM1 = "param1";
-    private static final long MOVE_DEFAULT_TIME = 1000;
-    private static final long FADE_DEFAULT_TIME = 300;
-
-//    private Handler mDelayedTransactionHandler = new Handler();
-//    private Runnable mRunnable = this::performTransition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
+        /*gets instance of all fragments here*/
+        final Fragment groupFragment = new GroupManagerFragment();
+        // final Fragment userGroupList = new UserGroupList();
+        final Fragment settingsFragment = new SettingsFragment();
 
         ParseACL parseACL = new ParseACL(ParseUser.getCurrentUser());
         parseACL.setPublicReadAccess(true);
         parseACL.setPublicWriteAccess(true);
         ParseUser.getCurrentUser().setACL(parseACL);
-        ParseUser.getCurrentUser().pinInBackground();
+        ParseUser.getCurrentUser().pinInBackground("friends");
 
         BottomNavigationViewEx bottomNavigationView = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);//Initiates BottomNavigationView
         bottomNavigationView.enableAnimation(false);
@@ -121,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.INVISIBLE);
         bottomNavigationView.getMenu().findItem(R.id.ic_group_empty).setChecked(true);
-        final FragmentManager fragmentManager = getSupportFragmentManager(); //Initiates FragmentManager
 
         String name = getIntent().getStringExtra("key");
 
@@ -137,21 +135,17 @@ public class MainActivity extends AppCompatActivity implements
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.layout_child_activity, fragment).commit();
         } else {
-            //sets default fragment
+            //sets most recent group fragment
             if (currentGroup != null) {
                 Fragment fragment = GroupFeedFragment.newInstance(currentGroup.getObjectId(), currentGroup.getTheme());
                 fragmentManager.beginTransaction().replace(R.id.layout_child_activity, fragment).addToBackStack(null).commit();
             } else {
+                //sets default fragment
                 FragmentTransaction tx = fragmentManager.beginTransaction();
                 tx.replace(R.id.layout_child_activity, new GroupManagerFragment());
                 tx.commit();
             }
         }
-
-        /*gets instance of all fragments here*/
-        final Fragment groupFragment = new GroupManagerFragment();
-        // final Fragment userGroupList = new UserGroupList();
-        final Fragment settingsFragment = new SettingsFragment();
 
         // handle navigation selection to various fragments
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -166,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements
                             case R.id.ic_group_empty:
                                 FragmentTransaction fragmentTransactionTwo = fragmentManager.beginTransaction();
                                 fragmentTransactionTwo.replace(R.id.layout_child_activity, groupFragment)
-                                        .commit();
+                                        .addToBackStack(null).commit();
                                 return true;
                             case R.id.ic_story:
                                 Intent intent = new Intent(MainActivity.this, StoryActivity.class);
@@ -174,14 +168,14 @@ public class MainActivity extends AppCompatActivity implements
                                 return true;
                             case R.id.ic_menu_thin:
                                 FragmentTransaction fragmentTransactionFour = fragmentManager.beginTransaction();
-                                fragmentTransactionFour.replace(R.id.layout_child_activity, settingsFragment).commit();
+                                fragmentTransactionFour.replace(R.id.layout_child_activity, settingsFragment)
+                                        .addToBackStack(null).commit();
                                 return true;
                             default:
                                 return false;
                         }
                     }
                 });
-
         chatLogin();
     }
 
@@ -197,48 +191,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     /*Navigates to the groupManagerFragment*/
     public void navigate_to_fragment(Fragment fragment) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.layout_child_activity, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-    }
-
-    public void managerToFeedTransition(Fragment managerFragment, Fragment feedFragment){
-        // Check that the device is running lollipop
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Inflate transitions to apply
-            Transition changeTransform = TransitionInflater.from(this).
-                    inflateTransition(R.transition.change_image_transform);
-            Transition explodeTransform = TransitionInflater.from(this).
-                    inflateTransition(android.R.transition.explode);
-
-            // Setup exit transition on first fragment
-            managerFragment.setSharedElementReturnTransition(changeTransform);
-            managerFragment.setExitTransition(explodeTransform);
-
-            // Setup enter transition on second fragment
-            feedFragment.setSharedElementEnterTransition(changeTransform);
-            feedFragment.setEnterTransition(explodeTransform);
-
-            // Find the shared element (in Fragment A)
-            ImageView ivCoverPhoto = (ImageView) findViewById(R.id.ivPropic);
-
-            // Add second fragment by replacing first
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, feedFragment)
-                    .addToBackStack("transaction")
-                    .addSharedElement(ivCoverPhoto, "groupExpand");
-            // Apply the transaction
-            ft.commit();
-        }
-        else {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.layout_child_activity, feedFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layout_child_activity, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -268,12 +225,10 @@ public class MainActivity extends AppCompatActivity implements
     /* From Chat Fragment tutorial */
     public static void addFragment(FragmentActivity fragmentActivity, Fragment fragmentToAdd, String fragmentTag) {
         FragmentManager supportFragmentManager = fragmentActivity.getSupportFragmentManager();
-
         FragmentTransaction fragmentTransaction = supportFragmentManager
                 .beginTransaction();
         fragmentTransaction.replace(R.id.layout_child_activity, fragmentToAdd,
                 fragmentTag);
-
         fragmentTransaction.addToBackStack(fragmentTag);
         fragmentTransaction.commitAllowingStateLoss();
         supportFragmentManager.executePendingTransactions();
@@ -399,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements
         user.setPassword(""); //optional, leave it blank for testing purpose,
         new UserLoginTask(user, listener, this).execute((Void) null);
 
-
         // chat fragment setup
         mobiComQuickConversationFragment = new MobiComQuickConversationFragment();
         conversationUIService = new ConversationUIService(this, mobiComQuickConversationFragment);
@@ -408,7 +362,6 @@ public class MainActivity extends AppCompatActivity implements
         Intent lastSeenStatusIntent = new Intent(this, UserIntentService.class);
         lastSeenStatusIntent.putExtra(UserIntentService.USER_LAST_SEEN_AT_STATUS, true);
         startService(lastSeenStatusIntent);
-
         addGroupChats(parseUser);
     }
 
@@ -450,27 +403,22 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onSuccess(Channel channel, Context context) {
                 Log.i("Group", "Group response :" + channel);
-
             }
 
             @Override
             public void onFailure(ChannelFeedApiResponse channelFeedApiResponse, Context context) {
-
             }
         };
-
 
         List<String> groupMembersUserIdList = group.getUsers();
         if (groupMembersUserIdList != null) {
             groupMembersUserIdList.remove(ParseUser.getCurrentUser().getObjectId());
-            ChannelInfo channelInfo = new ChannelInfo(group.getGroupName(),groupMembersUserIdList);
+            ChannelInfo channelInfo = new ChannelInfo(group.getGroupName(), groupMembersUserIdList);
             channelInfo.setType(Channel.GroupType.PUBLIC.getValue().intValue()); //group type
-//        channelInfo.setImageUrl(group.getGroupImage().getUrl()); //pass group image link URL
             channelInfo.setClientGroupId(Integer.toString(GroupFeedFragment.convert(group.getObjectId())));
             channelInfo.setParentKey(GroupFeedFragment.convert(group.getObjectId()));
-
             AlChannelCreateAsyncTask channelCreateAsyncTask = new AlChannelCreateAsyncTask(
-                    this,channelInfo,channelCreateTaskListener);
+                    this, channelInfo, channelCreateTaskListener);
             channelCreateAsyncTask.execute();
         }
     }

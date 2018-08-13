@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,17 +29,18 @@ import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.Models.Post;
 import com.example.arafatm.anti_socialmedia.Models.Story;
 import com.example.arafatm.anti_socialmedia.R;
+import com.example.arafatm.anti_socialmedia.Util.PhotoHelper;
 import com.example.arafatm.anti_socialmedia.Util.PostAdapter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,37 +51,29 @@ import butterknife.ButterKnife;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
-import static com.facebook.FacebookSdk.getCacheDir;
 
 public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "text";
-    private static final String ARG_PARAM3 = "caption";
-
     private String groupObjectId;
     private String groupName;
     private String text;
     private String caption;
     public static boolean selected = false;
     private int groupId;
+    private ImageView welcomeImage;
     public static Group publicCurrentGroup;
     private Group group;
     public static Group currentGroup;
     private String PREVIEW_TAG = "previewStory";
     private FrameLayout frameLayout;
-    private FrameLayout frameLayoutPreview;
-    private int storyIndex = 0;
-//    private ImageView next_story;
     public static boolean goToShare = false;
     public static Uri VideouUri;
     public static boolean goToUpload = false;
     private ArrayList<Story> allStories;
-//    private ImageView prev_story;
     public static boolean goToPost = false;
     private String selectedImageURL;
     private String dataType;
     private String imageFilePath = null;
-
     @BindView(R.id.tvGroupName)
     TextView tvGroupName;
     @BindView(R.id.ivCoverPhoto)
@@ -89,17 +84,14 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     ImageView ivThreeDots;
     @BindView(R.id.ivLaunchNewPost)
     ImageView ivLaunchNewPost;
-    //@BindView(R.id.tvNumberOfComments) TextView tvCommentCount;
-
-    //for posting
     public static PostAdapter postAdapter;
     public static ArrayList<Post> posts;
     public static
     RecyclerView rvPosts;
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.pbLoading) ProgressBar progressBar;
     String themeName;
-
 
     private OnFragmentInteractionListener mListener;
 
@@ -108,7 +100,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void navigate_to_fragment(Fragment fragment);
 
         void startGroupChat(int groupId, String groupName);
@@ -195,12 +186,14 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-      
         allStories = new ArrayList<>();
-//        next_story = view.findViewById(R.id.iv_next);
-//        prev_story = view.findViewById(R.id.iv_prev);
         rvPosts = view.findViewById(R.id.rvPostsFeed);
         frameLayout = (FrameLayout) view.findViewById(R.id.fragment_child);
+        welcomeImage = (ImageView) view.findViewById(R.id.welcomeImage);
+        String picTransitionName = "coverPhoto" + groupObjectId;
+        ViewCompat.setTransitionName(ivGroupPic, picTransitionName);
+        String textTransitionName = "groupName" + groupObjectId;
+        ViewCompat.setTransitionName(tvGroupName, textTransitionName);
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Group");
         query.fromLocalDatastore();
@@ -246,65 +239,42 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
             }
         });
 
-//        next_story.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (storyIndex < allStories.size() - 1) {  //checks out of bounce exception
-//                    storyIndex++;
-//                    selected = false;
-//                    displayStory(R.id.fragment_child);
-//                }
-//            }
-//        });
-
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selected = true;
-                //create a bundle
-                Bundle bundle = new Bundle();
-                //save all necessary info for story display
-                bundle.putString("text", text);
-                bundle.putString("caption", caption);
-                bundle.putString("imagePath", imageFilePath);
-                bundle.putString("videoPath", VideouUri.toString());
-                bundle.putString("dataType", dataType);
+                if (allStories != null && allStories.size() != 0) {
+                    selected = true;
+                    //create a bundle
+                    Bundle bundle = new Bundle();
+                    //save all necessary info for story display
+                    bundle.putString("text", text);
+                    bundle.putString("caption", caption);
+                    bundle.putParcelableArrayList("arraylist", allStories);
+                    bundle.putString("dataType", dataType);
 
-                //create StoryDisplayfragment
-                StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
-                //add bundle to it
-                sFragment.setArguments(bundle);
-                //navigate to StoryDisplayfragment
-                sFragment.setTargetFragment(GroupFeedFragment.this, 1);
-                mListener.navigateToDialog(sFragment);
+                    //create StoryDisplayfragment
+                    StoryDIsplayFragment sFragment = StoryDIsplayFragment.newInstance(null, null);
+                    //add bundle to it
+                    sFragment.setArguments(bundle);
+                    //navigate to StoryDisplayfragment
+                    sFragment.setTargetFragment(GroupFeedFragment.this, 1);
+                    mListener.navigateToDialog(sFragment);
+                }
             }
         });
-
-//        prev_story.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int jadal = storyIndex;
-//                if (storyIndex >= 1) {  //checks out of bounce exception
-//                    storyIndex--;
-//                    selected = false;
-//                    displayStory(R.id.fragment_child);
-//                }
-//            }
-//        });
     }
 
-    private void initiateGroup(ParseObject object) {
+    private void initiateGroup(final ParseObject object) {
         group = (Group) object;
-        publicCurrentGroup = group;
+        publicCurrentGroup = group; //set this static for easy access in other classes
         currentGroup = group;
+
         groupName = object.getString("groupName");
         tvGroupName.setText(groupName);
-        groupId = convert(object.getObjectId());
-
+        groupId = convert(group.getObjectId());
         ParseFile groupImage = object.getParseFile("groupImage");
 
         if (groupImage != null) {
-            /*shows group image on gridView*/
             Glide.with(getContext())
                     .load(groupImage.getUrl())
                     .apply(RequestOptions.circleCropTransform())
@@ -314,11 +284,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         //displaying the posts
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(getActivity().getSupportFragmentManager(), getContext(), posts, group.getNicknamesDict(), themeName);
-
         //RecyclerView setup (layout manager, use adapter)
         rvPosts.setLayoutManager(new LinearLayoutManager(GroupFeedFragment.this.getContext()));
         rvPosts.setAdapter(postAdapter);
-        loadTopPosts();
+        loadTopPosts(true);
 
         final Story.Query storyQuery = new Story.Query();
         storyQuery.fromLocalDatastore();
@@ -334,7 +303,11 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                         }
                     }
                     Collections.reverse(allStories); //reverse the order inorder to dosplay the most recent story
-                    displayStory(R.id.fragment_child);
+                    if (allStories.size() != 0) {
+                        displayStory(R.id.fragment_child);
+                    } else {
+                        welcomeImage.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     e.printStackTrace();
                 }
@@ -347,20 +320,10 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         final FragmentManager fragmentManager = getFragmentManager(); //Initiates FragmentManager
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        Story currentStory = ((allStories.size() == 0) ? null : allStories.get(storyIndex)); //selects a story
+        Story currentStory = ((allStories.size() == 0) ? null : allStories.get(0)); //selects a story
         if (currentStory != null) {
-            text = currentStory.getStoryCaption();
-            caption = currentStory.getStoryText();
-            dataType = currentStory.getStoryType();
-
-            try {
-                VideouUri = Uri.fromFile(currentStory.getStory().getFile());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            if (dataType.compareTo("video") == 0) {
-                navigateToVideoFragment(VideouUri, fragmentTransaction, view_id);
+            if (currentStory.getStoryType().compareTo("video") == 0) {
+                navigateToVideoFragment(fragmentTransaction, view_id);
             } else {
                 try {
                     imageFilePath = currentStory.getStory().getFile().getAbsolutePath();
@@ -372,22 +335,6 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         }
     }
 
-    /*gets the video path from video byte*/
-    private String getVideoPath(Story currentStory) throws ParseException {
-        File outputFile = null;
-        try {
-            byte[] videoByte = currentStory.getStory().getData();
-            outputFile = File.createTempFile("file", ".mp4", getCacheDir());
-            outputFile.deleteOnExit();
-            FileOutputStream fileoutputstream = new FileOutputStream("myVideo.mp4");
-            fileoutputstream.write(videoByte);
-            fileoutputstream.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return outputFile.getAbsolutePath();
-    }
-
     /*navigates to the Picture fragment and display the story*/
     private void navigateToPictureFragment(String imageFilePath,
                                            FragmentTransaction fragmentTransaction, int view_id) {
@@ -396,20 +343,19 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         args.putString("imagePath", imageFilePath);
         args.putString("text", text);
         args.putString("caption", caption);
-
         pictureFragment.setArguments(args);
         fragmentTransaction.replace(view_id, pictureFragment, PREVIEW_TAG)
                 .commit();
     }
 
     /*navigates to the Video fragment and display the story*/
-    private void navigateToVideoFragment(Uri videoFilePath,
-                                         FragmentTransaction fragmentTransaction, int view_id) {
+    private void navigateToVideoFragment(
+            FragmentTransaction fragmentTransaction, int view_id) {
         final Fragment videoFragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putString("text", text);
         args.putString("caption", caption);
-        args.putString("videoPath", videoFilePath.toString());
+        args.putParcelableArrayList("allStories", allStories);
         videoFragment.setArguments(args);
         fragmentTransaction.replace(view_id, videoFragment, PREVIEW_TAG)
                 .commit();
@@ -421,16 +367,20 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         mListener = null;
     }
 
-    private void loadTopPosts() {
+    private void loadTopPosts(Boolean fromLocal) {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
-        postsQuery.fromLocalDatastore();
+        if (fromLocal) {
+            postsQuery.fromLocalDatastore();
+        } else {
+            postsQuery.fromNetwork();
+        }
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-                    postAdapter.notifyDataSetChanged();
                     posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
                     swipeContainer.setRefreshing(false);
                 } else {
                     e.printStackTrace();
@@ -441,7 +391,8 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void refreshFeed() {
         postAdapter.clear();
-        loadTopPosts();
+        displayStory(R.id.fragment_child);
+        loadTopPosts(false);
         rvPosts.scrollToPosition(0);
     }
 
@@ -466,11 +417,69 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
         return ret;
     }
 
-    @Override
-    public void onFinishCreatePost(Post post) {
-        posts.add(0, post);
-        postAdapter.notifyItemInserted(0);
-        rvPosts.scrollToPosition(0);
-        Toast.makeText(getContext(), "New post created", Toast.LENGTH_SHORT).show();
+    public void passPostingToFeed(PhotoHelper photoHelper, String newMessage, Boolean hasNewPic, String imageUrl) {
+        progressBar.setVisibility(View.VISIBLE);
+
+        final Post newPost = new Post();
+        newPost.pinInBackground("posts");
+        newPost.saveEventually();
+        ParseFile image;
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseACL acl = new ParseACL(currentUser);
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        newPost.setACL(acl);
+
+        newPost.initPost(newMessage, currentGroup);
+
+        if (hasNewPic) {
+            if (imageUrl == null) {
+                image = photoHelper.grabImage();
+                final ParseFile finalImage = image;
+                finalImage.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            newPost.setImage(finalImage);
+                            saveNewPost(newPost);
+                        } else {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } else {
+                newPost.setImageURL(imageUrl);
+                saveNewPost(newPost);
+            }
+        } else {
+            saveNewPost(newPost);
+        }
+    }
+
+    private void saveNewPost(final Post newPost) {
+        newPost.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    currentGroup.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                progressBar.setVisibility(View.GONE);
+                                posts.add(0, newPost);
+                                postAdapter.notifyItemInserted(0);
+                                rvPosts.scrollToPosition(0);
+                                Toast.makeText(getContext(), "New post created", Toast.LENGTH_SHORT).show();
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

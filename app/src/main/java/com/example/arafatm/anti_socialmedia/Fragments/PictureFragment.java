@@ -10,13 +10,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.arafatm.anti_socialmedia.R;
 
 import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -27,16 +27,11 @@ public class PictureFragment extends Fragment {
     private static final String ARG_PARAM1 = "imagePath";
     private static final String ARG_PARAM2 = "caption";
     private static final String ARG_PARAM3 = "text";
-    private EditText status;
     private String imagePath;
-    private String imageStoryURL;
     private int currentAngle = 90;
-
     @BindView(R.id.imagePreview) ImageView displayImage;
     private String caption;
     private String text;
-    private String param1;
-    private String param2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -70,6 +65,7 @@ public class PictureFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_picture, container, false);
     }
 
+    //TODO NEED THIS??????????
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -109,16 +105,8 @@ public class PictureFragment extends Fragment {
         Bitmap rotated = rotateImage(currentAngle, bitmap);
 
         if (!selected) { // resize this to fit the cover framelayout on the feed
-            int currentBitmapWidth = rotated.getWidth();
-            int currentBitmapHeight = rotated.getHeight();
-            int ivWidth = 3200;
-            int ivHeight = 2300;
-            int newWidth = ivWidth;
-
-            int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
-            Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
-            //displays the image
-            displayImage.setImageBitmap(newbitMap);
+            Bitmap resized = resizeImageToFitscreen(rotated);
+            displayImage.setImageBitmap(resized);
         } else {
             //displays the image
             displayImage.setImageBitmap(rotated);
@@ -135,6 +123,18 @@ public class PictureFragment extends Fragment {
             showCaption.setText(caption);
     }
 
+    private Bitmap resizeImageToFitscreen(Bitmap rotated) {
+        int currentBitmapWidth = rotated.getWidth();
+        int currentBitmapHeight = rotated.getHeight();
+        int ivWidth = 3500;
+        int ivHeight = 2300;
+        int newWidth = ivWidth;
+
+        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+        Bitmap newbitMap = Bitmap.createScaledBitmap(rotated, newWidth, ivHeight, true);
+        return newbitMap;
+    }
+
     private Bitmap rotateImage(int degree, Bitmap bitmap) {
         //rotate image to upright position
         Matrix matrix = new Matrix();
@@ -142,5 +142,4 @@ public class PictureFragment extends Fragment {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
                 matrix, true);
     }
-
 }

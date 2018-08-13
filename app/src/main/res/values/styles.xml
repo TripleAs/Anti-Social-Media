@@ -6,11 +6,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#8CD1D4</item>
-        <item name="colorPrimaryDark">@color/black</item>
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowEnterTransition">@transition/change_image_transform</item>
-        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
+        <item name="colorPrimary">@color/blue_gradient_2</item>
+        <item name="colorPrimaryDark">@color/blue_gradient_2</item>
         <item name="colorAccent">@color/alphabet_b</item>
         <item name="gradientBackground">@drawable/title_gradient</item>
         <!--<item name="android:windowBackground">@drawable/title_gradient</item>-->
@@ -29,26 +26,20 @@
     </style>
 
     <style name="GroupRedTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/alphabet_g</item>
-        <item name="android:colorBackground">@color/alphabet_b</item>
-        <item name="colorPrimary">@color/red_gradient_1</item>
-        <item name="colorAccent">@color/red_7</item>
+        <item name="colorPrimary">@color/red_gradient_2</item>
+        <item name="colorAccent">@color/white</item>
         <item name="feedBackground">@drawable/feed_red_gradient</item>
     </style>
 
     <style name="GroupBlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/alphabet_e</item>
-        <item name="android:colorBackground">@color/alphabet_e</item>
-        <item name="colorPrimary">@color/blue_gradient_1</item>
-        <item name="colorAccent">@color/blue_7</item>
+        <item name="colorPrimary">@color/blue_gradient_2</item>
+        <item name="colorAccent">@color/white</item>
         <item name="feedBackground">@drawable/feed_blue_gradient</item>
     </style>
 
-    <style name="GroupGreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/alphabet_k</item>
-        <item name="android:colorBackground">@color/alphabet_j</item>
-        <item name="colorPrimary">@color/green_gradient_1</item>
-        <item name="colorAccent">@color/green_8</item>
+    <style name="GroupGreenTheme" parent="Theme.AppCompat.Light.NoActionBar"
+        <item name="colorPrimary">@color/green_gradient_2</item>
+        <item name="colorAccent">@color/white</item>
         <item name="feedBackground">@drawable/feed_green_gradient</item>
     </style>
 
@@ -59,5 +50,9 @@
         <item name="android:shadowRadius">0.1</item>
     </style>
 
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">@color/blue_gradient_3</item>
+        <item name="android:minHeight">10dip</item>
+    </style>
 
 </resources>

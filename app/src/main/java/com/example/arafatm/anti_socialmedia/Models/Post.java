@@ -15,16 +15,13 @@ import java.util.List;
 @ParseClassName("Post")
 public class Post extends ParseObject {
     private static final String KEY_SENDER = "sender";
-    private static final String KEY_PROPIC = "profileImage";
     private static final String KEY_RECIPIENT = "recipient";
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_CREATEDAT = "createdAt";
     private static final String KEY_MEDIA = "media";
-    private static final String KEY_COMMENTS = "comments";
     private static final String KEY_COMMENT = "comment";
     private static final String KEY_LIKES = "likes";
     private static final String KEY_IMAGEURL = "imageURL";
-
 
     public String getMessage() {
         return getString(KEY_MESSAGE);
@@ -87,19 +84,19 @@ public class Post extends ParseObject {
 
     public static class Query extends ParseQuery<Post> {
         //Query of a post class
-        public Query(){
+        public Query() {
             super(Post.class);
         }
 
-        public Query getTop(){
+        public Query getTop() {
             whereNotEqualTo("message", null);
             orderByDescending("createdAt");
             setLimit(20);
             return this;
         }
 
-        public Query withUser(){
-            include("User");
+        public Query withUser() {
+            include("user");
             return this;
         }
 
@@ -110,28 +107,35 @@ public class Post extends ParseObject {
     }
 
     // Functions for commenting
-    public ArrayList<Post> getComments(){
+    public ArrayList<Post> getComments() {
         List<Post> commentsList = getList("comments");
         ArrayList<Post> comments = new ArrayList<Post>();
-        if(commentsList != null){
+        if (commentsList != null) {
             comments.addAll(commentsList);
         }
         return comments;
     }
-    public void setComments(List<Post> comments){
+
+    public void setComments(List<Post> comments) {
         put("comments", comments);
         saveInBackground();
     }
 
-    public void setCommentString(String parseFile){
+    public void setCommentString(String parseFile) {
         put("comment", parseFile);
     }
-    public int getCommentsCount(){
+
+    public int getCommentsCount() {
         return getComments().size();
     }
 
-    public List<String> getLikes() { return getList(KEY_LIKES); }
-    public void setLikes(List<String> likes) { put(KEY_LIKES, likes); }
+    public List<String> getLikes() {
+        return getList(KEY_LIKES);
+    }
+
+    public void setLikes(List<String> likes) {
+        put(KEY_LIKES, likes);
+    }
 
     public String getTimestamp() {
         PrettyTime prettyTime = new PrettyTime();

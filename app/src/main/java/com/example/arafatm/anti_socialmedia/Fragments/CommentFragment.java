@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,34 +32,58 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CommentFragment extends Fragment{
-    @BindView(R.id.btCommentPost) Button btCommentSubmit;
-    @BindView(R.id.etComment) EditText etCommentText;
-    @BindView(R.id.rvComments)  RecyclerView rvComments;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
+import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
 
+public class CommentFragment extends Fragment {
+    @BindView(R.id.btCommentPost)
+    Button btCommentSubmit;
+    @BindView(R.id.etComment)
+    EditText etCommentText;
+    @BindView(R.id.rvComments)
+    RecyclerView rvComments;
     SwipeRefreshLayout swipeRefreshLayout;
     LinearLayoutManager linearLayoutManager;
     CommentAdapter commentAdapter;
     ArrayList<Post> comments;
     Post originalPost;
-
+    String theme;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        mContext = context;
     }
 
     @Override
-    public void onCreate( Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         originalPost = Parcels.unwrap(getArguments().getParcelable(Post.class.getSimpleName()));
+        theme = getArguments().getString("theme");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_comments, container, false);
+        if (container != null) {
+            container.removeAllViews();
+        }
+        Context contextThemeWrapper = null;
+        if (theme != null)
+            switch (theme) {
+                case KEY_RED:
+                    contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupRedTheme);
+                    break;
+                case KEY_GREEN:
+                    contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupGreenTheme);
+                    break;
+                case KEY_BLUE:
+                    contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.GroupBlueTheme);
+                    break;
+            }
+        // clone the inflater using the ContextThemeWrapper
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
+        // inflate the layout using the cloned inflater, not default inflater
+        return localInflater.inflate(R.layout.fragment_comments, container, false);
     }
 
     @Override
@@ -68,7 +93,7 @@ public class CommentFragment extends Fragment{
 
         //set up ArrayList of pointers to comments
         final ArrayList<Post> pointToComment = originalPost.getComments();
-        pointToComment.add(0,originalPost);      //adds original post to comment fragment
+        pointToComment.add(0, originalPost);      //adds original post to comment fragment
         comments = new ArrayList<>();
         commentAdapter = new CommentAdapter(pointToComment);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -83,29 +108,26 @@ public class CommentFragment extends Fragment{
                 refreshFeed();
             }
         });
-
         loadTopPosts();
-
         btCommentSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String commentString = etCommentText.getText().toString();
-
                 createComment(commentString, pointToComment);
             }
         });
-
     }
 
-    public static CommentFragment newInstance(Post post) {
+    public static CommentFragment newInstance(Post post, String color) {
         CommentFragment commentFragment = new CommentFragment();
         Bundle args = new Bundle();
         args.putParcelable(Post.class.getSimpleName(), Parcels.wrap(post));
+        args.putString("theme", color);
         commentFragment.setArguments(args);
         return commentFragment;
     }
 
-    private void createComment(String commentString, final ArrayList<Post> pointToComment){
+    private void createComment(String commentString, final ArrayList<Post> pointToComment) {
         final Post comment = new Post();
         comment.pinInBackground("comments");
         comment.saveEventually();
@@ -118,16 +140,15 @@ public class CommentFragment extends Fragment{
         comment.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if(e == null){
+                if (e == null) {
                     originalPost.setComments(pointToComment);
                     commentAdapter.notifyDataSetChanged();
                     etCommentText.setText("");
                     Toast.makeText(getContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
 
-                    rvComments.scrollToPosition(comments.size()-1);
+                    rvComments.scrollToPosition(comments.size() - 1);
                     comments.addAll(comments);
-                }
-                else {
+                } else {
                     e.printStackTrace();
                 }
             }
@@ -144,8 +165,7 @@ public class CommentFragment extends Fragment{
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-//                    comments.add(0, originalPost);
-                    objects.add(0,originalPost);
+                    objects.add(0, originalPost);
                     comments.addAll(objects);
                     commentAdapter.notifyDataSetChanged();
                     swipeRefreshLayout.setRefreshing(false);
@@ -155,15 +175,12 @@ public class CommentFragment extends Fragment{
                 }
             }
         });
-
     }
 
-    private void refreshFeed(){
+    private void refreshFeed() {
         CommentAdapter adapter = new CommentAdapter(comments);
-
         adapter.clear();
         loadTopPosts();
-        rvComments.scrollToPosition(comments.size()-1);
+        rvComments.scrollToPosition(comments.size() - 1);
     }
-
 }

@@ -22,9 +22,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EditNicknameFragment extends DialogFragment {
-
-    @BindView(R.id.etNickname) EditText etNickname;
-    @BindView(R.id.btDone) Button btDone;
+    @BindView(R.id.etNickname)
+    EditText etNickname;
+    @BindView(R.id.btDone)
+    Button btDone;
     String nickname;
     ParseUser member;
     OnFragmentInteractionListener mListener;
@@ -66,6 +67,9 @@ public class EditNicknameFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_nickname, container, false);
     }

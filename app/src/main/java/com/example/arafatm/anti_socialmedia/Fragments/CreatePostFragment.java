@@ -37,39 +37,28 @@ import static android.app.Activity.RESULT_OK;
 // ...
 
 public class CreatePostFragment extends SupportBlurDialogFragment {
-
-    @BindView(R.id.etNewPost)
-    EditText etNewPost;
-    @BindView(R.id.ivCamera)
-    ImageView ivCamera;
-    @BindView(R.id.ivUpload)
-    ImageView ivUpload;
-    @BindView(R.id.ivPreview)
-    ImageView ivPreview;
-    @BindView(R.id.ivCreatePost)
-    ImageView ivCreatePost;
-    @BindView(R.id.ivShareFrom)
-    ImageButton ivShareFrom;
+    @BindView(R.id.etNewPost) EditText etNewPost;
+    @BindView(R.id.ivCamera) ImageView ivCamera;
+    @BindView(R.id.ivUpload) ImageView ivUpload;
+    @BindView(R.id.ivPreview) ImageView ivPreview;
+    @BindView(R.id.ivCreatePost) ImageView ivCreatePost;
+    @BindView(R.id.ivShareFrom) ImageButton ivShareFrom;
 
     PhotoHelper photoHelper;
     private Boolean hasNewPic = false;
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int UPLOAD_IMAGE_ACTIVITY_REQUEST_CODE = 1035;
+
     private Fragment callback;
     private String imageURl;
-    private ParseFile image = null;
-
-    private Group currentGroup;
-    private ParseACL acl;
+    private CreatePostFragment.OnFragmentInteractionListener mListener;
 
     public CreatePostFragment() {
         // Empty constructor is required for DialogFragment
     }
 
-    private CreatePostFragment.OnFragmentInteractionListener mListener;
-
     public interface OnFragmentInteractionListener {
-        void onFinishCreatePost(Post post);
+        void passPostingToFeed(PhotoHelper photoHelper, String message, Boolean hasNewPic, String imageURL);
     }
 
     public static CreatePostFragment newInstance(String imageURL) {
@@ -86,7 +75,6 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         imageURl = this.getArguments().getString("imageURL"); //get image url
 
         if (imageURl != null) {
-            //set hasMew to true
             hasNewPic = true;
         }
 
@@ -101,6 +89,9 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         return inflater.inflate(R.layout.fragment_create_post, container);
     }
 
@@ -152,11 +143,9 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         ivCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    sendPostToParse();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String newMessage = etNewPost.getText().toString();
+                mListener.passPostingToFeed(photoHelper, newMessage, hasNewPic, imageURl);
+                dismiss();
             }
         });
     }
@@ -176,70 +165,5 @@ public class CreatePostFragment extends SupportBlurDialogFragment {
         } else {
             Toast.makeText(getContext(), "No picture chosen", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void sendPostToParse() throws IOException {
-        final Post newPost = new Post();
-        newPost.pinInBackground("posts");
-        newPost.saveEventually();
-        ParseFile image = null;
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseACL acl = new ParseACL(currentUser);
-        acl.setPublicReadAccess(true);
-        acl.setPublicWriteAccess(true);
-        newPost.setACL(acl);
-        String newMessage = etNewPost.getText().toString();
-
-        if (currentGroup == null) {
-            currentGroup = GroupFeedFragment.publicCurrentGroup;
-        }
-        newPost.initPost(newMessage, currentGroup);
-
-        if (hasNewPic) {
-            if (imageURl == null) {
-                image = photoHelper.grabImage();
-                final ParseFile finalImage = image;
-                finalImage.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            newPost.setImage(finalImage);
-                            saveNewPost(newPost);
-                        } else {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            } else {
-                newPost.setImageURL(imageURl);
-                saveNewPost(newPost);
-            }
-
-        } else {
-            saveNewPost(newPost);
-        }
-    }
-
-    private void saveNewPost(final Post newPost) {
-        newPost.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    currentGroup.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                mListener.onFinishCreatePost(newPost);
-                                dismiss();
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }

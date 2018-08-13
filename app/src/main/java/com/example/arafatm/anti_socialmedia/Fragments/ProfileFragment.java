@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.arafatm.anti_socialmedia.Models.Group;
 import com.example.arafatm.anti_socialmedia.R;
-import com.example.arafatm.anti_socialmedia.Util.PictureAdapter;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
@@ -25,19 +24,22 @@ import butterknife.ButterKnife;
 
 public class ProfileFragment extends Fragment {
 
-    @BindView(R.id.ivGroupPic) ImageView ivPropic;
-    @BindView(R.id.tvGroupName) TextView tvFullName;
-    @BindView(R.id.gvProfileGroups) GridView profileGroups;
-    @BindView(R.id.ivStartChat) ImageView ivStartChat;
+    @BindView(R.id.ivGroupPic)
+    ImageView ivPropic;
+    @BindView(R.id.tvGroupName)
+    TextView tvFullName;
+    @BindView(R.id.gvProfileGroups)
+    GridView profileGroups;
+    @BindView(R.id.ivStartChat)
+    ImageView ivStartChat;
     private ParseUser user;
     private Context mContext;
     ArrayList<Group> groupList;
-
     private OnFragmentInteractionListener mListener;
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void navigate_to_fragment(Fragment fragment);
+
         void startUserChat(String contactName, String message);
     }
 
@@ -64,7 +66,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Get back arguments
         user = Parcels.unwrap(getArguments().getParcelable(ParseUser.class.getSimpleName()));
     }
 
@@ -83,10 +84,9 @@ public class ProfileFragment extends Fragment {
         propicUrl = (propicUrl == null) ? user.getParseFile("profileImage").getUrl() : propicUrl;
 
         // for Parse profile pictures
-        if (propicUrl != null && !(propicUrl.equals("")))  {
+        if (propicUrl != null && !(propicUrl.equals(""))) {
             Glide.with(mContext).load(propicUrl).into(ivPropic);
-        }
-        else if(user.getParseFile("profileImage") != null){
+        } else if (user.getParseFile("profileImage") != null) {
             Glide.with(mContext).load(user.getParseFile("profileImage").getUrl()).into(ivPropic);
         }
 
@@ -97,7 +97,6 @@ public class ProfileFragment extends Fragment {
                 mListener.startUserChat(user.getObjectId(), user.getString("fullName"));
             }
         });
-
     }
 
     @Override
@@ -105,6 +104,4 @@ public class ProfileFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
 }

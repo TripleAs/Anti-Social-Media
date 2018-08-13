@@ -70,7 +70,6 @@ public class GroupCreationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         Bundle args = getArguments();
         if (args != null) {
             groupName = args.getString(ARGS_GROUP_NAME);
@@ -82,17 +81,17 @@ public class GroupCreationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        if (container != null) {
+            container.removeAllViews();
+        }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_group_creation, container, false);
         ButterKnife.bind(this, view);
-
         friendList = new ArrayList<>();
         fetchAllFriendList();
-
         friendListAdapter = new FriendListAdapter(friendList);
         recyclerView.setAdapter(friendListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
-
         return view;
     }
 
@@ -144,9 +143,7 @@ public class GroupCreationFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         final SearchView searchView = (SearchView) view.findViewById(R.id.sv_search);
-
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,17 +212,20 @@ public class GroupCreationFragment extends Fragment {
     private void createNewGroup() {
         //Create new group and initialize it
         final Group newGroup = new Group();
-        newGroup.pinInBackground("groups");
-        newGroup.saveEventually();
-
+       newGroup.pinInBackground("groups");
+       newGroup.saveEventually();
+      
         groupImage.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                saveNewGroup(newGroup);
+                if (e == null) {
+                    saveNewGroup(newGroup);
+                    sendGroupRequests(newGroup);
+                } else {
+                    e.printStackTrace();
+                }
             }
         });
-
-        sendGroupRequests(newGroup);
     }
 
     private void saveNewGroup(final Group newGroup) {
@@ -233,9 +233,14 @@ public class GroupCreationFragment extends Fragment {
         newGroup.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                String objectId = newGroup.getObjectId();
-                Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
-                mListener.navigate_to_fragment(fragment);
+                if (e == null) {
+                    String objectId = newGroup.getObjectId();
+                    Fragment fragment = GroupFeedFragment.newInstance(objectId, groupTheme);
+                    mListener.navigate_to_fragment(fragment);
+                } else {
+                    Toast.makeText(getContext(), "there was a problem saving group", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -253,7 +258,7 @@ public class GroupCreationFragment extends Fragment {
 
         for (int i = 0; i < newMembers.size(); i++) {
             final GroupRequestNotif newRequest = new GroupRequestNotif();
-            newRequest.pinInBackground();
+            newRequest.pinInBackground("notifs");
             newRequest.saveEventually();
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.fromLocalDatastore();

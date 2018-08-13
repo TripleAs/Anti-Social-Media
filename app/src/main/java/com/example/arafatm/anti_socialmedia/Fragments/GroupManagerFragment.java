@@ -64,12 +64,15 @@ public class GroupManagerFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         groupList = new ArrayList<>();
-        groupAdapter = new GroupManagerAdapter(groupList, getActivity().getSupportFragmentManager());
+        groupAdapter = new GroupManagerAdapter(groupList, getActivity().getSupportFragmentManager(), GroupManagerFragment.this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+            if (container != null) {
+                container.removeAllViews();
+            }
         View view = inflater.inflate(R.layout.fragment_group_manager, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         return view;
@@ -104,7 +107,7 @@ public class GroupManagerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         rvGroups = view.findViewById(R.id.rvGroups);
-        rvGroups.addItemDecoration(new SpacesItemDecoration(30));
+        rvGroups.addItemDecoration(new SpacesItemDecoration(20));
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager( 2, LinearLayoutManager.VERTICAL);
         rvGroups.setLayoutManager(gridLayoutManager);
@@ -120,7 +123,6 @@ public class GroupManagerFragment extends Fragment {
             }
         });
     }
-
 
     /*loads all groups from parse and display it*/
     private void loadAllGroups() {
