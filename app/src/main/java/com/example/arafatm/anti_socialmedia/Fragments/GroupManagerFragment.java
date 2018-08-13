@@ -143,6 +143,7 @@ public class GroupManagerFragment extends Fragment {
     }
 
     public static void refreshManager(int position, Group currentGroup) {
+        if (groupList.size() > 0)
         groupList.remove(position);
         groupList.add(position, currentGroup);
         groupAdapter.notifyItemChanged(position);

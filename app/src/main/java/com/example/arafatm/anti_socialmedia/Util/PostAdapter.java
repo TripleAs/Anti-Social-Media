@@ -100,19 +100,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         viewHolder.tvTimestamp.setText(relativeTime);
         displayLikeImage(viewHolder.ivLike, post);
         displayLikesCount(viewHolder.tvNumLikes, post);
-
+        String imageURL = null;
         if (post.getImage() != null || post.getImageURL() != null) {
-            String imageURL = null;
             if (post.getImageURL() != null) {
                 imageURL = post.getImageURL();
             } else {
                 imageURL = post.getImage().getUrl();
             }
+        }
             //picture with post
             Glide.with(context)
                     .load(imageURL)
                     .into(viewHolder.imagePost);
-        }
 
         PhotoHelper.displayPropic(sender, viewHolder.ivPropic, context);
 

@@ -45,6 +45,7 @@ import butterknife.ButterKnife;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_BLUE;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_GREEN;
 import static com.example.arafatm.anti_socialmedia.Fragments.GroupCustomizationFragment.KEY_RED;
+import static com.example.arafatm.anti_socialmedia.Fragments.StoryDIsplayFragment.storyIndex;
 
 public class GroupFeedFragment extends Fragment implements CreatePostFragment.OnFragmentInteractionListener {
     private static final String ARG_PARAM1 = "param1";
@@ -376,8 +377,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
 
     private void refreshFeed() {
         postAdapter.clear();
+        storyIndex = 0;
         displayStory(R.id.fragment_child);
-      
+
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser().forGroup(group);
         postsQuery.fromNetwork();

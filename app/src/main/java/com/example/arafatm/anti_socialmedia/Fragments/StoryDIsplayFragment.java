@@ -29,10 +29,9 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
     private static final String CAPTION = "caption";
     private static final String DATA_TYPE = "dataType";
     private String text;
-    public int storyIndex = 0;
+    public static int storyIndex = 0;
     private String caption;
     private ArrayList<Story> allStories;
-    private String getDataType;
     private OnFragmentInteractionListener mListener;
 
     public StoryDIsplayFragment() {
@@ -92,7 +91,7 @@ public class StoryDIsplayFragment extends SupportBlurDialogFragment {
 
         //initialize fragment manager
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        showStory(fragmentTransaction, storyIndex);
+        showStory(fragmentTransaction, 0);
 
         next_story.setOnClickListener(new View.OnClickListener() {
             @Override
