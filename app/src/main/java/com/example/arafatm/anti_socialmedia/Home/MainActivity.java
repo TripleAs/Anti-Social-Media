@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements
                             case R.id.ic_group_empty:
                                 FragmentTransaction fragmentTransactionTwo = fragmentManager.beginTransaction();
                                 fragmentTransactionTwo.replace(R.id.layout_child_activity, groupFragment)
-                                        .commit();
+                                        .addToBackStack(null).commit();
                                 return true;
                             case R.id.ic_story:
                                 Intent intent = new Intent(MainActivity.this, StoryActivity.class);
@@ -168,7 +168,8 @@ public class MainActivity extends AppCompatActivity implements
                                 return true;
                             case R.id.ic_menu_thin:
                                 FragmentTransaction fragmentTransactionFour = fragmentManager.beginTransaction();
-                                fragmentTransactionFour.replace(R.id.layout_child_activity, settingsFragment).commit();
+                                fragmentTransactionFour.replace(R.id.layout_child_activity, settingsFragment)
+                                        .addToBackStack(null).commit();
                                 return true;
                             default:
                                 return false;
