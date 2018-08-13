@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">@color/orange_4</color>
+    <color name="colorPrimary">#8CD1D4</color>
     <color name="orange_4">#ffffa863</color>
-    <color name="colorPrimaryDark">@color/orange_6</color>
+    <color name="colorPrimaryDark">#8CD1D4</color>
     <color name="orange_6">#ffd7670d</color>
-    <color name="colorAccent">@color/orange_6</color>
+    <color name="colorAccent">#8CD1D4</color>
     <color name="orange_5">#fffd8d32</color>
 
 
