@@ -420,7 +420,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
     }
 
     public void passPostingToFeed(PhotoHelper photoHelper, String newMessage, Boolean hasNewPic, String imageUrl) {
-        progressBar.setVisibility(View.VISIBLE);
+        if (imageUrl == null || progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         final Post newPost = new Post();
         newPost.pinInBackground("posts");
@@ -468,7 +470,9 @@ public class GroupFeedFragment extends Fragment implements CreatePostFragment.On
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                progressBar.setVisibility(View.GONE);
+                                if (progressBar != null) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
                                 posts.add(0, newPost);
                                 postAdapter.notifyItemInserted(0);
                                 rvPosts.scrollToPosition(0);
