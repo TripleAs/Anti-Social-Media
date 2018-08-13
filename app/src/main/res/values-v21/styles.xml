@@ -9,18 +9,7 @@
         <item name="colorPrimary">@color/blue_gradient_2</item>
         <item name="colorPrimaryDark">@color/blue_gradient_2</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:fragmentEnterTransition">@transition/change_image_transform</item>
-        <item name="android:fragmentExitTransition">@transition/change_image_transform</item>
-        <item name="android:transition">@transition/change_image_transform</item>
-        <item name="android:fragmentReenterTransition">@transition/change_image_transform</item>
-        <item name="android:fragmentReturnTransition">@transition/change_image_transform</item>
-        <item name="android:windowReenterTransition">@transition/change_image_transform</item>
-        <item name="android:windowReturnTransition">@transition/change_image_transform</item>
-        <item name="android:windowEnterTransition">@transition/change_image_transform</item>
-        <item name="android:windowExitTransition">@transition/change_image_transform</item>
-        <item name="android:windowEnterAnimation">@transition/change_image_transform</item>
-        <item name="android:windowExitAnimation">@transition/change_image_transform</item>
-        <item name="colorAccent">@color/alphabet_b</item>
+        <item name="colorAccent">@color/blue_gradient_3</item>
         <item name="gradientBackground">@drawable/title_gradient</item>
         <!--<item name="android:windowBackground">@drawable/title_gradient</item>-->
 

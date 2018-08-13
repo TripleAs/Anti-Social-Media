@@ -74,9 +74,9 @@
             android:id="@+id/btSave"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_below="@+id/rvMembers"
+            android:layout_below="@+id/ivCenter"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/white"
             android:background="@drawable/rounded_colorprimary_button"
@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvNicknameCommand"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -167,6 +167,41 @@
             android:layout_marginTop="30dp"
             android:text="Edit your group members' nicknames"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btAddMembers"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/rvMembers"
+            android:layout_alignRight="@+id/ivCenter"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_colorprimary_button"
+            android:text="Add Members" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/rvMembers"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/ivCenter"/>
+
+        <Button
+            android:id="@+id/btLeaveGroup"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/rvMembers"
+            android:layout_alignLeft="@+id/ivCenter"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_colorprimary_button"
+            android:text="Leave Group" />
+
 
     </RelativeLayout>
 
