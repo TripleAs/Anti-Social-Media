@@ -10,7 +10,9 @@
     <color name="blue_gradient_3">#55b2b6</color>
 
 
+
     <color name="colorPrimary">@color/blue_gradient_2</color>
+
     <color name="customGradientStart">#e75b97</color>
     <color name="customGradientCenter">#38e7e6</color>
     <color name="customGradientEnd">#127eff</color>

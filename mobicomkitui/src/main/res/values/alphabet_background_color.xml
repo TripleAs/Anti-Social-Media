@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="orange_4">#ffffa863</color>
+    <color name="orange_6">#ffd7670d</color>
+    <color name="orange_5">#fffd8d32</color>
+
     <color name="colorPrimary">@color/blue_gradient_2</color>
     <color name="colorPrimaryDark">@color/blue_gradient_3</color>
     <color name="colorAccent">@color/blue_gradient_2</color>
     <color name="blue_gradient_2">#8CD1D4</color>
     <color name="blue_gradient_3">#3d9da1</color>
-
-
 
     <color name="mg_alphabet_first">#FF617D8A</color>
     <color name="mg_alphabet_second">#FF628B70</color>

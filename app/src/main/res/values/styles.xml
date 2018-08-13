@@ -37,7 +37,7 @@
         <item name="feedBackground">@drawable/feed_blue_gradient</item>
     </style>
 
-    <style name="GroupGreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="GroupGreenTheme" parent="Theme.AppCompat.Light.NoActionBar"
         <item name="colorPrimary">@color/green_gradient_2</item>
         <item name="colorAccent">@color/white</item>
         <item name="feedBackground">@drawable/feed_green_gradient</item>

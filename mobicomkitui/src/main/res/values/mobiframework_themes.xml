@@ -5,8 +5,8 @@
         <item name="android:actionBarStyle">@style/ContactActionBar</item>
         <item name="actionBarStyle">@style/ContactActionBar</item>
         <!-- Set AppCompat’s color theming attrs -->
-        <item name="colorPrimary">@color/orange_4</item>
-        <item name="colorPrimaryDark">@color/orange_6</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/white</item>
     </style>
 
