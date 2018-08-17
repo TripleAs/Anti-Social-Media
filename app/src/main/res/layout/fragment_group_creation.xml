@@ -21,11 +21,11 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFriends"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btCreateGroup"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/sv_search"
-        android:layout_above="@+id/btNext"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="5dp" />
 
     <Button
         android:id="@+id/btCreateGroup"
