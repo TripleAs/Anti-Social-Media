@@ -23,7 +23,12 @@
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='asm-login.gif' title='Login and Group Creation' width='' alt='Login and Group Creation' />
+<img src='asm-notifs-feed.gif' title='Notifications and Feed' width='' alt='Notifications and Feed' />
+<img src='asm-customization.gif' title='Group Customization' width='' alt='Group Customization' />
+<img src='asm-posting.gif' title='Creating Posts' width='' alt='Creating Posts' />
+<img src='asm-story.gif' title='Story Watching and Creation' width='' alt='Story Watching and Creation' />
+<img src='asm-messaging.gif' title='Messaging' width='' alt='Messaging' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
